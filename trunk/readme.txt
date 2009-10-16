@@ -4,7 +4,7 @@ Donate link: http://example.com/
 Tags: Gravatar, gravatar, avatar, avatars, comments, comment
 Requires at least: 2.8
 Tested up to: 2.8.4
-Stable tag: 0.94
+Stable tag: 0.94.1
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
@@ -40,14 +40,14 @@ No, you can select where you want to show message, you can select all cases or j
 
 = Can I choose where on page to show message? =
 
-Yes, you can choose below which elements on page to show message. There are several elements already available to choose for all cases and you can alternatively add custom element by providing it's id. Since this plugin uses jQuery selectors to find element, you can add even more advanced filters for selecting. Note that all selectors start with # . Also be aware that display of message may not look good with your theme.
+Yes, you can choose below which elements on page to show message. There are several elements already available to choose for all cases and you can alternatively add custom element by providing it's id. Since this plugin uses [jQuery selectors](http://docs.jquery.com/Selectors) to find element, you can add even more advanced filters for selecting. Note that all selectors start with # . Also be aware that display of message may not look good with your theme.
 
 = Can I customize style of message? =
 
 Yes, you can add styles for message. Whole message is wraped with div with ID depending on case:
-- gse_tip_comment for comment form
-- gse_tip_profile for profile page
-- gde_tip_registration for registration page
+* `gse_tip_comment` for comment form
+* `gse_tip_profile` for profile page
+* `gde_tip_registration` for registration page
 
 = Can I customize text of message? =
 
@@ -57,7 +57,7 @@ Yes, you can write any message you want, even use HTML tags you want. Note that 
 
 No.
 
-= Can I translate plugin to language other then English? =
+= Can I translate plugin to language other than English? =
 
 Yes, this plugin is fully internationalized, you can translate all text and link to locale version of Gravatar's site.
 
@@ -68,6 +68,9 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.94.1 =
+* Fixing some grammar and spelling errors and changing several text strings.
 
 = 0.94 =
 * First alpha version in SVN.
