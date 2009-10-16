@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://milandinic.com/
 Description: Displays message to commenters without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 0.94
+Version: 0.94.1
 Author: Milan Dinić
 Author URI: http://milandinic.com/
 Text Domain: gse_textdomain
@@ -184,7 +184,7 @@ function add_gravatar_signup_encouragement_settings_field() {
 function gravatar_signup_encouragement_field_settings_form() {
 	global $gse_options;
 	// First we print selection of cases when to show tip ?>
-	<span id="gravatar_signup_encouragement_form"><?php _e( 'Choose where to show Gravatar Signup Tip', 'gse_textdomain' ); ?></span>
+	<span id="gravatar_signup_encouragement_form"><?php _e( 'Choose where to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
 	<br />
 	
 	<?php // Comments for unregistered ?>
@@ -192,7 +192,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php checked('1', $gse_options['show_comments_unreg']); ?> /> <?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?> </label>
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_comments_unreg" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element in comment form to show Gravatar Signup Tip', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose below which text input field or element in comment form to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_unreg]" type="radio" value="comment" 
 			<?php checked('comment', $gse_options['below_comments_unreg']); ?> /> <?php _e( 'Comment text', 'gse_textdomain' ); ?> </label><br />
@@ -214,7 +214,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php checked('1', $gse_options['show_comments_reg']); ?> /> <?php _e( 'Comment form (registered users)', 'gse_textdomain' ); ?> </label>
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_comments_reg" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element in comment form to show Gravatar Signup Tip', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose below which text input field or element in comment form to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_reg]" type="radio" value="comment" 
 			<?php checked('comment', $gse_options['below_comments_reg']); ?> /> <?php _e( 'Comment text', 'gse_textdomain' ); ?> </label><br />
@@ -234,7 +234,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php checked('1', $gse_options['show_profile']); ?> /> <?php _e( 'Profile page', 'gse_textdomain' ); ?> </label>
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_profile" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element on profile page to show Gravatar Signup Tip', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose below which text input field or element on profile page to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_profile]" type="radio" value="your-profile h3:eq(1)" 
 			<?php checked('your-profile h3:eq(1)', $gse_options['below_profile']); ?> /> <?php _e( '“Name” header', 'gse_textdomain' ); ?> </label>
@@ -263,7 +263,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php checked('1', $gse_options['show_registration']); ?> /> <?php _e( 'Registration page', 'gse_textdomain' ); ?> </label>
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_registration" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element on registration page to show Gravatar Signup Tip', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose below which text input field or element on registration page to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_registration]" type="radio" value="user_email" 
 			<?php checked('user_email', $gse_options['below_registration']); ?> /> <?php _e( 'E-mail address', 'gse_textdomain' ); ?> </label>
@@ -281,8 +281,8 @@ function gravatar_signup_encouragement_field_settings_form() {
 	
 	
 	<br /><br />
-	<?php _e( "Text to show to commenters that don't have avatar on Gravatar.", 'gse_textdomain' ); ?><br />
-	<?php _e( 'You should leave <strong>URL</strong> since it is automaticaly replaced with appropiate link to signup page on gravatar.com.', 'gse_textdomain' ); ?><br />
+	<?php _e( "Text to show to users that don't have avatar on Gravatar.", 'gse_textdomain' ); ?><br />
+	<?php _e( 'You should leave <strong>URL</strong> since it is automatically replaced with appropriate link to signup page on gravatar.com.', 'gse_textdomain' ); ?><br />
 	<label><textarea name="gravatar_signup_encouragement_settings[tip_text]" rows="5" cols="50" id="gravatar_signup_encouragement_settings[tip_text]" class="large-text code"><?php echo $gse_options['tip_text']; ?></textarea></label>
 	
 	<?php // Last we print jQuery script for show/hide on checkbox and text-to-radio input value ?>
@@ -533,5 +533,5 @@ if ( $gse_options['show_registration'] ) {
 Остало:
 - видети како изабрати елементе на страници сложеније са нпр. your-profile h3:eq(2) и додати још подразумеваних елемената
 - блокирање уноса прилагођеног приликом нештиклирања радија
-
+*/
 ?>
