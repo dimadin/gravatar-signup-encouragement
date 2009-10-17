@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: dimadin
-Tags: Gravatar, gravatar, avatar, avatars, comments, comment
+Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
-Tested up to: 2.8.4
-Stable tag: 0.94.1
+Tested up to: 2.9-rare
+Stable tag: 0.94.2
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
@@ -43,7 +43,8 @@ Yes, you can choose below which elements on page to show message. There are seve
 
 = Can I customize style of message? =
 
-Yes, you can add styles for message. Whole message is wraped with div with ID depending on case:
+Yes, you can add styles for message. Whole message is wrapped with div with ID depending on case:
+
 *   `gse_comments_message` for comment form
 *   `gse_profile_message` for profile page
 *   `gse_registration_message` for registration page
@@ -60,9 +61,13 @@ No.
 
 Yes, this plugin is fully internationalized, you can translate all text and link to locale version of Gravatar's site. You can find .pot file in `translations` folder where you should place your translation. Please make a [contact](http://blog.milandinic.com/contact/) for sending your translation so that it can be included in official realease.
 
+= Will this plugin enable use og Gravatar's API for managing avatars directly from WordPress installation? =
+
+No, this plugin will never add that feature since author of this plugin is against managing of account on Gravatar from remote site.
+
 == Screenshots ==
 
-1. Settings form with all expanded options.
+1. Settings form with all expanded options
 2. Message shown to unregistered commenter on default theme with default settings
 3. Message shown to registered commenter on default theme with default settings
 4. Message shown on profile page with option to show below “About Yourself” header
