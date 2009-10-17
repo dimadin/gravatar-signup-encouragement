@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Gravatar Signup Encouragement
-Plugin URI: http://milandinic.com/
-Description: Displays message to commenters without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 0.94.1
+Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
+Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
+Version: 0.94.2
 Author: Milan Dinić
-Author URI: http://milandinic.com/
+Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
 */
 
