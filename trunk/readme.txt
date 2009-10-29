@@ -75,6 +75,12 @@ No, this plugin will never add that feature since author of this plugin is again
 
 == Changelog ==
 
+= 0.94.8 =
+* Fixing issue with showing of message to unregistered commenters who changed e-mail address to one that does have a gravatar
+
+= 0.94.2 =
+* Updating plugin's meta-data
+
 = 0.94.1 =
 * Fixing some grammar and spelling errors and changing several text strings.
 
