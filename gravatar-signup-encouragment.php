@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 0.94.2
+Version: 0.94.8
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -396,7 +396,11 @@ jQuery(document).ready(function()
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
 		  	jQuery("#<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo $gse_tip_text; ?></div>"); <?php // show tip ?>
-          }  				
+          }  	
+		  else
+		  {
+			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
+		  }
         });
  
 	});
