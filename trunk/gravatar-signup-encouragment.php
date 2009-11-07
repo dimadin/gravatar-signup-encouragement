@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 0.94.8
+Version: 1.0
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -23,7 +23,7 @@ if (!function_exists ('add_action')) {
 * Make global variables
 */
 
-global $gse_options, $gse_plugin_dir, $gse_grav_check_url, $gse_tip_text_unformated;
+global $gse_options, $gse_plugin_dir, $gse_grav_check_url;
 
 /*
 * Find name of directory
@@ -50,47 +50,28 @@ add_action('init', 'gravatar_signup_encouragement_textdomain');
 $gse_options = get_option('gravatar_signup_encouragement_settings');
 
 /*
-* Localize URL
-* and format it for use
-*/
-
-/* translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian */
-$gse_locale_url = _x('en.gravatar.com', 'Locale gravatar.com, e.g. sr.gravatar.com for Serbian', 'gse_textdomain');
-$gse_url = "http://" . $gse_locale_url . '/site/signup/" + emailValue + "';
-
-/*
-* Make placeholder for URL in settings for easier editing
-*/
-
-$gse_url_placeholder = "URL";
-
-/*
-* Default tip
-*/
-
-$gse_tip_text_unformated = sprintf(__("It seems that you don't have an avatar on Gravatar. Click <a href='%s' target='_blank'>here</a> to make one.", "gse_textdomain"), $gse_url_placeholder);
-//$gse_tip_text_default = preg_replace('/^URL/', $gse_url, $gse_tip_text_unformated, 1);
-
-/*
-* Load tip from database and replace placeholder with real URL
-*/
-
-$gse_tip_text = preg_replace('/URL/', $gse_url, $gse_options['tip_text']);
-
-/*
 * Add default options on activation of plugin
 */
 
 function gravatar_signup_encouragement_activate() {
-	global $gse_options, $gse_tip_text_unformated;
+	global $gse_options, $gse_plugin_dir;
   
 	if (!$gse_options) {
+		/*
+		* Show message to unregistered commenters
+		* and show below: comment field (for comments), “Name” header (profile), e-mail address (registration)
+		*/
 		$gse_options['show_comments_unreg'] = '1';
 		$gse_options['below_comments_unreg'] = 'comment';
 		$gse_options['below_comments_reg'] = 'comment';
 		$gse_options['below_profile'] = 'your-profile h3:eq(1)';
 		$gse_options['below_registration'] = 'user_email';
-		$gse_options['tip_text'] = $gse_tip_text_unformated;
+		/*
+		* Load plugin textdomain only for activation hook
+		* so that default message could be saved in database localized
+		*/
+		load_plugin_textdomain( 'gse_textdomain', false, $gse_plugin_dir . '/translations');
+		$gse_options['tip_text'] = sprintf(__("It seems that you don't have an avatar on Gravatar. Click <a href='%s' target='_blank'>here</a> to make one.", "gse_textdomain"), 'URL');
 	
 		add_option('gravatar_signup_encouragement_settings', $gse_options);
 	}
@@ -150,7 +131,7 @@ function gravatar_signup_encouragement_enqueing_comments() {
 	}
 }
 add_action('get_header', 'gravatar_signup_encouragement_enqueing_comments');
-//or init insted of get_header?
+//or init instead of get_header?
 
 /*
 * Function to add fields on Discussion Settings page, section Gravatar
@@ -368,17 +349,44 @@ jQuery(document).ready(function()
 </script>
 <?php }
 
-//add action so that functions could actually work
+//add action so that fields are actually shown
 add_action('admin_init', 'add_gravatar_signup_encouragement_settings_field');
 
+/*
+* Prepeare message for use
+*/
 
+function gravatar_signup_encouragement_message() {
+	global $gse_options;
+	
+	/*
+	* Localize URL
+	* and format it for use
+	*/
+	
+	/* translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian */
+	$gse_locale_url = _x('en.gravatar.com', 'Locale gravatar.com, e.g. sr.gravatar.com for Serbian', 'gse_textdomain');
+	$gse_url = "http://" . $gse_locale_url . '/site/signup/" + emailValue + "';
+	
+	/*
+	* Load tip from database and replace placeholder with real URL
+	*/
+	
+	$gse_tip_text = preg_replace('/URL/', $gse_url, $gse_options['tip_text']);
+	
+	/*
+	* Print message
+	*/
+	
+	return $gse_tip_text;
+}
 
 /*
 * Add encouragement on comment form for unregistered users
 */
 		
 function show_gravatar_signup_encouragement_com_unreg() {
-	global $gse_options, $gse_tip_text, $gse_grav_check_url;
+	global $gse_options, $gse_grav_check_url;
 	?>
 	
 <script language="javascript">
@@ -395,7 +403,7 @@ jQuery(document).ready(function()
 			
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("#<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo $gse_tip_text; ?></div>"); <?php // show tip ?>
+		  	jQuery("#<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo gravatar_signup_encouragement_message(); ?></div>"); <?php // show tip ?>
           }  	
 		  else
 		  {
@@ -414,7 +422,7 @@ jQuery(document).ready(function()
 */
 		
 function show_gravatar_signup_encouragement_com_reg() {
-	global $user_email, $gse_options, $gse_tip_text, $gse_grav_check_url;
+	global $user_email, $gse_options, $gse_grav_check_url;
 	?>
 	
 <script language="javascript">
@@ -429,7 +437,7 @@ jQuery(document).ready(function()
 			
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("#<?php echo $gse_options['below_comments_reg']; ?>").after("<br /><div id='gse_comments_message'><?php echo $gse_tip_text; ?></div>"); <?php // show tip ?>
+		  	jQuery("#<?php echo $gse_options['below_comments_reg']; ?>").after("<br /><div id='gse_comments_message'><?php echo gravatar_signup_encouragement_message(); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -456,7 +464,7 @@ add_action('get_header', 'gravatar_signup_encouragement_comment_form');
 */
 
 function show_gravatar_signup_encouragement_profile() {
-	global $user_email, $gse_options, $gse_tip_text, $gse_grav_check_url;
+	global $user_email, $gse_options, $gse_grav_check_url;
       
 	//echo '<div id="gravatar_on_profile"></div>';
 	?>
@@ -472,7 +480,7 @@ jQuery(document).ready(function()
 			
 			jQuery('#gse_profile_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("#<?php echo $gse_options['below_profile']; ?>").after("<br /><div id='gse_profile_message'><?php echo $gse_tip_text; ?></div>"); <?php // show tip ?>
+		  	jQuery("#<?php echo $gse_options['below_profile']; ?>").after("<br /><div id='gse_profile_message'><?php echo gravatar_signup_encouragement_message(); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -488,7 +496,7 @@ if ( $gse_options['show_profile'] ) {
 * Actions based on plugin Gravajax Registration ( http://www.epicalex.com/gravajax-registration/ ) by Alex Cragg
 */
 function show_gravatar_signup_encouragement_registration() {
-	global $user_email, $gse_options, $gse_tip_text, $gse_grav_check_url;
+	global $gse_options, $gse_grav_check_url;
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
@@ -513,8 +521,12 @@ jQuery(document).ready(function()
 				
 				jQuery('#gse_registration_message').hide(); <?php // hide tip if allready shown ?>
 
-				jQuery("#<?php echo $gse_options['below_registration']; ?>").after("<div id='gse_registration_message'><?php echo $gse_tip_text; ?></div>"); <?php // show tip ?>
-			  }  				
+				jQuery("#<?php echo $gse_options['below_registration']; ?>").after("<div id='gse_registration_message'><?php echo gravatar_signup_encouragement_message(); ?></div>"); <?php // show tip ?>
+			  }
+			  else
+			  {
+				jQuery('#gse_registration_message').hide(); <?php // hide tip if allready shown ?>
+			  }
 			});
 		}, 1000); 
  
@@ -535,7 +547,6 @@ if ( $gse_options['show_registration'] ) {
 
 /*
 Остало:
-- видети како изабрати елементе на страници сложеније са нпр. your-profile h3:eq(2) и додати још подразумеваних елемената
 - блокирање уноса прилагођеног приликом нештиклирања радија
 */
 ?>

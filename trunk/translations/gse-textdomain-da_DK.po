@@ -1,0 +1,126 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravatar Signup Encouragement 0.94.8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-29 21:27+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Team Blogos <wordpress@blogos.dk>\n"
+"Language-Team: Team Blogos <wordpress@blogos.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;plural=n != 1;\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_c;_e;__ngettext:1,2;__ngettext_noop:1,2;_n:1,2;_nc:1,2;_n_noop:1,2\n"
+"X-Poedit-Basepath: d:\\wordpress\\plugins\\gravatar-signup-encouragement\n"
+"X-Poedit-SearchPath-0: d:\\wordpress\\plugins\\gravatar-signup-encouragement\n"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:71
+#, php-format
+msgid "It seems that you don't have an avatar on Gravatar. Click <a href='%s' target='_blank'>here</a> to make one."
+msgstr "Du ser ikke ud til at have en Gravatar. Klik <a href='%s' target='_blank'>her</a> for at oprette en."
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:120
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:172
+msgid "Gravatar Signup Encouragement"
+msgstr "Gravatar Signup Encouragement"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:187
+msgid "Choose where to show Gravatar Signup Encouragement message"
+msgstr "Vælg, hvor du vil vise Gravatar Signup Encouragement-opfordringen"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:192
+msgid "Comment form (unregistered users)"
+msgstr "Kommentarformular (ikke-registrerede brugere)"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:195
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:217
+msgid "Choose below which text input field or element in comment form to show Gravatar Signup Encouragement message"
+msgstr "Vælg nedenfor, hvilke tekstinputfelter eller elementer i kommentarformularen Gravatar Signup Encouragement-opfordringen skal vises i"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:198
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:220
+msgid "Comment text"
+msgstr "Kommentartekst"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:200
+msgid "URL"
+msgstr "URL"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:202
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:248
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:269
+msgid "E-mail address"
+msgstr "E-mail-adresse"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:205
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:225
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:275
+msgid "Submit button"
+msgstr "Indsend-knap"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:208
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:228
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:257
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:278
+msgid "Custom ID:"
+msgstr "Brugerdefineret id:"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:214
+msgid "Comment form (registered users)"
+msgstr "Kommentarformular (registrere brugere)"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:222
+msgid "Logout URL"
+msgstr "Log ud-URL"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:234
+msgid "Profile page"
+msgstr "Profilside"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:237
+msgid "Choose below which text input field or element on profile page to show Gravatar Signup Encouragement message"
+msgstr "Vælg nedenfor, hvilke tekstinputfelter eller elementer på profilsiden Gravatar Signup Encouragement-opfordringen skal vises i"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:240
+msgid "“Name” header"
+msgstr "\"Navn\"-header"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:243
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:272
+msgid "User name"
+msgstr "Brugernavn"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:245
+msgid "Nicename"
+msgstr "Nicename"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:251
+msgid "“About Yourself” header"
+msgstr "\"Om dig selv\"-header"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:254
+msgid "Biographical Info"
+msgstr "Biografisk info"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:263
+msgid "Registration page"
+msgstr "Registreringsside"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:266
+msgid "Choose below which text input field or element on registration page to show Gravatar Signup Encouragement message"
+msgstr "Vælg nedenfor, hvilke tekstinputfelter eller elementer på registreringssiden Gravatar Signup Encouragement-opfordringen skal vises i"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:284
+msgid "Text to show to users that don't have avatar on Gravatar."
+msgstr "Tekst, der skal vises til brugere, der ikke har en avatar på Gravatar"
+
+#: d:\wordpress\plugins\gravatar-signup-encouragement/gravatar-signup-encouragment.php:285
+msgid "You should leave <strong>URL</strong> since it is automatically replaced with appropriate link to signup page on gravatar.com."
+msgstr "Du bør ikke fjerne <strong>URL</strong>, eftersom denne automatisk erstattes med det rigtige link til registreringssiden på gravatar.com."
+
