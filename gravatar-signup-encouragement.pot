@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/gravatar-signup-"
 "encouragement\n"
-"POT-Creation-Date: 2009-10-16 22:24+0000\n"
+"POT-Creation-Date: 2009-11-07 14:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,118 +16,118 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian
-#: gravatar-signup-encouragment.php:58
-msgctxt "Locale gravatar.com, e.g. sr.gravatar.com for Serbian"
-msgid "en.gravatar.com"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:71
+#: gravatar-signup-encouragment.php:74
 #, php-format
 msgid ""
 "It seems that you don't have an avatar on Gravatar. Click <a href='%s' "
 "target='_blank'>here</a> to make one."
 msgstr ""
 
-#: gravatar-signup-encouragment.php:120
+#: gravatar-signup-encouragment.php:101
 msgid "Settings"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:172
+#: gravatar-signup-encouragment.php:153
 msgid "Gravatar Signup Encouragement"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:187
+#: gravatar-signup-encouragment.php:168
 msgid "Choose where to show Gravatar Signup Encouragement message"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:192
+#: gravatar-signup-encouragment.php:173
 msgid "Comment form (unregistered users)"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:195 gravatar-signup-encouragment.php:217
+#: gravatar-signup-encouragment.php:176 gravatar-signup-encouragment.php:198
 msgid ""
 "Choose below which text input field or element in comment form to show "
 "Gravatar Signup Encouragement message"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:198 gravatar-signup-encouragment.php:220
+#: gravatar-signup-encouragment.php:179 gravatar-signup-encouragment.php:201
 msgid "Comment text"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:200
+#: gravatar-signup-encouragment.php:181
 msgid "URL"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:202 gravatar-signup-encouragment.php:248
-#: gravatar-signup-encouragment.php:269
+#: gravatar-signup-encouragment.php:183 gravatar-signup-encouragment.php:229
+#: gravatar-signup-encouragment.php:250
 msgid "E-mail address"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:205 gravatar-signup-encouragment.php:225
-#: gravatar-signup-encouragment.php:275
+#: gravatar-signup-encouragment.php:186 gravatar-signup-encouragment.php:206
+#: gravatar-signup-encouragment.php:256
 msgid "Submit button"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:208 gravatar-signup-encouragment.php:228
-#: gravatar-signup-encouragment.php:257 gravatar-signup-encouragment.php:278
+#: gravatar-signup-encouragment.php:189 gravatar-signup-encouragment.php:209
+#: gravatar-signup-encouragment.php:238 gravatar-signup-encouragment.php:259
 msgid "Custom ID:"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:214
+#: gravatar-signup-encouragment.php:195
 msgid "Comment form (registered users)"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:222
+#: gravatar-signup-encouragment.php:203
 msgid "Logout URL"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:234
+#: gravatar-signup-encouragment.php:215
 msgid "Profile page"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:237
+#: gravatar-signup-encouragment.php:218
 msgid ""
 "Choose below which text input field or element on profile page to show "
 "Gravatar Signup Encouragement message"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:240
+#: gravatar-signup-encouragment.php:221
 msgid "“Name” header"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:243 gravatar-signup-encouragment.php:272
+#: gravatar-signup-encouragment.php:224 gravatar-signup-encouragment.php:253
 msgid "User name"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:245
+#: gravatar-signup-encouragment.php:226
 msgid "Nicename"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:251
+#: gravatar-signup-encouragment.php:232
 msgid "“About Yourself” header"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:254
+#: gravatar-signup-encouragment.php:235
 msgid "Biographical Info"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:263
+#: gravatar-signup-encouragment.php:244
 msgid "Registration page"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:266
+#: gravatar-signup-encouragment.php:247
 msgid ""
 "Choose below which text input field or element on registration page to show "
 "Gravatar Signup Encouragement message"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:284
+#: gravatar-signup-encouragment.php:265
 msgid "Text to show to users that don't have avatar on Gravatar."
 msgstr ""
 
-#: gravatar-signup-encouragment.php:285
+#: gravatar-signup-encouragment.php:266
 msgid ""
 "You should leave <strong>URL</strong> since it is automatically replaced "
 "with appropriate link to signup page on gravatar.com."
+msgstr ""
+
+#. translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian
+#: gravatar-signup-encouragment.php:368
+msgctxt "Locale gravatar.com, e.g. sr.gravatar.com for Serbian"
+msgid "en.gravatar.com"
 msgstr ""
