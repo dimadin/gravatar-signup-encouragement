@@ -3,7 +3,7 @@ Contributors: dimadin
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
 Tested up to: 2.9-rare
-Stable tag: 0.94.2
+Stable tag: 1.0
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
@@ -59,7 +59,12 @@ No.
 
 = Can I translate plugin to language other than English? =
 
-Yes, this plugin is fully internationalized, you can translate all text and link to locale version of Gravatar's site. You can find .pot file in `translations` folder where you should place your translation. Please make a [contact](http://blog.milandinic.com/contact/) for sending your translation so that it can be included in official realease.
+Yes, this plugin is fully internationalized, you can translate all text and link to locale version of Gravatar's site. You can find .pot file in root folder and you should place your translation in`translations` folder. Please make a [contact](http://blog.milandinic.com/contact/) for sending your translation so that it can be included in official realease.
+
+Currently, plugin includes following translations:
+
+* [Serbian](http://www.milandinic.com/2009/11/07/podstaknite-korisiscenje-gravatara/), by author himself
+* [Danish](http://wordpress.blogos.dk/s%C3%B8g-efter-downloads/?did=224), thanks to GeorgWP
 
 = Will this plugin enable use og Gravatar's API for managing avatars directly from WordPress installation? =
 
@@ -75,14 +80,22 @@ No, this plugin will never add that feature since author of this plugin is again
 
 == Changelog ==
 
+= 1.0 =
+* Moved URL localization and message preparation to function so that URL localization could work and to improve performance, as per [suggestion](http://groups.google.com/group/wp-hackers/browse_thread/thread/4fdc895360c3b087#) from Otto
+* Added load_plugin_textdomain function in register_activation_hook so that default message can be localized on activation, as per confirmation from Otto
+* Fixed issue with showing of message on registration page when user change e-mail address to one that does have a gravatar
+* Added Danish translation; thanks to [GeorgWP](http://wordpress.org/support/topic/326328)
+* Moved .pot file to root folder
+* Several small cleanups and moves of code
+
 = 0.94.8 =
-* Fixing issue with showing of message to unregistered commenters who changed e-mail address to one that does have a gravatar
+* Fixed issue with showing of message to unregistered commenters who changed e-mail address to one that does have a gravatar
 
 = 0.94.2 =
-* Updating plugin's meta-data
+* Updated plugin's meta-data
 
 = 0.94.1 =
-* Fixing some grammar and spelling errors and changing several text strings.
+* Fixed some grammar and spelling errors and changing several text strings.
 
 = 0.94 =
 * First alpha version in SVN.
