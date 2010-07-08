@@ -1,8 +1,8 @@
-=== Plugin Name ===
+=== Gravatar Signup Encouragement ===
 Contributors: dimadin
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
-Tested up to: 2.9-rare
+Tested up to: 3.0
 Stable tag: 1.0
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
@@ -79,6 +79,31 @@ No, this plugin will never add that feature since author of this plugin is again
 5. Message shown on registration page with default settings
 
 == Changelog ==
+
+= 1.1=
+* Update "Tested up to" to version 3.0
+* Show message to commenter who already left comment(s) before
+* Add a security check for localized URL to gravatar.com
+* Add new default message
+* Move localized URL forming to its own function
+* Improve function for returning message with better handling of line breaks, different cases of usage of email address
+* Add support for dialog after commenting
+* Add support for message in admin notices
+* Make function for checking existence of gravatar
+* Add links in contextual help to documentation and support forum
+* Add admin_url for settings link on plugins page
+* Replace previous URL tp gravatar-check.php with one that uses plugins_url
+* Remove global $gse_plugin_dir and use dirname( plugin_basename( __FILE__ ) ) inside load_plugin_textdomain functions
+* Add version in database for easier future upgrades
+* Replace ID selectors with any type of selectors and migrate old selectors to new format
+* Replace hard-coded curly quotes with HTML entities
+* Add filter gse_get_email_value_com_unreg for source of email address on comment forms in themes that don't follow standard naming
+* Remove global $gse_grav_check_url and use function gravatar_signup_encouragement_check_url instead
+* Add support for message on wp-signup.php page (multisite)
+* Add filters for message in every case
+* Add filter for timeout on registration
+* Show message to those who upgraded from older version with information about updates
+* Add two new elements on profile page: header "Profile" and last input
 
 = 1.0 =
 * Moved URL localization and message preparation to function so that URL localization could work and to improve performance, as per [suggestion](http://groups.google.com/group/wp-hackers/browse_thread/thread/4fdc895360c3b087#) from Otto
