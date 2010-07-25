@@ -2,7 +2,7 @@
 Contributors: dimadin
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
-Tested up to: 3.0
+Tested up to: 3.0.1
 Stable tag: 1.0
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
@@ -80,8 +80,8 @@ No, this plugin will never add that feature since author of this plugin is again
 
 == Changelog ==
 
-= 1.1=
-* Update "Tested up to" to version 3.0
+= 2.0 =
+* Update "Tested up to" to version 3.0.1
 * Show message to commenter who already left comment(s) before
 * Add a security check for localized URL to gravatar.com
 * Add new default message
@@ -104,6 +104,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Add filter for timeout on registration
 * Show message to those who upgraded from older version with information about updates
 * Add two new elements on profile page: header "Profile" and last input
+* Show message if plugin Use Google Libraries isn't installed
 
 = 1.0 =
 * Moved URL localization and message preparation to function so that URL localization could work and to improve performance, as per [suggestion](http://groups.google.com/group/wp-hackers/browse_thread/thread/4fdc895360c3b087#) from Otto

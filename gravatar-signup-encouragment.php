@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 1.1
+Version: 2.0b
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 */
@@ -75,7 +75,7 @@ function gravatar_signup_encouragement_activate() {
 		$gse_options['below_profile'] = '#your-profile h3:eq(1)';
 		$gse_options['below_registration'] = '#user_email';
 		$gse_options['below_ms_signup'] = '#user_email';
-		$gse_options['version'] = '1.1';
+		$gse_options['version'] = '2.0';
 		/*
 		* Load plugin textdomain only for activation hook
 		* so that default message could be saved in database localized
@@ -117,9 +117,9 @@ If you want to have your own unique avatar, click <a href='%s' target='_blank'>h
 			/*
 			* Add new version and new default value
 			*/
-			$gse_options['version'] = '1.1';
+			$gse_options['version'] = '2.0';
 			$gse_options['below_ms_signup'] = '#user_email';
-			$gse_options['notice_upgrade_1_11'] = true;
+			$gse_options['notice_upgrade_1_20'] = true;
 			update_option('gravatar_signup_encouragement_settings', $gse_options);
 		}
 	}
@@ -225,6 +225,19 @@ function add_gravatar_signup_encouragement_settings_field() {
 
 function gravatar_signup_encouragement_field_settings_form() {
 	global $gse_options;
+	
+	/*
+	* Show notice for Use Google Libraries
+	*/
+	if (!class_exists('JCP_UseGoogleLibraries')) {
+		?><div class="dashboard-widget-notice">
+		<strong><?php _e( "Notice:", "gse_textdomain" );?></strong><br />
+		<?php _e( "Plugin Gravatar Signup Encouragement uses jQuery for display of messages. You can speed up your site by installing plugin <a href='http://jasonpenney.net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, which will load jQuery from Google's CDN.", "gse_textdomain" );
+		echo sprintf(__(" (<a href='%s'>read more why</a>)", "gse_textdomain" ), "http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/");?><br />
+		<?php echo sprintf(__("<a href='%s' class='thickbox'>Install Use Google Libraries</a>", "gse_textdomain" ),  esc_url(admin_url('plugin-install.php?tab=plugin-information&plugin=use-google-libraries&TB_iframe=true&width=600&height=550')));?><br />
+		</div>
+	<?php }
+	
 	// First we print selection of cases when to show tip ?>
 	<span id="gravatar_signup_encouragement_form"><?php _e( 'Choose where to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
 	<br />
@@ -371,7 +384,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	/*
 	* Show upgrade notice
 	*/
-	if ( $gse_options['notice_upgrade_1_11'] ) {
+	if ( $gse_options['notice_upgrade_1_20'] ) {
 		?><div class="dashboard-widget-notice">
 		<?php _e( "There are new options for Gravatar Signup Encouragement.", "gse_textdomain" );?><br />
 		<ol>
@@ -385,8 +398,24 @@ function gravatar_signup_encouragement_field_settings_form() {
 It seems that you don't have an avatar on Gravatar. This means that default avatar is shown beside your comments on this site.
 
 If you want to have your own unique avatar, click <a href='%s' target='_blank'>here</a> to make one (link opens in new tab/window).", "gse_textdomain"), 'URL'); ?></textarea><br />
-		<?php printf( '<a href="%s" id="gse-notice-1-11-no">' . __('Do not show this notice again', 'gse_textdomain') . '</a>', '?gse_notice_1_11=0' ); ?></div><br />
+		<?php printf( '<a href="%s" id="gse-notice-1-20-no">' . __('Do not show this notice again', 'gse_textdomain') . '</a>', '?gse_notice_1_20=0' ); ?></div><br />
 	<?php } ?>
+	
+	<?php
+	/*
+	* Show notice if no message
+	*/
+	if ( !$gse_options['tip_text'] ) {
+		?><div class="dashboard-widget-notice">
+		<?php _e( "You don't have a message that is shown to users. For making your new message, you can take idea from default message.", "gse_textdomain" );?><br />
+		<?php _e( "Default message:", "gse_textdomain" );?><br />
+		<textarea  readonly="true" rows="5" cols="50" class="large-text code"><?php echo sprintf(__("
+It seems that you don't have an avatar on Gravatar. This means that default avatar is shown beside your comments on this site.
+
+If you want to have your own unique avatar, click <a href='%s' target='_blank'>here</a> to make one (link opens in new tab/window).", "gse_textdomain"), 'URL'); ?></textarea><br />
+		</div>
+	<?php } ?>
+	
 	<?php _e( "Text to show to users that don't have avatar on Gravatar.", 'gse_textdomain' ); ?><br />
 	<?php _e( 'You should leave <strong>URL</strong> since it is automatically replaced with appropriate link to signup page on gravatar.com.', 'gse_textdomain' ); ?><br />
 	<?php _e( 'Do not use double quotes (<strong>"</strong>) since it will break code. Instead, use curly quotes (<strong>&#8220;</strong> and <strong>&#8221;</strong>) for text, and single quotes (<strong>&#039;</strong>) for HTML tags.', 'gse_textdomain' ); ?><br />
@@ -916,7 +945,7 @@ if ( $gse_options['show_ms_signup'] ) {
 /*
 * Show notice after upgrade to version 1.1
 */
-function gravatar_signup_encouragement_notice_upgrade_to_1_11() {
+function gravatar_signup_encouragement_notice_upgrade_to_1_20() {
 	if ( !current_user_can( 'manage_options' ) ) //Short circuit it.
 		return;
 
@@ -926,30 +955,30 @@ function gravatar_signup_encouragement_notice_upgrade_to_1_11() {
 	_e('Plugin Gravatar Signup Encouragement has new options in its new version. Review it since you may find something that fits your needs.', 'gse_textdomain');
 	echo '</p><p>';
 	printf( '<a href="%s">' . __('Yes, take me to Gravatar Signup Encouragement settings', 'gse_textdomain') . '</a> | ', admin_url('options-discussion.php') . '#gravatar_signup_encouragement_form' );
-	printf( '<a href="%s" id="gse-notice-1-11-no">' . __('No thanks, do not remind me again', 'gse_textdomain') . '</a>', '?gse_notice_1_11=0' );
+	printf( '<a href="%s" id="gse-notice-1-20-no">' . __('No thanks, do not remind me again', 'gse_textdomain') . '</a>', '?gse_notice_1_20=0' );
 	echo '</p></div>';
 }
 
 /*
-* Remove notice after upgrade to version 1.1
+* Remove notice after upgrade to version 2.0
 */
-function gravatar_signup_encouragement_notice_upgrade_to_1_11_handler($errors = false) {
+function gravatar_signup_encouragement_notice_upgrade_to_1_20_handler($errors = false) {
 	global $gse_options;
 	
-	if ( isset($_GET['gse_notice_1_11']) && '0' == $_GET['gse_notice_1_11'] ) {
-		unset ($gse_options['notice_upgrade_1_11']);
+	if ( isset($_GET['gse_notice_1_20']) && '0' == $_GET['gse_notice_1_20'] ) {
+		unset ($gse_options['notice_upgrade_1_20']);
 		update_option('gravatar_signup_encouragement_settings', $gse_options);
 	}
 }
 
 /*
-* Add actions for notice after upgrade to version 1.1
+* Add actions for notice after upgrade to version 2.0
 */
-if ( $gse_options['notice_upgrade_1_11'] ) {
-	if ( !isset($_GET['gse_notice_1_11']) ) {
-		add_action('admin_notices', 'gravatar_signup_encouragement_notice_upgrade_to_1_11');
+if ( $gse_options['notice_upgrade_1_20'] ) {
+	if ( !isset($_GET['gse_notice_1_20']) ) {
+		add_action('admin_notices', 'gravatar_signup_encouragement_notice_upgrade_to_1_20');
 	}
-	add_action('admin_init', 'gravatar_signup_encouragement_notice_upgrade_to_1_11_handler');
+	add_action('admin_init', 'gravatar_signup_encouragement_notice_upgrade_to_1_20_handler');
 }
 
 
