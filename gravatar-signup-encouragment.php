@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 2.0b
+Version: 2.0-b2
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 */
@@ -56,6 +56,24 @@ add_action('init', 'gravatar_signup_encouragement_textdomain');
 $gse_options = get_option('gravatar_signup_encouragement_settings');
 
 /*
+* Return default message
+*/
+function gravatar_signup_encouragement_default_message() {
+	/*
+	* Load l10n functions on activation
+	*/
+	if(!function_exists('__')) {
+		load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
+	}
+	
+	$message = sprintf(__("You do not appear to have a registered Gravatar. Therefore, the default avatar will be shown with your comments on this site.
+
+If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a> to create one (link opens in new tab/window).", "gse_textdomain"), 'URL');
+
+	return $message;	
+}
+
+/*
 * Add default options on activation of plugin
 * or update existing on plugin upgrade
 */
@@ -65,26 +83,30 @@ function gravatar_signup_encouragement_activate() {
   
 	if (!$gse_options) {
 		/*
-		* Show message to unregistered commenters
-		* and show below: comment field (for comments), “Name” header (profile), e-mail address (registration & signup)
+		* By default, show message to unregistered commenters
+		* and show below: comment field (for comments), “Profile” header (profile), e-mail address (registration & signup)
 		*/
 		$gse_options['show_comments_unreg'] = '1';
 		$gse_options['below_comments_unreg'] = '#comment';
-		$gse_options['show_after_commenting_modal_unreg'] = '1';
 		$gse_options['below_comments_reg'] = '#comment';
-		$gse_options['below_profile'] = '#your-profile h3:eq(1)';
+		$gse_options['below_profile'] = 'h2';
 		$gse_options['below_registration'] = '#user_email';
-		$gse_options['below_ms_signup'] = '#user_email';
+		if ( function_exists('is_multisite') && is_multisite() ) {
+			$gse_options['below_ms_signup'] = '#user_email';
+		}
+		/*
+		* Add version number
+		*/
 		$gse_options['version'] = '2.0';
 		/*
 		* Load plugin textdomain only for activation hook
 		* so that default message could be saved in database localized
 		*/
 		load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
-		$gse_options['tip_text'] = sprintf(__("
-It seems that you don't have an avatar on Gravatar. This means that default avatar is shown beside your comments on this site.
-
-If you want to have your own unique avatar, click <a href='%s' target='_blank'>here</a> to make one (link opens in new tab/window).", "gse_textdomain"), 'URL');
+		/*
+		* Add default message
+		*/
+		$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
 	
 		add_option('gravatar_signup_encouragement_settings', $gse_options);
 	} else {
@@ -115,11 +137,10 @@ If you want to have your own unique avatar, click <a href='%s' target='_blank'>h
 			endforeach;
 			
 			/*
-			* Add new version and new default value
+			* Add new version and notice about upgrade
 			*/
 			$gse_options['version'] = '2.0';
-			$gse_options['below_ms_signup'] = '#user_email';
-			$gse_options['notice_upgrade_1_20'] = true;
+			$gse_options['notice_upgrade_1_to_2'] = true;
 			update_option('gravatar_signup_encouragement_settings', $gse_options);
 		}
 	}
@@ -185,7 +206,7 @@ add_action('load-options-discussion.php','add_gravatar_signup_encouragement_cont
 
 function gravatar_signup_encouragement_enqueing_comments() {
 	global $gse_options;
-	if (/*!is_admin() && */is_singular() && comments_open()) {
+	if (is_singular() && comments_open()) {
 		if ( (!is_user_logged_in() && $gse_options['show_comments_unreg']) || (is_user_logged_in() && $gse_options['show_comments_reg']) ) {
 			wp_enqueue_script('jquery');
 		}
@@ -193,6 +214,14 @@ function gravatar_signup_encouragement_enqueing_comments() {
 }
 add_action('get_header', 'gravatar_signup_encouragement_enqueing_comments');
 //or init instead of get_header?
+
+/*
+* URL of screenshot
+*/
+function gravatar_signup_encouragement_screenshot_url($screenshot) {
+	$gse_screenshot_url = plugins_url( $screenshot, __FILE__ );
+	return $gse_screenshot_url;
+}
 
 /*
 * Function to add fields on Discussion Settings page, section Gravatar
@@ -233,7 +262,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 		?><div class="dashboard-widget-notice">
 		<strong><?php _e( "Notice:", "gse_textdomain" );?></strong><br />
 		<?php _e( "Plugin Gravatar Signup Encouragement uses jQuery for display of messages. You can speed up your site by installing plugin <a href='http://jasonpenney.net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, which will load jQuery from Google's CDN.", "gse_textdomain" );
-		echo sprintf(__(" (<a href='%s'>read more why</a>)", "gse_textdomain" ), "http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/");?><br />
+		echo sprintf(__(" (<a href='%s'>read here for more information</a>)", "gse_textdomain" ), "http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/");?><br />
 		<?php echo sprintf(__("<a href='%s' class='thickbox'>Install Use Google Libraries</a>", "gse_textdomain" ),  esc_url(admin_url('plugin-install.php?tab=plugin-information&plugin=use-google-libraries&TB_iframe=true&width=600&height=550')));?><br />
 		</div>
 	<?php }
@@ -244,10 +273,10 @@ function gravatar_signup_encouragement_field_settings_form() {
 	
 	<?php // Comments for unregistered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_comments_unreg]" class="gse_show_comments_unreg" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_comments_unreg']); ?> /> <?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_comments_unreg']); ?> /> <?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-2.jpg' ); ?>" title="<?php _e( 'Message shown below comment text field on a Twenty Ten theme', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_comments_unreg" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element in comment form to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_unreg]" type="radio" value="#comment" 
 			<?php checked('#comment', $gse_options['below_comments_unreg']); ?> /> <?php _e( 'Comment text', 'gse_textdomain' ); ?> </label><br />
@@ -266,10 +295,10 @@ function gravatar_signup_encouragement_field_settings_form() {
 	
 	<?php // Comments for registered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_comments_reg]" class="gse_show_comments_reg" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_comments_reg']); ?> /> <?php _e( 'Comment form (registered users)', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_comments_reg']); ?> /> <?php _e( 'Comment form (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-3.jpg' ); ?>" title="<?php _e( 'Message shown below comment text field on a Twenty Ten theme', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_comments_reg" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element in comment form to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_reg]" type="radio" value="#comment" 
 			<?php checked('#comment', $gse_options['below_comments_reg']); ?> /> <?php _e( 'Comment text', 'gse_textdomain' ); ?> </label><br />
@@ -286,25 +315,25 @@ function gravatar_signup_encouragement_field_settings_form() {
 	
 	<?php // Modal for unregistered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_after_commenting_modal_unreg]" class="gse_show_after_commenting_modal_unreg" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_after_commenting_modal_unreg']); ?> /> <?php _e( 'Dialog after comment posting (unregistered users)', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_after_commenting_modal_unreg']); ?> /> <?php _e( 'Dialog after comment posting (unregistered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-4.jpg' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Ten theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 	
 	<?php // Modal for registered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_after_commenting_modal_reg]" class="gse_show_after_commenting_modal_reg" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_after_commenting_modal_reg']); ?> /> <?php _e( 'Dialog after comment posting (registered users)', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_after_commenting_modal_reg']); ?> /> <?php _e( 'Dialog after comment posting (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-5.jpg' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Ten theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 	
 	<?php // Admin notice ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_in_admin_notices]" class="gse_show_in_admin_notices" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_in_admin_notices']); ?> /> <?php _e( 'Administration notice', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_in_admin_notices']); ?> /> <?php _e( 'Administration notice', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-6.jpg' ); ?>" title="<?php _e( 'Message shown in administration notices', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 	
 	<?php // Profile ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_profile]" class="gse_show_profile" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_profile']); ?> /> <?php _e( 'Profile page', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_profile']); ?> /> <?php _e( 'Profile page', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-7.jpg' ); ?>" title="<?php _e( 'Message shown on a profile page below “Profile” header', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_profile" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element on profile page to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose the profile page form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_profile]" type="radio" value="h2" 
 			<?php checked('h2', $gse_options['below_profile']); ?> /> <?php _e( 'Header &#8220;Profile&#8221;', 'gse_textdomain' ); ?> </label>
@@ -336,10 +365,10 @@ function gravatar_signup_encouragement_field_settings_form() {
 	
 	<?php // Registration ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_registration]" class="gse_show_registration" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_registration']); ?> /> <?php _e( 'Registration page', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_registration']); ?> /> <?php _e( 'Registration page', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-8.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_registration" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element on registration page to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose the registration page form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_registration]" type="radio" value="#user_email" 
 			<?php checked('#user_email', $gse_options['below_registration']); ?> /> <?php _e( 'E-mail address', 'gse_textdomain' ); ?> </label>
@@ -358,10 +387,10 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php // Sign-up (multisite) ?>
 	<?php if ( function_exists('is_multisite') && is_multisite() && is_main_site() && is_super_admin() ) { ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_ms_signup]" class="gse_show_ms_signup" type="checkbox" value="1" 
-	<?php checked('1', $gse_options['show_ms_signup']); ?> /> <?php _e( 'Signup page (multisite)', 'gse_textdomain' ); ?> </label>
+	<?php checked('1', $gse_options['show_ms_signup']); ?> /> <?php _e( 'Signup page (multisite)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-9.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page (multisite) on a Twenty Ten theme below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_ms_signup" style="margin: 5px 0 0 10px;">
-			<span><?php _e( 'Choose below which text input field or element on signup page (multisite) to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
+			<span><?php _e( 'Choose the (multisite) registration page form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_ms_signup]" type="radio" value="#user_email" 
 			<?php checked('#user_email', $gse_options['below_ms_signup']); ?> /> <?php _e( 'E-mail address', 'gse_textdomain' ); ?> </label>
@@ -384,21 +413,18 @@ function gravatar_signup_encouragement_field_settings_form() {
 	/*
 	* Show upgrade notice
 	*/
-	if ( $gse_options['notice_upgrade_1_20'] ) {
+	if ( $gse_options['notice_upgrade_1_to_2'] ) {
 		?><div class="dashboard-widget-notice">
 		<?php _e( "There are new options for Gravatar Signup Encouragement.", "gse_textdomain" );?><br />
 		<ol>
-			<li><?php _e( "Now you can show message in dialog after comment is posted, as a administration notice, and on a signup page for multisite installation.", "gse_textdomain" );?></li>
+			<li><?php _e( "Now you can show message in dialog after comment is posted, as an administration notice, and on a signup page for multisite installation.", "gse_textdomain" );?></li>
 			<li><?php _e( "Now you can add message after any element on a page more easily then before.", "gse_textdomain" );?></li>
 			<li><?php _e( "There are new predefined elements for profile page.", "gse_textdomain" );?></li>
-			<li><?php _e( "Finally, there is a new default message which is longer and more descriptive then previous one. You can take idea from it for update of your existing message.", "gse_textdomain" );?></li>
+			<li><?php _e( "Finally, there is a new, longer, and more descriptive default message. You can use the new default message, your existing message, or update your existing message.", "gse_textdomain" );?></li>
 		</ol>
 		<?php _e( "New default message:", "gse_textdomain" );?><br />
-		<textarea  readonly="true" rows="5" cols="50" class="large-text code"><?php echo sprintf(__("
-It seems that you don't have an avatar on Gravatar. This means that default avatar is shown beside your comments on this site.
-
-If you want to have your own unique avatar, click <a href='%s' target='_blank'>here</a> to make one (link opens in new tab/window).", "gse_textdomain"), 'URL'); ?></textarea><br />
-		<?php printf( '<a href="%s" id="gse-notice-1-20-no">' . __('Do not show this notice again', 'gse_textdomain') . '</a>', '?gse_notice_1_20=0' ); ?></div><br />
+		<textarea  readonly="true" rows="5" cols="50" class="large-text code"><?php echo gravatar_signup_encouragement_default_message(); ?></textarea><br />
+		<?php printf( '<a href="%s" id="gse-notice-1-to-2-no">' . __('Do not show this notice again', 'gse_textdomain') . '</a>', '?gse_notice_1_to_2=0' ); ?></div><br />
 	<?php } ?>
 	
 	<?php
@@ -407,16 +433,13 @@ If you want to have your own unique avatar, click <a href='%s' target='_blank'>h
 	*/
 	if ( !$gse_options['tip_text'] ) {
 		?><div class="dashboard-widget-notice">
-		<?php _e( "You don't have a message that is shown to users. For making your new message, you can take idea from default message.", "gse_textdomain" );?><br />
+		<?php _e( "You have not created a custom message. Below is the default message, to help with creating your own custom message.", "gse_textdomain" );?><br />
 		<?php _e( "Default message:", "gse_textdomain" );?><br />
-		<textarea  readonly="true" rows="5" cols="50" class="large-text code"><?php echo sprintf(__("
-It seems that you don't have an avatar on Gravatar. This means that default avatar is shown beside your comments on this site.
-
-If you want to have your own unique avatar, click <a href='%s' target='_blank'>here</a> to make one (link opens in new tab/window).", "gse_textdomain"), 'URL'); ?></textarea><br />
+		<textarea  readonly="true" rows="5" cols="50" class="large-text code"><?php echo gravatar_signup_encouragement_default_message(); ?></textarea><br />
 		</div>
 	<?php } ?>
 	
-	<?php _e( "Text to show to users that don't have avatar on Gravatar.", 'gse_textdomain' ); ?><br />
+	<?php _e( "Message to display to users who have not registered a Gravatar.", 'gse_textdomain' ); ?><br />
 	<?php _e( 'You should leave <strong>URL</strong> since it is automatically replaced with appropriate link to signup page on gravatar.com.', 'gse_textdomain' ); ?><br />
 	<?php _e( 'Do not use double quotes (<strong>"</strong>) since it will break code. Instead, use curly quotes (<strong>&#8220;</strong> and <strong>&#8221;</strong>) for text, and single quotes (<strong>&#039;</strong>) for HTML tags.', 'gse_textdomain' ); ?><br />
 	<label><textarea name="gravatar_signup_encouragement_settings[tip_text]" rows="5" cols="50" id="gravatar_signup_encouragement_settings[tip_text]" class="large-text code"><?php echo $gse_options['tip_text']; ?></textarea></label>
@@ -568,8 +591,7 @@ function gravatar_signup_encouragement_message( $email = '', $onclick = '') {
 	/*
 	* Localize URL
 	* and format it for use
-	*/
-	
+	*/	
 	if ( empty($email) ) {
 		$gse_url = gravatar_signup_encouragement_locale_signup_url() . '" + emailValue + "';
 	} else {
@@ -577,9 +599,15 @@ function gravatar_signup_encouragement_message( $email = '', $onclick = '') {
 	}
 	
 	/*
-	* Load tip from database and replace placeholder with real URL
+	* If there is no message, use default
 	*/
+	if (!$gse_options['tip_text']) {
+		$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
+	}
 	
+	/*
+	* Replace placeholder with real URL
+	*/
 	$gse_tip_text = preg_replace('/URL/', $gse_url, $gse_options['tip_text']);
 	
 	/*
@@ -926,7 +954,7 @@ jQuery(document).ready(function()
 				jQuery('#gse_ms_signup_message').hide(); <?php // hide tip if allready shown ?>
 			  }
 			});
-		}, <?php echo apply_filters('gse_timeout_ms_signup', '1000'); ?>; 
+		}, <?php echo apply_filters('gse_timeout_ms_signup', '1000'); ?>); 
  
 	});
 });
@@ -943,30 +971,30 @@ if ( $gse_options['show_ms_signup'] ) {
 }
 
 /*
-* Show notice after upgrade to version 1.1
+* Show notice after upgrade to version 2.0
 */
-function gravatar_signup_encouragement_notice_upgrade_to_1_20() {
+function gravatar_signup_encouragement_notice_upgrade_1_to_2() {
 	if ( !current_user_can( 'manage_options' ) ) //Short circuit it.
 		return;
 
 	echo '<div class="error default-password-nag">';
 	echo '<p>';
 	echo '<strong>' . __('Notice:', 'gse_textdomain') . '</strong> ';
-	_e('Plugin Gravatar Signup Encouragement has new options in its new version. Review it since you may find something that fits your needs.', 'gse_textdomain');
+	_e('The latest version of the Gravatar Signup Encouragement plugin has new options. Default settings have been configured for these options. Would you like to review and update these new options?', 'gse_textdomain');
 	echo '</p><p>';
-	printf( '<a href="%s">' . __('Yes, take me to Gravatar Signup Encouragement settings', 'gse_textdomain') . '</a> | ', admin_url('options-discussion.php') . '#gravatar_signup_encouragement_form' );
-	printf( '<a href="%s" id="gse-notice-1-20-no">' . __('No thanks, do not remind me again', 'gse_textdomain') . '</a>', '?gse_notice_1_20=0' );
+	printf( '<a href="%s">' . __('Yes (edit Gravatar Signup Encouragement settings)', 'gse_textdomain') . '</a> | ', admin_url('options-discussion.php') . '#gravatar_signup_encouragement_form' );
+	printf( '<a href="%s" id="gse-notice-1-to-2-no">' . __('No (use pre-configured default settings)', 'gse_textdomain') . '</a>', '?gse_notice_1_to_2=0' );
 	echo '</p></div>';
 }
 
 /*
 * Remove notice after upgrade to version 2.0
 */
-function gravatar_signup_encouragement_notice_upgrade_to_1_20_handler($errors = false) {
+function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler($errors = false) {
 	global $gse_options;
 	
-	if ( isset($_GET['gse_notice_1_20']) && '0' == $_GET['gse_notice_1_20'] ) {
-		unset ($gse_options['notice_upgrade_1_20']);
+	if ( isset($_GET['gse_notice_1_to_2']) && '0' == $_GET['gse_notice_1_to_2'] ) {
+		unset ($gse_options['notice_upgrade_1_to_2']);
 		update_option('gravatar_signup_encouragement_settings', $gse_options);
 	}
 }
@@ -974,37 +1002,49 @@ function gravatar_signup_encouragement_notice_upgrade_to_1_20_handler($errors = 
 /*
 * Add actions for notice after upgrade to version 2.0
 */
-if ( $gse_options['notice_upgrade_1_20'] ) {
-	if ( !isset($_GET['gse_notice_1_20']) ) {
-		add_action('admin_notices', 'gravatar_signup_encouragement_notice_upgrade_to_1_20');
+if ( $gse_options['notice_upgrade_1_to_2'] ) {
+	if ( !isset($_GET['gse_notice_1_to_2']) ) {
+		add_action('admin_notices', 'gravatar_signup_encouragement_notice_upgrade_1_to_2');
 	}
-	add_action('admin_init', 'gravatar_signup_encouragement_notice_upgrade_to_1_20_handler');
+	add_action('admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler');
 }
 
-
+function gravatar_signup_encouragement_load_thickbox_admin() {
+			add_thickbox();
+			
+		}
+		add_action( 'admin_print_styles-options-discussion.php', 'gravatar_signup_encouragement_load_thickbox_admin' );
 /*
 * Test actions
 *
 * Do test actions on request
 */
-/*
 if ( isset($_REQUEST['gsedotestactions']) ) {
 	add_action('template_redirect', 'gravatar_signup_encouragement_test_actions');
 }
 function gravatar_signup_encouragement_test_actions() {
 	global $gse_options;
-	$gse_options['notice_upgrade_1_11'] = true;
+	$gse_options['notice_upgrade_1_to_2'] = true;
 	update_option('gravatar_signup_encouragement_settings', $gse_options);
 }
-add_filter('gse_message_after_commenting_modal', 'gse_filter_test', 10, 2);
+//add_filter('gse_message_after_commenting_modal', 'gse_filter_test', 10, 2);
 function gse_filter_test($message, $commenter_email) {
 	$message = 'new message <a href="' . gravatar_signup_encouragement_locale_signup_url($commenter_email) . '">url</a>';
 	return $message;
 }
-*/
+
 /*
 Остало:
 - блокирање уноса прилагођеног приликом нештиклирања радија
++ ако је коментатор већ оставио коментар, прикажи му поруку
++ користи plugin_url_dir уместо досадашњег?
++ користи admin_url у вези са странице са додацима ка подешавањима
 - побољшати документацију
++ додати издање у базу
++ померити $gse_grav_check_url у функцију
++ додати филтере пре приказивања поруке и где још може
++ додати подршку за више-места на отварању налога
++ заменити знаке навода са HTML entities
++ додати нове елементе за избор
 */
 ?>
