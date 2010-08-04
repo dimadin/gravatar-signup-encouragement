@@ -113,6 +113,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Moved default message to its own function
 * Added new screenshot
 * Added text 'example of how this looks' which opens thickbox with screenshot of current case in usage
+* Replaced get_header action with template_redirect
 
 = 1.0 =
 * Moved URL localization and message preparation to function so that URL localization could work and to improve performance, as per [suggestion](http://groups.google.com/group/wp-hackers/browse_thread/thread/4fdc895360c3b087#) from Otto

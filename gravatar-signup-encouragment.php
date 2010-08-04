@@ -212,8 +212,7 @@ function gravatar_signup_encouragement_enqueing_comments() {
 		}
 	}
 }
-add_action('get_header', 'gravatar_signup_encouragement_enqueing_comments');
-//or init instead of get_header?
+add_action('template_redirect', 'gravatar_signup_encouragement_enqueing_comments');
 
 /*
 * URL of screenshot
@@ -738,7 +737,7 @@ function gravatar_signup_encouragement_comment_form() {
 		add_action('comment_form', 'show_gravatar_signup_encouragement_com_reg');
 	}
 }
-add_action('get_header', 'gravatar_signup_encouragement_comment_form');
+add_action('template_redirect', 'gravatar_signup_encouragement_comment_form');
 
 /*
 * Add encouragement modal after comment posting

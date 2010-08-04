@@ -1,133 +1,326 @@
-# SOME DESCRIPTIVE TITLE.
-# This file is put in the public domain.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Translation of the WordPress plugin   by .
+# Copyright (C) 2010 
+# This file is distributed under the same license as the  package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/gravatar-signup-"
 "encouragement\n"
-"POT-Creation-Date: 2009-11-07 14:55+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2010-08-03 13:08+0000\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gravatar-signup-encouragment.php:74
+#: gravatar-signup-encouragment.php:69
 #, php-format
 msgid ""
-"It seems that you don't have an avatar on Gravatar. Click <a href='%s' "
-"target='_blank'>here</a> to make one."
+"You do not appear to have a registered Gravatar. Therefore, the default "
+"avatar will be shown with your comments on this site.\r\n"
+"\r\n"
+"If you would like your own Gravatar, click <a href='%s' "
+"target='_blank'>here</a> to create one (link opens in new tab/window)."
 msgstr ""
 
-#: gravatar-signup-encouragment.php:101
+#: gravatar-signup-encouragment.php:170
 msgid "Settings"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:153
+#: gravatar-signup-encouragment.php:188 gravatar-signup-encouragment.php:243
 msgid "Gravatar Signup Encouragement"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:168
-msgid "Choose where to show Gravatar Signup Encouragement message"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:173
-msgid "Comment form (unregistered users)"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:176 gravatar-signup-encouragment.php:198
+#: gravatar-signup-encouragment.php:189
 msgid ""
-"Choose below which text input field or element in comment form to show "
-"Gravatar Signup Encouragement message"
+"<a href='http://blog.milandinic.com/wordpress/plugins/gravatar-signup-"
+"encouragement/' target='_blank'>Gravatar Signup Encouragement Settings "
+"Documentation</a>"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:179 gravatar-signup-encouragment.php:201
-msgid "Comment text"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:181
-msgid "URL"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:183 gravatar-signup-encouragment.php:229
-#: gravatar-signup-encouragment.php:250
-msgid "E-mail address"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:186 gravatar-signup-encouragment.php:206
-#: gravatar-signup-encouragment.php:256
-msgid "Submit button"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:189 gravatar-signup-encouragment.php:209
-#: gravatar-signup-encouragment.php:238 gravatar-signup-encouragment.php:259
-msgid "Custom ID:"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:195
-msgid "Comment form (registered users)"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:203
-msgid "Logout URL"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:215
-msgid "Profile page"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:218
+#: gravatar-signup-encouragment.php:190
 msgid ""
-"Choose below which text input field or element on profile page to show "
-"Gravatar Signup Encouragement message"
+"<a href=\"http://wordpress.org/tags/gravatar-signup-encouragement\" target="
+"\"_blank\">Gravatar Signup Encouragement Support Forums</a>"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:221
-msgid "“Name” header"
+#: gravatar-signup-encouragment.php:263 gravatar-signup-encouragment.php:982
+msgid "Notice:"
 msgstr ""
 
-#: gravatar-signup-encouragment.php:224 gravatar-signup-encouragment.php:253
-msgid "User name"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:226
-msgid "Nicename"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:232
-msgid "“About Yourself” header"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:235
-msgid "Biographical Info"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:244
-msgid "Registration page"
-msgstr ""
-
-#: gravatar-signup-encouragment.php:247
+#: gravatar-signup-encouragment.php:264
 msgid ""
-"Choose below which text input field or element on registration page to show "
-"Gravatar Signup Encouragement message"
+"Plugin Gravatar Signup Encouragement uses jQuery for display of messages. "
+"You can speed up your site by installing plugin <a href='http://jasonpenney."
+"net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, which "
+"will load jQuery from Google's CDN."
 msgstr ""
 
 #: gravatar-signup-encouragment.php:265
-msgid "Text to show to users that don't have avatar on Gravatar."
+#, php-format
+msgid " (<a href='%s'>read here for more information</a>)"
 msgstr ""
 
 #: gravatar-signup-encouragment.php:266
+#, php-format
+msgid "<a href='%s' class='thickbox'>Install Use Google Libraries</a>"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:271
+msgid "Choose where to show Gravatar Signup Encouragement message"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:276
+msgid "Comment form (unregistered users)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:276 gravatar-signup-encouragment.php:298
+msgid "Message shown below comment text field on a Twenty Ten theme"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:276 gravatar-signup-encouragment.php:298
+#: gravatar-signup-encouragment.php:318 gravatar-signup-encouragment.php:323
+#: gravatar-signup-encouragment.php:328 gravatar-signup-encouragment.php:333
+#: gravatar-signup-encouragment.php:368 gravatar-signup-encouragment.php:390
+msgid "example of how this looks"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:279 gravatar-signup-encouragment.php:301
+msgid ""
+"Choose the comment form element or text field to display the Gravatar Signup "
+"Encouragement message below it"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:282 gravatar-signup-encouragment.php:304
+msgid "Comment text"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:284
+msgid "URL"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:286 gravatar-signup-encouragment.php:350
+#: gravatar-signup-encouragment.php:374 gravatar-signup-encouragment.php:396
+msgid "E-mail address"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:289 gravatar-signup-encouragment.php:309
+#: gravatar-signup-encouragment.php:380 gravatar-signup-encouragment.php:402
+msgid "Submit button"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:292 gravatar-signup-encouragment.php:312
+#: gravatar-signup-encouragment.php:362 gravatar-signup-encouragment.php:383
+msgid "Custom element:"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:292 gravatar-signup-encouragment.php:312
+#: gravatar-signup-encouragment.php:362 gravatar-signup-encouragment.php:383
+msgid ""
+"Use <a href=\"http://api.jquery.com/category/selectors/\" target=\"_blank"
+"\">jQuery selectors</a> to choose any element on a page"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:298
+msgid "Comment form (registered users)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:306
+msgid "Logout URL"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:318
+msgid "Dialog after comment posting (unregistered users)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:318 gravatar-signup-encouragment.php:323
+msgid ""
+"Message shown in a dialog over a Twenty Ten theme after comment is posted"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:323
+msgid "Dialog after comment posting (registered users)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:328
+msgid "Administration notice"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:328
+msgid "Message shown in administration notices"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:333
+msgid "Profile page"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:333
+msgid "Message shown on a profile page below “Profile” header"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:336
+msgid ""
+"Choose the profile page form element or text field to display the Gravatar "
+"Signup Encouragement message below it"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:339
+msgid "Header &#8220;Profile&#8221;"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:342
+msgid "Header &#8220;Name&#8221;"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:345 gravatar-signup-encouragment.php:377
+#: gravatar-signup-encouragment.php:399
+msgid "User name"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:347
+msgid "Nicename"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:353
+msgid "Header &#8220;About Yourself&#8221;"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:356
+msgid "Biographical Info"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:359
+msgid "Last input field (by default, &#8220;New Password&#8221;)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:368
+msgid "Registration page"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:368
+msgid "Message shown on a registration page below e-mail address text field"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:371
+msgid ""
+"Choose the registration page form element or text field to display the "
+"Gravatar Signup Encouragement message below it"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:390
+msgid "Signup page (multisite)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:390
+msgid ""
+"Message shown on a registration page (multisite) on a Twenty Ten theme below "
+"e-mail address text field"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:393
+msgid ""
+"Choose the (multisite) registration page form element or text field to "
+"display the Gravatar Signup Encouragement message below it"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:405
+msgid "Custom ID:"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:418
+msgid "There are new options for Gravatar Signup Encouragement."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:420
+msgid ""
+"Now you can show message in dialog after comment is posted, as an "
+"administration notice, and on a signup page for multisite installation."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:421
+msgid ""
+"Now you can add message after any element on a page more easily then before."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:422
+msgid "There are new predefined elements for profile page."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:423
+msgid ""
+"Finally, there is a new, longer, and more descriptive default message. You "
+"can use the new default message, your existing message, or update your "
+"existing message."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:425
+msgid "New default message:"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:427
+msgid "Do not show this notice again"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:436
+msgid ""
+"You have not created a custom message. Below is the default message, to help "
+"with creating your own custom message."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:437
+msgid "Default message:"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:442
+msgid "Message to display to users who have not registered a Gravatar."
+msgstr ""
+
+#: gravatar-signup-encouragment.php:443
 msgid ""
 "You should leave <strong>URL</strong> since it is automatically replaced "
 "with appropriate link to signup page on gravatar.com."
 msgstr ""
 
+#: gravatar-signup-encouragment.php:444
+msgid ""
+"Do not use double quotes (<strong>\"</strong>) since it will break code. "
+"Instead, use curly quotes (<strong>&#8220;</strong> and <strong>&#8221;</"
+"strong>) for text, and single quotes (<strong>&#039;</strong>) for HTML tags."
+msgstr ""
+
 #. translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian
-#: gravatar-signup-encouragment.php:368
+#: gravatar-signup-encouragment.php:567
 msgctxt "Locale gravatar.com, e.g. sr.gravatar.com for Serbian"
 msgid "en.gravatar.com"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:777
+msgid "Signup to Gravatar"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:786
+msgid "Get a new avatar"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:787
+msgid "Close this message"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:983
+msgid ""
+"The latest version of the Gravatar Signup Encouragement plugin has new "
+"options. Default settings have been configured for these options. Would you "
+"like to review and update these new options?"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:985
+msgid "Yes (edit Gravatar Signup Encouragement settings)"
+msgstr ""
+
+#: gravatar-signup-encouragment.php:986
+msgid "No (use pre-configured default settings)"
 msgstr ""
