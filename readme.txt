@@ -1,5 +1,4 @@
 === Gravatar Signup Encouragement ===
-
 Contributors: dimadin
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
@@ -114,6 +113,8 @@ No, this plugin will never add that feature since author of this plugin is again
 * Added new screenshot
 * Added text 'example of how this looks' which opens thickbox with screenshot of current case in usage
 * Replaced get_header action with template_redirect
+* Added filters so that plugin can work with comment forms on Carrington Blog and Mystique themes
+* Added notices in options when site is using Carrington Blog or Mystique themes with link that opens thickbox with list of default values
 
 = 1.0 =
 * Moved URL localization and message preparation to function so that URL localization could work and to improve performance, as per [suggestion](http://groups.google.com/group/wp-hackers/browse_thread/thread/4fdc895360c3b087#) from Otto

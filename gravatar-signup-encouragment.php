@@ -3,9 +3,11 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 2.0-b2
+Version: 2.0-b4
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
+Text Domain: gse_textdomain
+Domain Path: translations
 */
 
 /*
@@ -277,6 +279,17 @@ function gravatar_signup_encouragement_field_settings_form() {
 		<div id="gse_below_comments_unreg" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
+			<?php
+			//If theme doesn't follow standards, add notice
+			if ( gravatar_signup_encouragement_is_theme_in_list() ) {
+				?><div class="dashboard-widget-notice">
+				<?php
+				echo sprintf(__("Notice: Theme you are using doesn't fully follow WordPress theme standards so some of predefined fields in comment form might not work. You can add custom element to make it work. Read <a href='%s' class='thickbox'>here</a> for more information.", "gse_textdomain" ), "#TB_inline?height=500&width=400&inlineId=gsenonstandardthemetips&modal=true");
+				?>
+				</div>
+			<?php
+			}
+			?>
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_unreg]" type="radio" value="#comment" 
 			<?php checked('#comment', $gse_options['below_comments_unreg']); ?> /> <?php _e( 'Comment text', 'gse_textdomain' ); ?> </label><br />
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_unreg]" type="radio" value="#url" 
@@ -299,6 +312,17 @@ function gravatar_signup_encouragement_field_settings_form() {
 		<div id="gse_below_comments_reg" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
+			<?php
+			//If theme doesn't follow standards, add notice
+			if ( gravatar_signup_encouragement_is_theme_in_list() ) {
+				?><div class="dashboard-widget-notice">
+				<?php
+				echo sprintf(__("Notice: Theme you are using doesn't fully follow WordPress theme standards so some of predefined fields in comment form might not work. You can add custom element to make it work. Read <a href='%s' class='thickbox'>here</a> for more information.", "gse_textdomain" ), "#TB_inline?height=500&width=400&inlineId=gsenonstandardthemetips&modal=true");
+				?>
+				</div>
+			<?php
+			}
+			?>
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_reg]" type="radio" value="#comment" 
 			<?php checked('#comment', $gse_options['below_comments_reg']); ?> /> <?php _e( 'Comment text', 'gse_textdomain' ); ?> </label><br />
 			<label><input name="gravatar_signup_encouragement_settings[below_comments_reg]" type="radio" value="#commentform p:first" 
@@ -540,7 +564,56 @@ jQuery(document).ready(function()
 	});
 });
 </script>
-<?php }
+
+	<?php // Last we print Thickboxes for bad themes ?>
+	<?php
+	if ( gravatar_signup_encouragement_is_theme_in_list() ) {
+		?>
+		<div id="gsenonstandardthemetips" style="display:none">
+			<h3 style="text-align: center;"><?php _e( 'Nonstandard default elements on your theme', 'gse_textdomain' ); ?></h3>
+			<p id="gse_nonstandard_theme_tips_text">
+				<?php _e( 'Some default elements will not work on your theme and they are listed below. You need to add value of element to field <em>Custom element</em>. List below contains element name and value:', 'gse_textdomain' );
+				if ( get_stylesheet() == 'mystique' ) {
+				?>
+				<ul>
+					<li><strong><?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?></strong>
+						<ul>
+							<li><?php _e( 'URL', 'gse_textdomain' ); ?> <input type="text" value="input[name='url']" size="35" /></li>
+							<li><?php _e( 'E-mail address', 'gse_textdomain' ); ?> <input type="text" value="input[name='email']" size="35" /></li>
+						</ul>
+					</li>
+				</ul>
+				<?php
+				} elseif ( get_stylesheet() == 'carrington-blog' ) {
+				?>
+				<ul>
+					<li><strong><?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?></strong>
+						<ul>
+							<li><?php _e( 'Comment text', 'gse_textdomain' ); ?> <input type="text" value="textarea[name='comment']" size="35" /></li>
+							<li><?php _e( 'URL', 'gse_textdomain' ); ?> <input type="text" value="input[name='url']" size="35" /></li>
+							<li><?php _e( 'E-mail address', 'gse_textdomain' ); ?> <input type="text" value="input[name='email']" size="35" /></li>
+							<li><?php _e( 'Submit button', 'gse_textdomain' ); ?> <input type="text" value="input[name='submit']" size="35" /></li>
+						</ul>
+					</li>
+					<li><strong><?php _e( 'Comment form (registered users)', 'gse_textdomain' ); ?></strong>
+						<ul>
+							<li><?php _e( 'Comment text', 'gse_textdomain' ); ?> <input type="text" value="textarea[name='comment']" size="35" /></li>
+							<li><?php _e( 'Logout URL', 'gse_textdomain' ); ?> <input type="text" value=".logged-in" size="35" /></li>
+							<li><?php _e( 'Submit button', 'gse_textdomain' ); ?> <input type="text" value="input[name='submit']" size="35" /></li>
+						</ul>
+					</li>
+				</ul>
+				<?php
+				}
+				?>
+			</p>
+			<p style="text-align:center" id="gse_nonstandard_theme_tips_buttons">
+				<input type="submit" id="gse_nonstandard_theme_tips_close_button" value="<?php _e( 'Close this message', 'gse_textdomain' ); ?>" onclick="tb_remove()" />
+			</p> 
+		</div>
+	<?php
+	}
+}
 
 //add action so that fields are actually shown
 add_action('admin_init', 'add_gravatar_signup_encouragement_settings_field');
@@ -640,7 +713,8 @@ function show_gravatar_signup_encouragement_com_unreg() {
 	/*
 	* Show message if user commented before
 	*/
-	if ( wp_get_current_commenter() ) {
+	$gse_current_commenter = wp_get_current_commenter();
+	if ( $gse_current_commenter['comment_author_email'] ) {
 		?>
 	
 <script language="javascript">
@@ -1008,16 +1082,46 @@ if ( $gse_options['notice_upgrade_1_to_2'] ) {
 	add_action('admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler');
 }
 
+/*
+* Load Thickbox on options page
+*/
 function gravatar_signup_encouragement_load_thickbox_admin() {
-			add_thickbox();
-			
-		}
-		add_action( 'admin_print_styles-options-discussion.php', 'gravatar_signup_encouragement_load_thickbox_admin' );
+	add_thickbox();
+}
+add_action( 'admin_print_styles-options-discussion.php', 'gravatar_signup_encouragement_load_thickbox_admin' );
+
+/*
+* Filter email text field for bad themes
+*/
+function gravatar_signup_encouragement_filter_email_source($element) {
+	if ( gravatar_signup_encouragement_is_theme_in_list() ) {
+		return "input[name='email']";
+	} else {
+		return $element;
+	}
+}
+
+/*
+* Check if theme doesn't follow standards
+* Themes are: Carrington Blog and Mystique
+*/
+function gravatar_signup_encouragement_is_theme_in_list() {
+	if ( in_array( get_stylesheet(), array( 'carrington-blog', 'mystique' ) ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+/*
+* Add filter for bad themes
+*/
+add_filter("gse_get_email_value_com_unreg", "gravatar_signup_encouragement_filter_email_source");
+
 /*
 * Test actions
 *
 * Do test actions on request
-*/
+
 if ( isset($_REQUEST['gsedotestactions']) ) {
 	add_action('template_redirect', 'gravatar_signup_encouragement_test_actions');
 }
@@ -1026,24 +1130,16 @@ function gravatar_signup_encouragement_test_actions() {
 	$gse_options['notice_upgrade_1_to_2'] = true;
 	update_option('gravatar_signup_encouragement_settings', $gse_options);
 }
-//add_filter('gse_message_after_commenting_modal', 'gse_filter_test', 10, 2);
+add_filter('gse_message_after_commenting_modal', 'gse_filter_test', 10, 2);
 function gse_filter_test($message, $commenter_email) {
 	$message = 'new message <a href="' . gravatar_signup_encouragement_locale_signup_url($commenter_email) . '">url</a>';
 	return $message;
 }
+*/
 
 /*
 Остало:
 - блокирање уноса прилагођеног приликом нештиклирања радија
-+ ако је коментатор већ оставио коментар, прикажи му поруку
-+ користи plugin_url_dir уместо досадашњег?
-+ користи admin_url у вези са странице са додацима ка подешавањима
 - побољшати документацију
-+ додати издање у базу
-+ померити $gse_grav_check_url у функцију
-+ додати филтере пре приказивања поруке и где још може
-+ додати подршку за више-места на отварању налога
-+ заменити знаке навода са HTML entities
-+ додати нове елементе за избор
 */
 ?>
