@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 2.0-b4
+Version: 2.0-b5
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -77,10 +77,47 @@ If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a>
 
 /*
 * Add default options on activation of plugin
-* or update existing on plugin upgrade
 */
 
 function gravatar_signup_encouragement_activate() {
+	global $gse_options;
+  
+	if (!$gse_options) {
+		/*
+		* By default, show message to unregistered commenters
+		* and show below: comment field (for comments), “Profile” header (profile), e-mail address (registration & signup)
+		*/
+		$gse_options['show_comments_unreg'] = '1';
+		$gse_options['below_comments_unreg'] = '#comment';
+		$gse_options['below_comments_reg'] = '#comment';
+		$gse_options['below_profile'] = 'h2';
+		$gse_options['below_registration'] = '#user_email';
+		if ( function_exists('is_multisite') && is_multisite() ) {
+			$gse_options['below_ms_signup'] = '#user_email';
+		}
+		/*
+		* Add version number
+		*/
+		$gse_options['version'] = '2.0';
+		/*
+		* Load plugin textdomain only for activation hook
+		* so that default message could be saved in database localized
+		*/
+		load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
+		/*
+		* Add default message
+		*/
+		$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
+	
+		add_option('gravatar_signup_encouragement_settings', $gse_options);
+	}
+}
+register_activation_hook( __FILE__, 'gravatar_signup_encouragement_activate' );
+
+/*
+* Update options on plugin upgrade
+*/
+function gravatar_signup_encouragement_upgrade() {
 	global $gse_options;
   
 	if (!$gse_options) {
@@ -147,7 +184,18 @@ function gravatar_signup_encouragement_activate() {
 		}
 	}
 }
-register_activation_hook( __FILE__, 'gravatar_signup_encouragement_activate' );
+
+/*
+* Fire upgrade function on admin_init
+*/
+function gravatar_signup_encouragement_action_admin_init() {
+	global $gse_options;
+  
+	if (!$gse_options || !$gse_options['version']) {
+		gravatar_signup_encouragement_upgrade();
+	}
+}
+add_action( 'admin_init', 'gravatar_signup_encouragement_action_admin_init' );
 
 /*
 * Remove options on uninstallation of plugin
