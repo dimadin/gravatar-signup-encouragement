@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gravatar\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/gravatar-signup-encouragement\n"
-"POT-Creation-Date: 2009-10-16 22:24+0000\n"
+"POT-Creation-Date: 2010-08-03 13:08+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Milan Dinić <milan@srpski.biz>\n"
 "Language-Team: Milan <milan@srpski.biz>\n"
@@ -14,119 +14,323 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: C:\\xampp\\htdocs\\tests\\wp-test\\wp-content\\plugins\\gravatar-signup-encouragment\n"
 
+#: gravatar-signup-encouragment.php:69
+#, php-format
+msgid ""
+"You do not appear to have a registered Gravatar. Therefore, the default avatar will be shown with your comments on this site.\r\n"
+"\r\n"
+"If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a> to create one (link opens in new tab/window)."
+msgstr ""
+"Изгледа да немате регистрован граватар. Зато ће подразумевани аватар бити приказан уз ваше коментаре на овом веб месту.\r\n"
+"\r\n"
+"Уколико желите сопствени граватар, притисните <a href='%s' target='_blank'>овде</a> да бисте направили један (веза се отвара у новом језичку/прозору)."
+
+#: gravatar-signup-encouragment.php:170
+msgid "Settings"
+msgstr "Подешавања"
+
+#: gravatar-signup-encouragment.php:188
+#: gravatar-signup-encouragment.php:243
+msgid "Gravatar Signup Encouragement"
+msgstr "Подстицај учлањивања на Граватар"
+
+#: gravatar-signup-encouragment.php:189
+msgid "<a href='http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/' target='_blank'>Gravatar Signup Encouragement Settings Documentation</a>"
+msgstr "<a href='http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/' target='_blank'>Документација за подешавања Подстицаја учлањивања на Граватар</a>"
+
+#: gravatar-signup-encouragment.php:190
+msgid "<a href=\"http://wordpress.org/tags/gravatar-signup-encouragement\" target=\"_blank\">Gravatar Signup Encouragement Support Forums</a>"
+msgstr "<a href=\"http://wordpress.org/tags/gravatar-signup-encouragement\" target=\"_blank\">Форуми подршке Подстицаја учлањивања на Граватар</a>"
+
+#: gravatar-signup-encouragment.php:263
+#: gravatar-signup-encouragment.php:982
+msgid "Notice:"
+msgstr "Напомена:"
+
+#: gravatar-signup-encouragment.php:264
+msgid "Plugin Gravatar Signup Encouragement uses jQuery for display of messages. You can speed up your site by installing plugin <a href='http://jasonpenney.net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, which will load jQuery from Google's CDN."
+msgstr "Додатак Подстицај учлањивања на Граватар користи jQuery за приказ порука. Можете убрзати своје веб место постављајући додатак <a href='http://jasonpenney.net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, који ће учитавати jQuery са Гугловог CDN-а (мреже за достављање садржаја)."
+
+#: gravatar-signup-encouragment.php:265
+#, php-format
+msgid " (<a href='%s'>read here for more information</a>)"
+msgstr " (<a href='%s'>прочитајте овде за више података</a>)"
+
+#: gravatar-signup-encouragment.php:266
+#, php-format
+msgid "<a href='%s' class='thickbox'>Install Use Google Libraries</a>"
+msgstr "<a href='%s' class='thickbox'>Постави Use Google Libraries</a>"
+
+#: gravatar-signup-encouragment.php:271
+msgid "Choose where to show Gravatar Signup Encouragement message"
+msgstr "Изаберите где желите да прикажете поруку за подстицај учлањивања на Граватар"
+
+#: gravatar-signup-encouragment.php:276
+msgid "Comment form (unregistered users)"
+msgstr "Образац за коментаре (нерегистровани корисници)"
+
+#: gravatar-signup-encouragment.php:276
+#: gravatar-signup-encouragment.php:298
+msgid "Message shown below comment text field on a Twenty Ten theme"
+msgstr "Порука приказна испод поља за унос коментара теме Twenty Ten"
+
+#: gravatar-signup-encouragment.php:276
+#: gravatar-signup-encouragment.php:298
+#: gravatar-signup-encouragment.php:318
+#: gravatar-signup-encouragment.php:323
+#: gravatar-signup-encouragment.php:328
+#: gravatar-signup-encouragment.php:333
+#: gravatar-signup-encouragment.php:368
+#: gravatar-signup-encouragment.php:390
+msgid "example of how this looks"
+msgstr "пример како ово изгледа"
+
+#: gravatar-signup-encouragment.php:279
+#: gravatar-signup-encouragment.php:301
+msgid "Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it"
+msgstr "Изаберите поље за унос текста или елемент у обрасцу за коментаре испод ког желите да прикажете поруку за подстицај учлањивања на Граватар"
+
+#: gravatar-signup-encouragment.php:282
+#: gravatar-signup-encouragment.php:304
+msgid "Comment text"
+msgstr "Текст коментара"
+
+#: gravatar-signup-encouragment.php:284
+msgid "URL"
+msgstr "URL"
+
+#: gravatar-signup-encouragment.php:286
+#: gravatar-signup-encouragment.php:350
+#: gravatar-signup-encouragment.php:374
+#: gravatar-signup-encouragment.php:396
+msgid "E-mail address"
+msgstr "Адреса е-поште"
+
+#: gravatar-signup-encouragment.php:289
+#: gravatar-signup-encouragment.php:309
+#: gravatar-signup-encouragment.php:380
+#: gravatar-signup-encouragment.php:402
+msgid "Submit button"
+msgstr "Дугме за слање"
+
+#: gravatar-signup-encouragment.php:292
+#: gravatar-signup-encouragment.php:312
+#: gravatar-signup-encouragment.php:362
+#: gravatar-signup-encouragment.php:383
+msgid "Custom element:"
+msgstr "Прилагођени елемент:"
+
+#: gravatar-signup-encouragment.php:292
+#: gravatar-signup-encouragment.php:312
+#: gravatar-signup-encouragment.php:362
+#: gravatar-signup-encouragment.php:383
+msgid "Use <a href=\"http://api.jquery.com/category/selectors/\" target=\"_blank\">jQuery selectors</a> to choose any element on a page"
+msgstr "Користите <a href=\"http://api.jquery.com/category/selectors/\" target=\"_blank\">jQuery бираче</a> да бисте одабрали било који елемент странице"
+
+#: gravatar-signup-encouragment.php:298
+msgid "Comment form (registered users)"
+msgstr "Образац за коментаре (регистровани корисници)"
+
+#: gravatar-signup-encouragment.php:306
+msgid "Logout URL"
+msgstr "URL за одјаву"
+
+#: gravatar-signup-encouragment.php:318
+msgid "Dialog after comment posting (unregistered users)"
+msgstr "Дијалог након предаје коментара (нерегистровани корисници)"
+
+#: gravatar-signup-encouragment.php:318
+#: gravatar-signup-encouragment.php:323
+msgid "Message shown in a dialog over a Twenty Ten theme after comment is posted"
+msgstr "Порука приказна у дијалогу преко Twenty Ten теме након што је коментар објављен"
+
+#: gravatar-signup-encouragment.php:323
+msgid "Dialog after comment posting (registered users)"
+msgstr "Дијалог након предаје коментара (регистровани корисници)"
+
+#: gravatar-signup-encouragment.php:328
+msgid "Administration notice"
+msgstr "Управљачке напомене"
+
+#: gravatar-signup-encouragment.php:328
+msgid "Message shown in administration notices"
+msgstr "Порука приказана у управљачким напоменама"
+
+#: gravatar-signup-encouragment.php:333
+msgid "Profile page"
+msgstr "Страница профила"
+
+#: gravatar-signup-encouragment.php:333
+msgid "Message shown on a profile page below “Profile” header"
+msgstr "Порука приказана на страници профила испод заглавља „Профил“"
+
+#: gravatar-signup-encouragment.php:336
+msgid "Choose the profile page form element or text field to display the Gravatar Signup Encouragement message below it"
+msgstr "Изаберите поље за унос текста или елемент странице профила испод ког желите да прикажете поруку за подстицај учлањивања на Граватар"
+
+#: gravatar-signup-encouragment.php:339
+msgid "Header &#8220;Profile&#8221;"
+msgstr "Заглавље &#0132;Профил&#0147;"
+
+#: gravatar-signup-encouragment.php:342
+msgid "Header &#8220;Name&#8221;"
+msgstr "Заглавље &#0132;Име&#0147;"
+
+#: gravatar-signup-encouragment.php:345
+#: gravatar-signup-encouragment.php:377
+#: gravatar-signup-encouragment.php:399
+msgid "User name"
+msgstr "Корисничко име"
+
+#: gravatar-signup-encouragment.php:347
+msgid "Nicename"
+msgstr "Име за приказивање"
+
+#: gravatar-signup-encouragment.php:353
+msgid "Header &#8220;About Yourself&#8221;"
+msgstr "Заглавље &#0132;О вама&#0147;"
+
+#: gravatar-signup-encouragment.php:356
+msgid "Biographical Info"
+msgstr "Биографски подаци"
+
+#: gravatar-signup-encouragment.php:359
+msgid "Last input field (by default, &#8220;New Password&#8221;)"
+msgstr "Последње поље за унос (подразумевано, &#0132;Нова лозинка&#0147;)"
+
+#: gravatar-signup-encouragment.php:368
+msgid "Registration page"
+msgstr "Страница за регистрацију"
+
+#: gravatar-signup-encouragment.php:368
+msgid "Message shown on a registration page below e-mail address text field"
+msgstr "Порука приказана на страници за регистровање испод поља за унос адресе е-поште"
+
+#: gravatar-signup-encouragment.php:371
+msgid "Choose the registration page form element or text field to display the Gravatar Signup Encouragement message below it"
+msgstr "Изаберите поље за унос текста или елемент странице за регистровање испод ког желите да прикажете поруку за подстицај учлањивања на Граватар"
+
+#: gravatar-signup-encouragment.php:390
+msgid "Signup page (multisite)"
+msgstr "Страница за отварање налога (вишеместа)"
+
+#: gravatar-signup-encouragment.php:390
+msgid "Message shown on a registration page (multisite) on a Twenty Ten theme below e-mail address text field"
+msgstr "Порука приказна на страници за регистрацију (вишеместа) испод поља за унос адресе е-поште теме Twenty Ten"
+
+#: gravatar-signup-encouragment.php:393
+msgid "Choose the (multisite) registration page form element or text field to display the Gravatar Signup Encouragement message below it"
+msgstr "Изаберите поље за унос текста или елемент странице за регистровање (вишеместа) испод ког желите да прикажете поруку за подстицај учлањивања на Граватар"
+
+#: gravatar-signup-encouragment.php:405
+msgid "Custom ID:"
+msgstr "Прилагођени ID:"
+
+#: gravatar-signup-encouragment.php:418
+msgid "There are new options for Gravatar Signup Encouragement."
+msgstr "Постоје нове могућности за Подстицај учлањивања на Граватар."
+
+#: gravatar-signup-encouragment.php:420
+msgid "Now you can show message in dialog after comment is posted, as an administration notice, and on a signup page for multisite installation."
+msgstr "Сада можете приказати поруку у дијалогу након што је коментар објављен, као управљачку напомену и на страници за отварање налога на поставкама за вишеместа."
+
+#: gravatar-signup-encouragment.php:421
+msgid "Now you can add message after any element on a page more easily then before."
+msgstr "Сада можете додати поруку након било ког елемента на страници лакше него раније."
+
+#: gravatar-signup-encouragment.php:422
+msgid "There are new predefined elements for profile page."
+msgstr "Постоје нови унапред одређени елементи за страницу профила."
+
+#: gravatar-signup-encouragment.php:423
+msgid "Finally, there is a new, longer, and more descriptive default message. You can use the new default message, your existing message, or update your existing message."
+msgstr "Коначно, постоји нова, дужа и јаснија подразумевана порука. Можете користити нову подразумевану поруку, своју постојећу поруку, или ажурирати своју постојећу поруку."
+
+#: gravatar-signup-encouragment.php:425
+msgid "New default message:"
+msgstr "Нова подразумевана порука:"
+
+#: gravatar-signup-encouragment.php:427
+msgid "Do not show this notice again"
+msgstr "Не приказуј поново ову напомену"
+
+#: gravatar-signup-encouragment.php:436
+msgid "You have not created a custom message. Below is the default message, to help with creating your own custom message."
+msgstr "Нисте направили прилагођену поруку. Испод је подразумевана порука, да би вам помогла са прављењем ваше сопствене прилагођене поруке."
+
+#: gravatar-signup-encouragment.php:437
+msgid "Default message:"
+msgstr "Подразумевана порука:"
+
+#: gravatar-signup-encouragment.php:442
+msgid "Message to display to users who have not registered a Gravatar."
+msgstr "Порука која ће се приказивати корисницима који немају граватар."
+
+#: gravatar-signup-encouragment.php:443
+msgid "You should leave <strong>URL</strong> since it is automatically replaced with appropriate link to signup page on gravatar.com."
+msgstr "Требало би да оставите <strong>URL</strong> пошто је аутоматски замењен са одговарајућом везом ка страници за учлањивање на gravatar.com."
+
+#: gravatar-signup-encouragment.php:444
+msgid "Do not use double quotes (<strong>\"</strong>) since it will break code. Instead, use curly quotes (<strong>&#8220;</strong> and <strong>&#8221;</strong>) for text, and single quotes (<strong>&#039;</strong>) for HTML tags."
+msgstr "Не користите енглеске наводнике (<strong>\"</strong>) пошто ће пореметити код. Уместо тога, користите српске наводнике (<strong>&#0132;</strong> и <strong>&#0147;</strong>) за текст, и енглеске полунаводнике (<strong>&#039;</strong>) за HTML ознаке."
+
 #. translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian
-#: gravatar-signup-encouragment.php:58
+#: gravatar-signup-encouragment.php:567
 msgctxt "Locale gravatar.com, e.g. sr.gravatar.com for Serbian"
 msgid "en.gravatar.com"
 msgstr "sr.gravatar.com"
 
-#: gravatar-signup-encouragment.php:71
-#, php-format
-msgid "It seems that you don't have an avatar on Gravatar. Click <a href='%s' target='_blank'>here</a> to make one."
-msgstr "Изгледа да немате аватар на Граватару. Притисните <a href='%s' target='_blank'>овде</a> да бисте направили један."
+#: gravatar-signup-encouragment.php:777
+msgid "Signup to Gravatar"
+msgstr "Отворите налог на Граватару"
 
-#: gravatar-signup-encouragment.php:120
-msgid "Settings"
-msgstr "Подешавања"
+#: gravatar-signup-encouragment.php:786
+msgid "Get a new avatar"
+msgstr "Добијте нови аватар"
 
-#: gravatar-signup-encouragment.php:172
-msgid "Gravatar Signup Encouragement"
-msgstr "Подстицај учлањивања на Граватар"
+#: gravatar-signup-encouragment.php:787
+msgid "Close this message"
+msgstr "Затвори ову поруку"
 
-#: gravatar-signup-encouragment.php:187
-msgid "Choose where to show Gravatar Signup Encouragement message"
-msgstr "Изаберите где желите да прикажете поруку за подстицај учлањивања на Граватар"
+#: gravatar-signup-encouragment.php:983
+msgid "The latest version of the Gravatar Signup Encouragement plugin has new options. Default settings have been configured for these options. Would you like to review and update these new options?"
+msgstr "Последње издање додатка Подстицај учлањивања на Граватар има нове могућности. Подразумевана подешавања су подешена за ове могућности. Да ли желите да прегледате и ажурирате ове нове могућности?"
 
-#: gravatar-signup-encouragment.php:192
-msgid "Comment form (unregistered users)"
-msgstr "Образац за коментаре (нерегистровани корисници)"
+#: gravatar-signup-encouragment.php:985
+msgid "Yes (edit Gravatar Signup Encouragement settings)"
+msgstr "Да (уреди подешавања Подстицаја учлањивања на Граватар)"
 
-#: gravatar-signup-encouragment.php:195
-#: gravatar-signup-encouragment.php:217
-msgid "Choose below which text input field or element in comment form to show Gravatar Signup Encouragement message"
-msgstr "Изаберите испод ког поља за унос текста или елемента у обрасцу за коментаре желите да прикажете поруку за подстицај учлањивања на Граватар"
+#: gravatar-signup-encouragment.php:986
+msgid "No (use pre-configured default settings)"
+msgstr "Не (користи унапред одређена подразумевана подешавања)"
 
-#: gravatar-signup-encouragment.php:198
-#: gravatar-signup-encouragment.php:220
-msgid "Comment text"
-msgstr "Текст коментара"
+#~ msgid ""
+#~ "It seems that you don't have an avatar on Gravatar. Click <a href='%s' "
+#~ "target='_blank'>here</a> to make one."
+#~ msgstr ""
+#~ "Изгледа да немате аватар на Граватару. Притисните <a href='%s' "
+#~ "target='_blank'>овде</a> да бисте направили један."
 
-#: gravatar-signup-encouragment.php:200
-msgid "URL"
-msgstr "URL"
+#~ msgid ""
+#~ "Choose below which text input field or element on profile page to show "
+#~ "Gravatar Signup Encouragement message"
+#~ msgstr ""
+#~ "Изаберите испод ког поља за унос текста или елемента на страници профила "
+#~ "желите да прикажете поруку за подстицај учлањивања на Граватар"
 
-#: gravatar-signup-encouragment.php:202
-#: gravatar-signup-encouragment.php:248
-#: gravatar-signup-encouragment.php:269
-msgid "E-mail address"
-msgstr "Адреса е-поште"
+#~ msgid "“Name” header"
+#~ msgstr "Заглавље „Име“"
 
-#: gravatar-signup-encouragment.php:205
-#: gravatar-signup-encouragment.php:225
-#: gravatar-signup-encouragment.php:275
-msgid "Submit button"
-msgstr "Дугме за слање"
+#~ msgid "“About Yourself” header"
+#~ msgstr "Заглавље „О вама“"
 
-#: gravatar-signup-encouragment.php:208
-#: gravatar-signup-encouragment.php:228
-#: gravatar-signup-encouragment.php:257
-#: gravatar-signup-encouragment.php:278
-msgid "Custom ID:"
-msgstr "Прилагођени ID:"
-
-#: gravatar-signup-encouragment.php:214
-msgid "Comment form (registered users)"
-msgstr "Образац за коментаре (регистровани корисници)"
-
-#: gravatar-signup-encouragment.php:222
-msgid "Logout URL"
-msgstr "URL за одјаву"
-
-#: gravatar-signup-encouragment.php:234
-msgid "Profile page"
-msgstr "Страница профила"
-
-#: gravatar-signup-encouragment.php:237
-msgid "Choose below which text input field or element on profile page to show Gravatar Signup Encouragement message"
-msgstr "Изаберите испод ког поља за унос текста или елемента на страници профила желите да прикажете поруку за подстицај учлањивања на Граватар"
-
-#: gravatar-signup-encouragment.php:240
-msgid "“Name” header"
-msgstr "Заглавље „Име“"
-
-#: gravatar-signup-encouragment.php:243
-#: gravatar-signup-encouragment.php:272
-msgid "User name"
-msgstr "Корисничко име"
-
-#: gravatar-signup-encouragment.php:245
-msgid "Nicename"
-msgstr "Име за приказивање"
-
-#: gravatar-signup-encouragment.php:251
-msgid "“About Yourself” header"
-msgstr "Заглавље „О вама“"
-
-#: gravatar-signup-encouragment.php:254
-msgid "Biographical Info"
-msgstr "Биографски подаци"
-
-#: gravatar-signup-encouragment.php:263
-msgid "Registration page"
-msgstr "Страница за регистрацију"
-
-#: gravatar-signup-encouragment.php:266
-msgid "Choose below which text input field or element on registration page to show Gravatar Signup Encouragement message"
-msgstr "Изаберите испод ког поља за унос текста или елемента на страници за регистровање желите да прикажете поруку за подстицај учлањивања на Граватар"
-
-#: gravatar-signup-encouragment.php:284
-msgid "Text to show to users that don't have avatar on Gravatar."
-msgstr "Текст који ће се приказивати корисницима који немају Граватар."
-
-#: gravatar-signup-encouragment.php:285
-msgid "You should leave <strong>URL</strong> since it is automatically replaced with appropriate link to signup page on gravatar.com."
-msgstr "Требало би да оставите <strong>URL</strong> пошто је аутоматски замењен са одговарајућом везом ка страници за учлањивање на gravatar.com."
+#~ msgid ""
+#~ "Choose below which text input field or element on registration page to "
+#~ "show Gravatar Signup Encouragement message"
+#~ msgstr ""
+#~ "Изаберите испод ког поља за унос текста или елемента на страници за "
+#~ "регистровање желите да прикажете поруку за подстицај учлањивања на "
+#~ "Граватар"
 
 #~ msgid "Text of tip"
 #~ msgstr "Текст поруке"
-
