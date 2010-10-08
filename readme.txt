@@ -3,7 +3,7 @@ Contributors: dimadin
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
 Tested up to: 3.0.1
-Stable tag: 1.0
+Stable tag: 2.0
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
@@ -85,6 +85,8 @@ No, this plugin will never add that feature since author of this plugin is again
 == Changelog ==
 
 = 2.0 =
+* Released on 8th October 2010
+* [Announcement](http://blog.milandinic.com/2010/10/08/gravatar-signup-encouragement-2-0/)
 * Updated "Tested up to" to version 3.0.1
 * Show message to commenter who already left comment(s) before
 * Added a security check for localized URL to gravatar.com

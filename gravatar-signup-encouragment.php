@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 2.0-b5
+Version: 2.0
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -1165,29 +1165,4 @@ function gravatar_signup_encouragement_is_theme_in_list() {
 */
 add_filter("gse_get_email_value_com_unreg", "gravatar_signup_encouragement_filter_email_source");
 
-/*
-* Test actions
-*
-* Do test actions on request
-
-if ( isset($_REQUEST['gsedotestactions']) ) {
-	add_action('template_redirect', 'gravatar_signup_encouragement_test_actions');
-}
-function gravatar_signup_encouragement_test_actions() {
-	global $gse_options;
-	$gse_options['notice_upgrade_1_to_2'] = true;
-	update_option('gravatar_signup_encouragement_settings', $gse_options);
-}
-add_filter('gse_message_after_commenting_modal', 'gse_filter_test', 10, 2);
-function gse_filter_test($message, $commenter_email) {
-	$message = 'new message <a href="' . gravatar_signup_encouragement_locale_signup_url($commenter_email) . '">url</a>';
-	return $message;
-}
-*/
-
-/*
-Остало:
-- блокирање уноса прилагођеног приликом нештиклирања радија
-- побољшати документацију
-*/
 ?>
