@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 2.0
+Version: 2.0.1
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -918,20 +918,22 @@ function show_gravatar_signup_encouragement_after_commenting_modal() {
 */
 function gravatar_signup_encouragement_after_commenting_redirect($url, $comment) {
 	global $gse_options;
-	if ( ( !is_user_logged_in() && $gse_options['show_after_commenting_modal_unreg'] ) || ( is_user_logged_in() && $gse_options['show_after_commenting_modal_reg'] ) ) {
+	if ( ( $gse_options['show_after_commenting_modal_unreg'] && !is_user_logged_in() ) || ( $gse_options['show_after_commenting_modal_reg'] && is_user_logged_in() ) ) {
 		if (!gravatar_signup_encouragement_check_gravatar_existence($comment->comment_author_email)) {
 			$new_url = add_query_arg( 'gseaftercommentingmodal', '', $url );
 			return $new_url;
 		} else {
 			return $url;
 		}
+	} else {
+		return $url;
 	}
 }
 
 /*
 * Actions to use modal after comment posting
 */
-add_filter('comment_post_redirect','gravatar_signup_encouragement_after_commenting_redirect',10,2);
+add_filter( 'comment_post_redirect', 'gravatar_signup_encouragement_after_commenting_redirect', 10, 2 );
 
 /* http://themehybrid.com/support/topic/adding-jquery-ui-using-wp_enqueue_script-and-firing-onload-events */
 if ( isset($_REQUEST['gseaftercommentingmodal']) ) {

@@ -3,7 +3,7 @@ Contributors: dimadin
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
 Tested up to: 3.0.1
-Stable tag: 2.0
+Stable tag: 2.0.1
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
@@ -83,6 +83,10 @@ No, this plugin will never add that feature since author of this plugin is again
 9. Message shown on a registration page (multisite) with default theme and default settings
 
 == Changelog ==
+
+= 2.0.1 =
+* Released on 22nd October 2010
+* Fixed issue when blank page was shown after comment is submitted
 
 = 2.0 =
 * Released on 8th October 2010

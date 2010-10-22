@@ -13,9 +13,9 @@ $gravatar_email = $_POST['gravmail'];
 * If there is no POST, return 403 error
 */
 if (!$gravatar_email) {
-		header('Status: 403 Forbidden');
-		header('HTTP/1.1 403 Forbidden');
-		exit();
+	header('Status: 403 Forbidden');
+	header('HTTP/1.1 403 Forbidden');
+	exit();
 }
 
 /*
