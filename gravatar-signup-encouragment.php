@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 2.0.1
+Version: 3.0-alpha-1
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -19,20 +19,6 @@ if (!function_exists ('add_action')) {
 	header('HTTP/1.1 403 Forbidden');
 	exit();
 }
-
-/*
-* Make global variables
-*/
-
-global $gse_options;
-
-/*
-* Find name of directory
-* and make path to gravatar-check.php
-*/
-
-//$gse_plugin_dir = basename(dirname(__FILE__));
-//$gse_grav_check_url = plugins_url( 'gravatar-check.php', __FILE__ );
 
 /*
 * URL of gravatar-check.php
@@ -51,11 +37,17 @@ function gravatar_signup_encouragement_textdomain() {
 }
 add_action('init', 'gravatar_signup_encouragement_textdomain');
 
-/*
-* Load options from database
-*/
-
-$gse_options = get_option('gravatar_signup_encouragement_settings');
+/**
+ * Load options from database
+ *
+ * @since 3.0
+ *
+ * @return array Array of options values.
+ */
+function gravatar_signup_encouragement_get_option() {
+	$gse_options = get_option( 'gravatar_signup_encouragement_settings' );
+	return $gse_options;
+}
 
 /*
 * Return default message
@@ -75,12 +67,74 @@ If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a>
 	return $message;	
 }
 
+/**
+ * Load GSE actions at init
+ *
+ * @since 3.0
+ */
+function gravatar_signup_encouragement_init() {
+	/* Load options */
+	$gse_options = gravatar_signup_encouragement_get_option();
+	
+	/* 
+	 * Load modal if needed
+	 * via http://themehybrid.com/support/topic/adding-jquery-ui-using-wp_enqueue_script-and-firing-onload-events
+	 */
+	if ( isset( $_REQUEST['gseaftercommentingmodal'] ) ) {
+		add_action( 'template_redirect', 'show_gravatar_signup_encouragement_after_commenting_modal' );
+	}
+	
+	/* Load custom script on profile page if needed */
+	if ( $gse_options['show_profile'] ) {
+		add_action( 'show_user_profile', 'show_gravatar_signup_encouragement_profile' );
+	}
+	
+	/* Enqueue jQuery and load custom script on registration page if needed */
+	if ( $gse_options['show_registration'] ) {
+		add_action( 'login_head', 'gravatar_signup_encouragement_enqueing_registration' );
+		add_action( 'login_head', 'wp_print_scripts', 11 );
+		add_action( 'register_form', 'show_gravatar_signup_encouragement_registration' );
+	}
+	
+	/* Enqueue jQuery on multisite signup page if needed */
+	if ( $gse_options['show_ms_signup'] ) {
+		add_action( 'template_redirect', 'gravatar_signup_encouragement_enqueing_ms_signup' );
+		add_action( 'signup_extra_fields', 'show_gravatar_signup_encouragement_ms_signup' );
+	}
+	
+	/* Load custom script in admin notices if needed */
+	if ( $gse_options['show_in_admin_notices'] ) {
+		add_action( 'admin_notices', 'show_gravatar_signup_encouragement_admin_notice' );
+	}
+	
+	/* Add actions for notice after upgrade to version 2.0 */
+	if ( $gse_options['notice_upgrade_1_to_2'] ) {
+		if ( ! isset( $_GET['gse_notice_1_to_2'] ) ) {
+			add_action( 'admin_notices', 'gravatar_signup_encouragement_notice_upgrade_1_to_2' );
+		}
+		add_action( 'admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler' );
+	}
+}
+add_action( 'init', 'gravatar_signup_encouragement_init' );
+
+/**
+ * Load GSE actions at template_redirect
+ *
+ * @since 3.0
+ */
+function gravatar_signup_encouragement_template_redirect() {
+	/* Load options */
+	$gse_options = gravatar_signup_encouragement_get_option();
+	
+}
+add_action( 'template_redirect', 'gravatar_signup_encouragement_template_redirect' );
+
 /*
 * Add default options on activation of plugin
 */
 
 function gravatar_signup_encouragement_activate() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
   
 	if (!$gse_options) {
 		/*
@@ -118,7 +172,7 @@ register_activation_hook( __FILE__, 'gravatar_signup_encouragement_activate' );
 * Update options on plugin upgrade
 */
 function gravatar_signup_encouragement_upgrade() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
   
 	if (!$gse_options) {
 		/*
@@ -189,7 +243,7 @@ function gravatar_signup_encouragement_upgrade() {
 * Fire upgrade function on admin_init
 */
 function gravatar_signup_encouragement_action_admin_init() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
   
 	if (!$gse_options || !$gse_options['version']) {
 		gravatar_signup_encouragement_upgrade();
@@ -255,7 +309,7 @@ add_action('load-options-discussion.php','add_gravatar_signup_encouragement_cont
 */
 
 function gravatar_signup_encouragement_enqueing_comments() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	if (is_singular() && comments_open()) {
 		if ( (!is_user_logged_in() && $gse_options['show_comments_unreg']) || (is_user_logged_in() && $gse_options['show_comments_reg']) ) {
 			wp_enqueue_script('jquery');
@@ -302,7 +356,7 @@ function add_gravatar_signup_encouragement_settings_field() {
 */
 
 function gravatar_signup_encouragement_field_settings_form() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	
 	/*
 	* Show notice for Use Google Libraries
@@ -315,6 +369,13 @@ function gravatar_signup_encouragement_field_settings_form() {
 		<?php echo sprintf(__("<a href='%s' class='thickbox'>Install Use Google Libraries</a>", "gse_textdomain" ),  esc_url(admin_url('plugin-install.php?tab=plugin-information&plugin=use-google-libraries&TB_iframe=true&width=600&height=550')));?><br />
 		</div>
 	<?php }
+	
+	/* Include options version if available */
+	if ( $gse_options['version'] ) {
+		?>
+		<input type="hidden" name="gravatar_signup_encouragement_settings[version]" value="<?php echo $gse_options['version']; ?>" />
+		<?php
+	}
 	
 	// First we print selection of cases when to show tip ?>
 	<span id="gravatar_signup_encouragement_form"><?php _e( 'Choose where to show Gravatar Signup Encouragement message', 'gse_textdomain' ); ?></span>
@@ -706,7 +767,7 @@ function gravatar_signup_encouragement_locale_signup_url( $email = '' ) {
 */
 
 function gravatar_signup_encouragement_message( $email = '', $onclick = '') {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	
 	/*
 	* Localize URL
@@ -756,7 +817,7 @@ function gravatar_signup_encouragement_message( $email = '', $onclick = '') {
 */
 		
 function show_gravatar_signup_encouragement_com_unreg() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	
 	/*
 	* Show message if user commented before
@@ -824,7 +885,8 @@ jQuery(document).ready(function()
 */
 		
 function show_gravatar_signup_encouragement_com_reg() {
-	global $user_email, $gse_options;
+	global $user_email;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	?>
 	
 <script language="javascript">
@@ -851,7 +913,7 @@ jQuery(document).ready(function()
 * Actions to print jQuery code for comment form
 */
 function gravatar_signup_encouragement_comment_form() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	if ( !is_user_logged_in() && $gse_options['show_comments_unreg'] ) {
 		add_action('comment_form', 'show_gravatar_signup_encouragement_com_unreg');
 	}
@@ -865,7 +927,7 @@ add_action('template_redirect', 'gravatar_signup_encouragement_comment_form');
 * Add encouragement modal after comment posting
 */
 function show_gravatar_signup_encouragement_after_commenting_modal() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	if ( ( !is_user_logged_in() && $gse_options['show_after_commenting_modal_unreg'] ) || ( is_user_logged_in() && $gse_options['show_after_commenting_modal_reg'] ) ) {
 		function gravatar_signup_encouragement_load_thickbox() {
 			add_thickbox();
@@ -917,7 +979,7 @@ function show_gravatar_signup_encouragement_after_commenting_modal() {
 * Add variable in comment redirect URL
 */
 function gravatar_signup_encouragement_after_commenting_redirect($url, $comment) {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	if ( ( $gse_options['show_after_commenting_modal_unreg'] && !is_user_logged_in() ) || ( $gse_options['show_after_commenting_modal_reg'] && is_user_logged_in() ) ) {
 		if (!gravatar_signup_encouragement_check_gravatar_existence($comment->comment_author_email)) {
 			$new_url = add_query_arg( 'gseaftercommentingmodal', '', $url );
@@ -935,10 +997,7 @@ function gravatar_signup_encouragement_after_commenting_redirect($url, $comment)
 */
 add_filter( 'comment_post_redirect', 'gravatar_signup_encouragement_after_commenting_redirect', 10, 2 );
 
-/* http://themehybrid.com/support/topic/adding-jquery-ui-using-wp_enqueue_script-and-firing-onload-events */
-if ( isset($_REQUEST['gseaftercommentingmodal']) ) {
-	add_action('template_redirect', 'show_gravatar_signup_encouragement_after_commenting_modal');
-}
+
 
 /*
 * Add encouragement in admin notices
@@ -951,16 +1010,14 @@ function show_gravatar_signup_encouragement_admin_notice() {
 		echo '<div class="update-nag" id="gse_admin_notice">' . gravatar_signup_encouragement_message($user_email) . '</div>';
 	}
 }
-if ( $gse_options['show_in_admin_notices'] ) {
-	add_action('admin_notices', 'show_gravatar_signup_encouragement_admin_notice');
-}
 
 /*
 * Add encouragement on profile page
 */
 
 function show_gravatar_signup_encouragement_profile() {
-	global $user_email, $gse_options;
+	global $user_email;
+	$gse_options = gravatar_signup_encouragement_get_option();
       
 	//echo '<div id="gravatar_on_profile"></div>';
 	?>
@@ -983,16 +1040,13 @@ jQuery(document).ready(function()
 </script>
 	<?php
 }
-if ( $gse_options['show_profile'] ) {
-	add_action('show_user_profile', 'show_gravatar_signup_encouragement_profile');
-}
 
 /*
 * Add encouragement on registration page
 * Actions based on plugin Gravajax Registration ( http://www.epicalex.com/gravajax-registration/ ) by Alex Cragg
 */
 function show_gravatar_signup_encouragement_registration() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
@@ -1034,18 +1088,13 @@ jQuery(document).ready(function()
 function gravatar_signup_encouragement_enqueing_registration() {
 	wp_enqueue_script('jquery');
 }
-if ( $gse_options['show_registration'] ) {
-	//Actions
-	add_action('login_head', 'gravatar_signup_encouragement_enqueing_registration');
-	add_action('login_head', 'wp_print_scripts', 11);
-	add_action('register_form', 'show_gravatar_signup_encouragement_registration');
-}
+
 
 /*
 * Add encouragement on signup page (multisite)
 */
 function show_gravatar_signup_encouragement_ms_signup() {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
@@ -1087,11 +1136,7 @@ jQuery(document).ready(function()
 function gravatar_signup_encouragement_enqueing_ms_signup() {
 	wp_enqueue_script('jquery');
 }
-if ( $gse_options['show_ms_signup'] ) {
-	//Actions
-	add_action('init', 'gravatar_signup_encouragement_enqueing_ms_signup');
-	add_action('signup_extra_fields', 'show_gravatar_signup_encouragement_ms_signup');
-}
+
 
 /*
 * Show notice after upgrade to version 2.0
@@ -1114,7 +1159,7 @@ function gravatar_signup_encouragement_notice_upgrade_1_to_2() {
 * Remove notice after upgrade to version 2.0
 */
 function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler($errors = false) {
-	global $gse_options;
+	$gse_options = gravatar_signup_encouragement_get_option();
 	
 	if ( isset($_GET['gse_notice_1_to_2']) && '0' == $_GET['gse_notice_1_to_2'] ) {
 		unset ($gse_options['notice_upgrade_1_to_2']);
@@ -1122,15 +1167,7 @@ function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler($errors = f
 	}
 }
 
-/*
-* Add actions for notice after upgrade to version 2.0
-*/
-if ( $gse_options['notice_upgrade_1_to_2'] ) {
-	if ( !isset($_GET['gse_notice_1_to_2']) ) {
-		add_action('admin_notices', 'gravatar_signup_encouragement_notice_upgrade_1_to_2');
-	}
-	add_action('admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler');
-}
+
 
 /*
 * Load Thickbox on options page
