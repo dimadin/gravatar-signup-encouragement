@@ -107,11 +107,8 @@ function gravatar_signup_encouragement_init() {
 		add_action( 'admin_notices', 'show_gravatar_signup_encouragement_admin_notice' );
 	}
 	
-	/* Add actions for notice after upgrade to version 2.0 */
+	/* Add action for handler of remover of notice after upgrade to version 2.0 */
 	if ( $gse_options['notice_upgrade_1_to_2'] ) {
-		if ( ! isset( $_GET['gse_notice_1_to_2'] ) ) {
-			add_action( 'admin_notices', 'gravatar_signup_encouragement_notice_upgrade_1_to_2' );
-		}
 		add_action( 'admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler' );
 	}
 }
@@ -358,18 +355,6 @@ function add_gravatar_signup_encouragement_settings_field() {
 function gravatar_signup_encouragement_field_settings_form() {
 	$gse_options = gravatar_signup_encouragement_get_option();
 	
-	/*
-	* Show notice for Use Google Libraries
-	*/
-	if (!class_exists('JCP_UseGoogleLibraries')) {
-		?><div class="dashboard-widget-notice">
-		<strong><?php _e( "Notice:", "gse_textdomain" );?></strong><br />
-		<?php _e( "Plugin Gravatar Signup Encouragement uses jQuery for display of messages. You can speed up your site by installing plugin <a href='http://jasonpenney.net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, which will load jQuery from Google's CDN.", "gse_textdomain" );
-		echo sprintf(__(" (<a href='%s'>read here for more information</a>)", "gse_textdomain" ), "http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/");?><br />
-		<?php echo sprintf(__("<a href='%s' class='thickbox'>Install Use Google Libraries</a>", "gse_textdomain" ),  esc_url(admin_url('plugin-install.php?tab=plugin-information&plugin=use-google-libraries&TB_iframe=true&width=600&height=550')));?><br />
-		</div>
-	<?php }
-	
 	/* Include options version if available */
 	if ( $gse_options['version'] ) {
 		?>
@@ -576,7 +561,20 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php _e( 'Do not use double quotes (<strong>"</strong>) since it will break code. Instead, use curly quotes (<strong>&#8220;</strong> and <strong>&#8221;</strong>) for text, and single quotes (<strong>&#039;</strong>) for HTML tags.', 'gse_textdomain' ); ?><br />
 	<label><textarea name="gravatar_signup_encouragement_settings[tip_text]" rows="5" cols="50" id="gravatar_signup_encouragement_settings[tip_text]" class="large-text code"><?php echo $gse_options['tip_text']; ?></textarea></label>
 	
-	<?php // Last we print jQuery script for show/hide on checkbox and text-to-radio input value ?>
+	<?php
+	/* Show encouragement to install Use Google Libraries plugin if it's not installed */
+	if ( ! class_exists( 'JCP_UseGoogleLibraries' ) ) {
+		?>
+		<div class="dashboard-widget-notice">
+			<strong><?php _e( "Notice:", "gse_textdomain" ); ?></strong><br />
+			<?php _e( "Plugin Gravatar Signup Encouragement uses jQuery for display of messages. You can speed up your site by installing plugin <a href='http://jasonpenney.net/wordpress-plugins/use-google-libraries/'>Use Google Libraries</a>, which will load jQuery from Google's CDN.", "gse_textdomain" );
+			echo sprintf( __( " (<a href='%s'>read here for more information</a>)", "gse_textdomain" ), "http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/" ); ?><br />
+			<?php echo sprintf( __( "<a href='%s' class='thickbox'>Install Use Google Libraries</a>", "gse_textdomain" ),  esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=use-google-libraries&TB_iframe=true&width=600&height=550' ) ) ); ?><br />
+		</div>
+		<?php
+	}
+	
+	// Last we print jQuery script for show/hide on checkbox and text-to-radio input value ?>
 <script language="javascript">
 jQuery(document).ready(function()
 {	

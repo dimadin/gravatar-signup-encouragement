@@ -88,6 +88,8 @@ No, this plugin will never add that feature since author of this plugin is again
 * Introduced gravatar_signup_encouragement_get_option() function as a replacement for global variable with options
 * Moved all code inside add_action() function so we don't have anything before init hook
 * Added hidden field inside settings form that contains options version
+* Removed notice about upgrade from admin_notices
+* Moved encouragement to install Use Google Libraries plugin to the bottom of a setting form
 
 = 2.0.1 =
 * Released on 22nd October 2010
