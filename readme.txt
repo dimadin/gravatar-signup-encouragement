@@ -90,6 +90,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Added hidden field inside settings form that contains options version
 * Removed notice about upgrade from admin_notices
 * Moved encouragement to install Use Google Libraries plugin to the bottom of a setting form
+* Added support for showing encouragement in admin bar
 
 = 2.0.1 =
 * Released on 22nd October 2010

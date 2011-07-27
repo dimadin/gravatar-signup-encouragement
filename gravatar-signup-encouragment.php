@@ -102,7 +102,12 @@ function gravatar_signup_encouragement_init() {
 		add_action( 'signup_extra_fields', 'show_gravatar_signup_encouragement_ms_signup' );
 	}
 	
-	/* Load custom script in admin notices if needed */
+	/* Show encouragement in admin bar if needed */
+	if ( $gse_options['show_in_admin_bar'] ) {
+		add_action( 'admin_bar_menu', 'gravatar_signup_encouragement_admin_bar', 1 ); // Load early before user's gravatar
+	}
+	
+	/* Show encouragement in admin notices if needed */
 	if ( $gse_options['show_in_admin_notices'] ) {
 		add_action( 'admin_notices', 'show_gravatar_signup_encouragement_admin_notice' );
 	}
@@ -353,6 +358,7 @@ function add_gravatar_signup_encouragement_settings_field() {
 */
 
 function gravatar_signup_encouragement_field_settings_form() {
+	global $wp_version;
 	$gse_options = gravatar_signup_encouragement_get_option();
 	
 	/* Include options version if available */
@@ -439,6 +445,13 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<label><input name="gravatar_signup_encouragement_settings[show_after_commenting_modal_reg]" class="gse_show_after_commenting_modal_reg" type="checkbox" value="1" 
 	<?php checked('1', $gse_options['show_after_commenting_modal_reg']); ?> /> <?php _e( 'Dialog after comment posting (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-5.jpg' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Ten theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
+	
+	<?php // Admin bar ?>
+	<?php if ( version_compare( $wp_version, '3.1', '>=' ) ) { ?>
+	<label><input name="gravatar_signup_encouragement_settings[show_in_admin_bar]" class="gse_show_in_admin_bar" type="checkbox" value="1" 
+	<?php checked('1', $gse_options['show_in_admin_bar']); ?> /> <?php _e( 'Admin bar', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-6.jpg' ); ?>" title="<?php _e( 'Message shown in admin bar', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<br />
+	<?php } ?>
 	
 	<?php // Admin notice ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_in_admin_notices]" class="gse_show_in_admin_notices" type="checkbox" value="1" 
@@ -1087,6 +1100,26 @@ function gravatar_signup_encouragement_enqueing_registration() {
 	wp_enqueue_script('jquery');
 }
 
+/**
+ * Show encouragement in admin bar
+ *
+ * @since 3.0
+ */
+function gravatar_signup_encouragement_admin_bar() {
+	global $wp_admin_bar, $user_email;
+	
+	/* If user has an gravatar, return empty */
+	if ( gravatar_signup_encouragement_check_gravatar_existence( $user_email ) )
+		return;
+
+	$wp_admin_bar->add_menu( 
+		array(
+			'id' => 'gse-tip',
+			'title' => __( 'Signup to Gravatar', 'gse_textdomain' ),
+			'href' => gravatar_signup_encouragement_locale_signup_url( $user_email )
+		)
+	);
+}
 
 /*
 * Add encouragement on signup page (multisite)
