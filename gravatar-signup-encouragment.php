@@ -280,7 +280,8 @@ function gravatar_signup_encouragement_filter_plugin_actions($links, $file){
 
 	if( $file == $this_plugin ){
 		$settings_link = '<a href="' . admin_url('options-discussion.php') . '#gravatar_signup_encouragement_form' . '">' . __('Settings', 'gse_textdomain') . '</a>';
-		$links = array_merge( array($settings_link), $links); // before other links
+		$donate_link = '<a href="http://blog.milandinic.com/donate/">' . __('Donate', 'gse_textdomain') . '</a>';
+		$links = array_merge( array($settings_link, $donate_link), $links); // before other links
 	}
 	return $links;
 }
@@ -618,6 +619,18 @@ function gravatar_signup_encouragement_field_settings_form() {
 		</div>
 		<?php
 	}
+	
+	/* Show donation encouragement */
+	?>
+	<div class="dashboard-widget-notice">
+		<br />
+		<strong>
+		<?php
+		echo sprintf( __( "If you like plugin Gravatar Signup Encouragement, you can <a href='%s'>donate</a> to the author to support its further development.", "gse_textdomain" ), "http://blog.milandinic.com/donate/" );
+		?>
+		</strong><br />
+	</div>
+	<?php
 	
 	// Last we print jQuery script for show/hide on checkbox and text-to-radio input value ?>
 <script language="javascript">

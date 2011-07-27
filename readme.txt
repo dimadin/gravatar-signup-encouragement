@@ -1,5 +1,6 @@
 === Gravatar Signup Encouragement ===
 Contributors: dimadin
+Donate link: http://blog.milandinic.com/donate/
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
 Tested up to: 3.0.1
@@ -8,6 +9,8 @@ Stable tag: 2.0.1
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
 == Description ==
+
+[Plugin homepage](http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/) | [Plugin author](http://blog.milandinic.com/) | [Donate](http://blog.milandinic.com/donate/)
 
 This plugin shows a message with link to signup page of Gravatar (pre-filled with e-mail address) to commenters and/or users who don't have gravatar. 
 
@@ -92,6 +95,8 @@ No, this plugin will never add that feature since author of this plugin is again
 * Moved encouragement to install Use Google Libraries plugin to the bottom of a setting form
 * Added support for showing encouragement in admin bar
 * Added support for showing encouragement in bbPress reply form
+* Added donate links to a plugin and readme.txt
+* Added links to author's site in readme.txt description
 
 = 2.0.1 =
 * Released on 22nd October 2010
