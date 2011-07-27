@@ -28,12 +28,13 @@ function gravatar_signup_encouragement_check_url() {
 	return $gse_grav_check_url;
 }
 
-/*
-* Load textdomain for internationalization
-*/
-
+/**
+ * Load textdomain for internationalization
+ *
+ * @since 1.0
+ */
 function gravatar_signup_encouragement_textdomain() {
-	load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
+	load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations' );
 }
 add_action('init', 'gravatar_signup_encouragement_textdomain');
 
@@ -57,7 +58,7 @@ function gravatar_signup_encouragement_default_message() {
 	* Load l10n functions on activation
 	*/
 	if(!function_exists('__')) {
-		load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
+		gravatar_signup_encouragement_textdomain();
 	}
 	
 	$message = sprintf(__("You do not appear to have a registered Gravatar. Therefore, the default avatar will be shown with your comments on this site.
@@ -166,7 +167,7 @@ function gravatar_signup_encouragement_add_default_options() {
 	 * Load plugin textdomain only for activation hook
 	 * so that default message could be saved in database localized
 	 */
-	load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
+	gravatar_signup_encouragement_textdomain();
 	
 	/* Add default message */
 	$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
