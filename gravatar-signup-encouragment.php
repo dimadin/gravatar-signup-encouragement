@@ -112,6 +112,12 @@ function gravatar_signup_encouragement_init() {
 		add_action( 'admin_notices', 'show_gravatar_signup_encouragement_admin_notice' );
 	}
 	
+	/* Show encouragement in bbPress reply form if needed */
+	if ( $gse_options['show_bbpress'] ) {
+		wp_enqueue_script( 'jquery' );
+		add_action( 'wp_footer', 'gravatar_signup_encouragement_bbpress' );
+	}
+	
 	/* Add action for handler of remover of notice after upgrade to version 2.0 */
 	if ( $gse_options['notice_upgrade_1_to_2'] ) {
 		add_action( 'admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler' );
@@ -537,6 +543,32 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<br />
 	<?php } ?>
 	
+	<?php // bbPress ?>
+	<?php if ( class_exists( 'bbPress' ) ) { ?>
+	<label><input name="gravatar_signup_encouragement_settings[show_bbpress]" class="gse_show_bbpress" type="checkbox" value="1" 
+	<?php checked('1', $gse_options['show_bbpress']); ?> /> <?php _e( 'bbPress reply form', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-9.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page (multisite) on a Twenty Ten theme below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+		<?php // Then we print selection of cases where on page to show tip ?>
+		<div id="gse_below_bbpress" style="margin: 5px 0 0 10px;">
+			<span><?php _e( 'Choose the bbPress reply form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
+			<br />
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#bbp_topic_tags" 
+			<?php checked('#bbp_topic_tags', $gse_options['below_bbpress']); ?> /> <?php _e( 'Topic tags', 'gse_textdomain' ); ?> </label>
+			<br />
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post div.avatar" 
+			<?php checked('#new-post div.avatar', $gse_options['below_bbpress']); ?> /> <?php _e( 'Avatar', 'gse_textdomain' ); ?> </label>
+			<br />
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post .bbp-form p:last" 
+			<?php checked('#new-post .bbp-form p:last', $gse_options['below_bbpress']); ?> /> <?php _e( 'Last input field', 'gse_textdomain' ); ?> </label>
+			<br />
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post button" 
+			<?php checked('#new-post button', $gse_options['below_bbpress']); ?> /> <?php _e( 'Submit button', 'gse_textdomain' ); ?> </label>
+			<br />
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" class="gse_below_bbpress_custom_radio" type="radio" value="<?php echo $gse_options['below_bbpress_custom']; ?>" 
+			<?php checked($gse_options['below_bbpress_custom'], $gse_options['below_bbpress']); ?> /> <?php _e( 'Custom ID:', 'gse_textdomain' ); ?></label> <input name="gravatar_signup_encouragement_settings[below_bbpress_custom]" type="text" class="gse_below_bbpress_custom_text" value="<?php echo $gse_options['below_bbpress_custom']; ?>" /> 
+		</div>
+	<br />
+	<?php } ?>
+	
 	
 	<br /><br />
 	<?php
@@ -652,6 +684,17 @@ jQuery(document).ready(function()
 		return true;
 	});
 	
+	<?php if( !$gse_options['show_bbpress'] ){ ?>
+	jQuery('#gse_below_bbpress').hide();
+	<?php } ?>
+	jQuery('.gse_show_bbpress').change(function() {
+		if(jQuery('.gse_show_bbpress').attr('checked'))
+			jQuery('#gse_below_bbpress').show();
+		else
+			jQuery('#gse_below_bbpress').hide();
+		return true;
+	});
+	
 	<?php 
 	/*
 	* Get value from text input field of custom element on keyup
@@ -681,6 +724,11 @@ jQuery(document).ready(function()
 	jQuery('.gse_below_ms_signup_custom_text').keyup(function(event){
 		var gse_below_ms_signup_custom = jQuery('.gse_below_ms_signup_custom_text').val();
 		jQuery('.gse_below_ms_signup_custom_radio').val(gse_below_ms_signup_custom);
+	});
+	
+	jQuery('.gse_below_bbpress_custom_text').keyup(function(event){
+		var gse_below_bbpress_custom = jQuery('.gse_below_bbpress_custom_text').val();
+		jQuery('.gse_below_bbpress_custom_radio').val(gse_below_bbpress_custom);
 	});
 });
 </script>
@@ -1119,6 +1167,36 @@ function gravatar_signup_encouragement_admin_bar() {
 			'href' => gravatar_signup_encouragement_locale_signup_url( $user_email )
 		)
 	);
+}
+
+/**
+ * Show encouragement in bbPress reply form
+ *
+ * @since 3.0
+ */
+function gravatar_signup_encouragement_bbpress() {
+	global $user_email;
+	$gse_options = gravatar_signup_encouragement_get_option();
+	?>
+	
+<script language="javascript">
+jQuery(document).ready(function()
+{		
+		<?php // post and check if gravatar exists or not from ajax ?>
+		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>" } ,function(data)
+        {
+		  if(data) <?php // if gravatar doesn't exist ?>
+		  {
+			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
+			
+			jQuery('#gse_bbpress_message').hide(); <?php // hide tip if allready shown ?>
+
+		  	jQuery("<?php echo $gse_options['below_bbpress']; ?>").after("<br /><div id='gse_bbpress_message'><?php echo apply_filters('gse_message_bbpress', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+          }  				
+        });
+});
+</script>
+	<?php
 }
 
 /*
