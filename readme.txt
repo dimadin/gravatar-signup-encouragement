@@ -97,6 +97,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Added support for showing encouragement in bbPress reply form
 * Added donate links to a plugin and readme.txt
 * Added links to author's site in readme.txt description
+* Moved default options setup to sepparate function gravatar_signup_encouragement_add_default_options()
 
 = 2.0.1 =
 * Released on 22nd October 2010

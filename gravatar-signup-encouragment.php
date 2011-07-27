@@ -137,112 +137,100 @@ function gravatar_signup_encouragement_template_redirect() {
 }
 add_action( 'template_redirect', 'gravatar_signup_encouragement_template_redirect' );
 
-/*
-* Add default options on activation of plugin
-*/
-
-function gravatar_signup_encouragement_activate() {
-	$gse_options = gravatar_signup_encouragement_get_option();
-  
-	if (!$gse_options) {
-		/*
-		* By default, show message to unregistered commenters
-		* and show below: comment field (for comments), “Profile” header (profile), e-mail address (registration & signup)
-		*/
-		$gse_options['show_comments_unreg'] = '1';
-		$gse_options['below_comments_unreg'] = '#comment';
-		$gse_options['below_comments_reg'] = '#comment';
-		$gse_options['below_profile'] = 'h2';
-		$gse_options['below_registration'] = '#user_email';
-		if ( function_exists('is_multisite') && is_multisite() ) {
-			$gse_options['below_ms_signup'] = '#user_email';
-		}
-		/*
-		* Add version number
-		*/
-		$gse_options['version'] = '2.0';
-		/*
-		* Load plugin textdomain only for activation hook
-		* so that default message could be saved in database localized
-		*/
-		load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
-		/*
-		* Add default message
-		*/
-		$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
+/**
+ * Save default options to database
+ *
+ * @since 3.0
+ */
+function gravatar_signup_encouragement_add_default_options() {
+	/* Setup variable */
+	$gse_options = array();
 	
-		add_option('gravatar_signup_encouragement_settings', $gse_options);
+	/*
+	 * By default, show message to unregistered commenters
+	 * and show below: comment field (for comments), “Profile” header (profile), e-mail address (registration & signup)
+	 */
+	$gse_options['show_comments_unreg'] = '1';
+	$gse_options['below_comments_unreg'] = '#comment';
+	$gse_options['below_comments_reg'] = '#comment';
+	$gse_options['below_profile'] = 'h2';
+	$gse_options['below_registration'] = '#user_email';
+	if ( function_exists('is_multisite') && is_multisite() && is_main_site() ) {
+		$gse_options['below_ms_signup'] = '#user_email';
+	}
+	
+	/* Add version number */
+	$gse_options['version'] = '2.0';
+	
+	/*
+	 * Load plugin textdomain only for activation hook
+	 * so that default message could be saved in database localized
+	 */
+	load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
+	
+	/* Add default message */
+	$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
+
+	/* Save options to the database */
+	add_option( 'gravatar_signup_encouragement_settings', $gse_options );
+}
+
+/**
+ * Add default options on activation of plugin
+ *
+ * @since 1.0
+ */
+function gravatar_signup_encouragement_activate() {
+	/* Load options */
+	$gse_options = gravatar_signup_encouragement_get_option();
+
+	/* If no options, add default */
+	if ( ! $gse_options ) {
+		gravatar_signup_encouragement_add_default_options();
 	}
 }
 register_activation_hook( __FILE__, 'gravatar_signup_encouragement_activate' );
 
-/*
-* Update options on plugin upgrade
-*/
+/**
+ * Update or add default options.
+ *
+ * Runs on admin_init to see what should do.
+ *
+ * @since 2.0
+ */
 function gravatar_signup_encouragement_upgrade() {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-  
-	if (!$gse_options) {
-		/*
-		* By default, show message to unregistered commenters
-		* and show below: comment field (for comments), “Profile” header (profile), e-mail address (registration & signup)
-		*/
-		$gse_options['show_comments_unreg'] = '1';
-		$gse_options['below_comments_unreg'] = '#comment';
-		$gse_options['below_comments_reg'] = '#comment';
-		$gse_options['below_profile'] = 'h2';
-		$gse_options['below_registration'] = '#user_email';
-		if ( function_exists('is_multisite') && is_multisite() ) {
-			$gse_options['below_ms_signup'] = '#user_email';
-		}
-		/*
-		* Add version number
-		*/
-		$gse_options['version'] = '2.0';
-		/*
-		* Load plugin textdomain only for activation hook
-		* so that default message could be saved in database localized
-		*/
-		load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations');
-		/*
-		* Add default message
-		*/
-		$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
-	
-		add_option('gravatar_signup_encouragement_settings', $gse_options);
+
+	/* If no options, add default */
+	if ( ! $gse_options ) {
+		gravatar_signup_encouragement_add_default_options();
+	/* Else update to version 2.0 */
 	} else {
-		if (!$gse_options['version']) {
-			/*
-			* Make array with names of options
-			*/
-			$elements = array('below_comments_unreg', 'below_comments_unreg_custom', 'below_comments_reg', 'below_comments_reg_custom', 'below_profile', 'below_profile_custom', 'below_registration', 'below_registration_custom');
+		if ( ! $gse_options['version'] ) {
+			/* Make array with names of options */
+			$elements = array( 'below_comments_unreg', 'below_comments_unreg_custom', 'below_comments_reg', 'below_comments_reg_custom', 'below_profile', 'below_profile_custom', 'below_registration', 'below_registration_custom' );
 			
-			/*
-			* Split array into keys with names of options
-			*/
+			/* Split array into keys with names of options */
 			foreach ( $elements as $element ) :
-				/*
-				* Check if option exists
-				*/
-				if ($gse_options[$element]) {
+				/* Check if option exists */
+				if ( $gse_options[$element] ) {
 					/*
-					* Get position of # in option's value.
-					* If it isn't a first character,
-					* add it in front of value and update option.
-					*/
-					if (strpos($gse_options[$element], '#') !== 0) {
+					 * Get position of # in option's value.
+					 * If it isn't a first character,
+					 * add it in front of value and update option.
+					 */
+					if ( strpos( $gse_options[$element], '#' ) !== 0 ) {
 						$gse_options[$element] = '#' . $gse_options[$element];
-						update_option('gravatar_signup_encouragement_settings', $gse_options);
+						update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 					}
 				}
 			endforeach;
 			
-			/*
-			* Add new version and notice about upgrade
-			*/
+			/* Add new version and notice about upgrade	*/
 			$gse_options['version'] = '2.0';
 			$gse_options['notice_upgrade_1_to_2'] = true;
-			update_option('gravatar_signup_encouragement_settings', $gse_options);
+			update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 		}
 	}
 }
