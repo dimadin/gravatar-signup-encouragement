@@ -125,6 +125,25 @@ function gravatar_signup_encouragement_init() {
 add_action( 'init', 'gravatar_signup_encouragement_init' );
 
 /**
+ * Load GSE actions at admin_init
+ *
+ * @since 2.0
+*/
+function gravatar_signup_encouragement_action_admin_init() {
+	/* Load options */
+	$gse_options = gravatar_signup_encouragement_get_option();
+
+	/* If no options, or version <2.0, upgrade */
+	if ( ! $gse_options || ! $gse_options['version'] ) {
+		gravatar_signup_encouragement_upgrade();
+	}
+	
+	/* Add settings fields */
+	add_gravatar_signup_encouragement_settings_field();
+}
+add_action( 'admin_init', 'gravatar_signup_encouragement_action_admin_init' );
+
+/**
  * Load GSE actions at template_redirect
  *
  * @since 3.0
@@ -132,7 +151,17 @@ add_action( 'init', 'gravatar_signup_encouragement_init' );
 function gravatar_signup_encouragement_template_redirect() {
 	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	
+
+	/* Show encouragement in comment form if needed */
+	if ( is_singular() && comments_open() ) {
+		if ( ! is_user_logged_in() && $gse_options['show_comments_unreg'] ) {
+			wp_enqueue_script( 'jquery' );
+			add_action( 'comment_form', 'show_gravatar_signup_encouragement_com_unreg' );
+		} elseif ( is_user_logged_in() && $gse_options['show_comments_reg'] ) {
+			wp_enqueue_script( 'jquery' );
+			add_action( 'comment_form', 'show_gravatar_signup_encouragement_com_reg' );
+		}
+	}
 }
 add_action( 'template_redirect', 'gravatar_signup_encouragement_template_redirect' );
 
@@ -232,18 +261,6 @@ function gravatar_signup_encouragement_upgrade() {
 }
 
 /*
-* Fire upgrade function on admin_init
-*/
-function gravatar_signup_encouragement_action_admin_init() {
-	$gse_options = gravatar_signup_encouragement_get_option();
-  
-	if (!$gse_options || !$gse_options['version']) {
-		gravatar_signup_encouragement_upgrade();
-	}
-}
-add_action( 'admin_init', 'gravatar_signup_encouragement_action_admin_init' );
-
-/*
 * Remove options on uninstallation of plugin
 */
 
@@ -297,19 +314,18 @@ function add_gravatar_signup_encouragement_contextual_help() {
 }
 add_action('load-options-discussion.php','add_gravatar_signup_encouragement_contextual_help');
 
-/*
-* Enqueue jQuery on singular page with opened comments
-*/
-
+/**
+ * Enqueue jQuery on singular page with opened comments
+ *
+ * @since 1.0
+ * @deprecated 3.0.0
+ * @deprecated Use gravatar_signup_encouragement_template_redirect()
+ * @see gravatar_signup_encouragement_template_redirect()
+ */
 function gravatar_signup_encouragement_enqueing_comments() {
-	$gse_options = gravatar_signup_encouragement_get_option();
-	if (is_singular() && comments_open()) {
-		if ( (!is_user_logged_in() && $gse_options['show_comments_unreg']) || (is_user_logged_in() && $gse_options['show_comments_reg']) ) {
-			wp_enqueue_script('jquery');
-		}
-	}
+	_deprecated_function( __FUNCTION__, '3.0', 'gravatar_signup_encouragement_template_redirect()' );
+	return gravatar_signup_encouragement_template_redirect();
 }
-add_action('template_redirect', 'gravatar_signup_encouragement_enqueing_comments');
 
 /*
 * URL of screenshot
@@ -780,9 +796,6 @@ jQuery(document).ready(function()
 	}
 }
 
-//add action so that fields are actually shown
-add_action('admin_init', 'add_gravatar_signup_encouragement_settings_field');
-
 /**
  * Check if gravatar exists
  */
@@ -965,19 +978,18 @@ jQuery(document).ready(function()
 	<?php
 }
 
-/*
-* Actions to print jQuery code for comment form
-*/
+/**
+ * Conditionaly load comment form encouregement
+ *
+ * @since 1.0
+ * @deprecated 3.0.0
+ * @deprecated Use gravatar_signup_encouragement_template_redirect()
+ * @see gravatar_signup_encouragement_template_redirect()
+ */
 function gravatar_signup_encouragement_comment_form() {
-	$gse_options = gravatar_signup_encouragement_get_option();
-	if ( !is_user_logged_in() && $gse_options['show_comments_unreg'] ) {
-		add_action('comment_form', 'show_gravatar_signup_encouragement_com_unreg');
-	}
-	elseif ( is_user_logged_in() && $gse_options['show_comments_reg'] ) {
-		add_action('comment_form', 'show_gravatar_signup_encouragement_com_reg');
-	}
+	_deprecated_function( __FUNCTION__, '3.0', 'gravatar_signup_encouragement_template_redirect()' );
+	return gravatar_signup_encouragement_template_redirect();
 }
-add_action('template_redirect', 'gravatar_signup_encouragement_comment_form');
 
 /*
 * Add encouragement modal after comment posting
@@ -1141,8 +1153,14 @@ jQuery(document).ready(function()
 </script>
 <?php	
 }
+
+/**
+ * Enqueue jQuery
+ *
+ * @since 1.0
+ */
 function gravatar_signup_encouragement_enqueing_registration() {
-	wp_enqueue_script('jquery');
+	wp_enqueue_script( 'jquery' );
 }
 
 /**
@@ -1239,8 +1257,14 @@ jQuery(document).ready(function()
 </script>
 <?php	
 }
+
+/**
+ * Enqueue jQuery
+ *
+ * @since 2.0
+ */
 function gravatar_signup_encouragement_enqueing_ms_signup() {
-	wp_enqueue_script('jquery');
+	wp_enqueue_script( 'jquery' );
 }
 
 
