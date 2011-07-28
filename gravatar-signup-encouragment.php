@@ -1110,7 +1110,7 @@ function gravatar_signup_encouragement_after_commenting_redirect( $url, $comment
 	$gse_options = gravatar_signup_encouragement_get_option();
 
 	/* Check to see if we need to add query argument */
-	if ( ( $gse_options['show_after_commenting_modal_unreg'] && !i s_user_logged_in() ) || ( $gse_options['show_after_commenting_modal_reg'] && is_user_logged_in() ) ) {
+	if ( ( $gse_options['show_after_commenting_modal_unreg'] && ! is_user_logged_in() ) || ( $gse_options['show_after_commenting_modal_reg'] && is_user_logged_in() ) ) {
 		/* Check to see if commenter has gravatar */
 		if ( ! gravatar_signup_encouragement_check_gravatar_existence( $comment->comment_author_email ) ) {
 			$new_url = add_query_arg( 'gseaftercommentingmodal', '', $url );
