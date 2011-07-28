@@ -11,18 +11,21 @@ Domain Path: translations
 */
 
 /*
-* If file opened directly, return 403 error
-*/
-
-if (!function_exists ('add_action')) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
+ * If file is opened directly, return 403 error
+ */
+if ( ! function_exists( 'add_action' ) ) {
+	header( 'Status: 403 Forbidden' );
+	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
 
-/*
-* URL of gravatar-check.php
-*/
+/**
+ * Get URL of gravatar existence check
+ *
+ * @since 2.0
+ *
+ * @return string URL of gravatar-check.php file
+ */
 function gravatar_signup_encouragement_check_url() {
 	$gse_grav_check_url = plugins_url( 'gravatar-check.php', __FILE__ );
 	return $gse_grav_check_url;
@@ -49,16 +52,20 @@ function gravatar_signup_encouragement_get_option() {
 	return $gse_options;
 }
 
-/*
-* Return default message
-*/
+/**
+ * Get default encouragement message
+ *
+ * @since 2.0
+ *
+ * @return string Default encouragement message
+ */
 function gravatar_signup_encouragement_default_message() {
 	/* Load plugin textdomain since maybe it's not loaded already */
 	gravatar_signup_encouragement_textdomain();
-	
-	$message = sprintf(__("You do not appear to have a registered Gravatar. Therefore, the default avatar will be shown with your comments on this site.
 
-If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a> to create one (link opens in new tab/window).", "gse_textdomain"), "URL");
+	$message = sprintf( __( "You do not appear to have a registered Gravatar. Therefore, the default avatar will be shown with your comments on this site.
+
+If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a> to create one (link opens in new tab/window).", "gse_textdomain" ), "URL" );
 
 	return $message;	
 }
@@ -71,10 +78,10 @@ If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a>
 function gravatar_signup_encouragement_init() {
 	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	
+
 	/* Load plugin textdomain */
 	gravatar_signup_encouragement_textdomain();
-	
+
 	/* 
 	 * Load modal if needed
 	 * via http://themehybrid.com/support/topic/adding-jquery-ui-using-wp_enqueue_script-and-firing-onload-events
@@ -82,41 +89,41 @@ function gravatar_signup_encouragement_init() {
 	if ( isset( $_REQUEST['gseaftercommentingmodal'] ) ) {
 		add_action( 'template_redirect', 'show_gravatar_signup_encouragement_after_commenting_modal' );
 	}
-	
+
 	/* Load custom script on profile page if needed */
 	if ( $gse_options['show_profile'] ) {
 		add_action( 'show_user_profile', 'show_gravatar_signup_encouragement_profile' );
 	}
-	
+
 	/* Enqueue jQuery and load custom script on registration page if needed */
 	if ( $gse_options['show_registration'] ) {
 		add_action( 'login_head', 'gravatar_signup_encouragement_enqueing_registration' );
 		add_action( 'login_head', 'wp_print_scripts', 11 );
 		add_action( 'register_form', 'show_gravatar_signup_encouragement_registration' );
 	}
-	
+
 	/* Enqueue jQuery on multisite signup page if needed */
 	if ( $gse_options['show_ms_signup'] ) {
 		add_action( 'template_redirect', 'gravatar_signup_encouragement_enqueing_ms_signup' );
 		add_action( 'signup_extra_fields', 'show_gravatar_signup_encouragement_ms_signup' );
 	}
-	
+
 	/* Show encouragement in admin bar if needed */
 	if ( $gse_options['show_in_admin_bar'] ) {
 		add_action( 'admin_bar_menu', 'gravatar_signup_encouragement_admin_bar', 1 ); // Load early before user's gravatar
 	}
-	
+
 	/* Show encouragement in admin notices if needed */
 	if ( $gse_options['show_in_admin_notices'] ) {
 		add_action( 'admin_notices', 'show_gravatar_signup_encouragement_admin_notice' );
 	}
-	
+
 	/* Show encouragement in bbPress reply form if needed */
 	if ( $gse_options['show_bbpress'] ) {
 		wp_enqueue_script( 'jquery' );
 		add_action( 'wp_footer', 'gravatar_signup_encouragement_bbpress' );
 	}
-	
+
 	/* Add action for handler of remover of notice after upgrade to version 2.0 */
 	if ( $gse_options['notice_upgrade_1_to_2'] ) {
 		add_action( 'admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler' );
@@ -137,7 +144,7 @@ function gravatar_signup_encouragement_action_admin_init() {
 	if ( ! $gse_options || ! $gse_options['version'] ) {
 		gravatar_signup_encouragement_upgrade();
 	}
-	
+
 	/* Add settings fields */
 	add_gravatar_signup_encouragement_settings_field();
 }
@@ -173,7 +180,7 @@ add_action( 'template_redirect', 'gravatar_signup_encouragement_template_redirec
 function gravatar_signup_encouragement_add_default_options() {
 	/* Setup variable */
 	$gse_options = array();
-	
+
 	/*
 	 * By default, show message to unregistered commenters
 	 * and show below: comment field (for comments), “Profile” header (profile), e-mail address (registration & signup)
@@ -186,13 +193,13 @@ function gravatar_signup_encouragement_add_default_options() {
 	if ( function_exists('is_multisite') && is_multisite() && is_main_site() ) {
 		$gse_options['below_ms_signup'] = '#user_email';
 	}
-	
+
 	/* Add version number */
 	$gse_options['version'] = '2.0';
-	
+
 	/* Load plugin textdomain since maybe it's not loaded already */
 	gravatar_signup_encouragement_textdomain();
-	
+
 	/* Add default message */
 	$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
 
@@ -235,7 +242,7 @@ function gravatar_signup_encouragement_upgrade() {
 		if ( ! $gse_options['version'] ) {
 			/* Make array with names of options */
 			$elements = array( 'below_comments_unreg', 'below_comments_unreg_custom', 'below_comments_reg', 'below_comments_reg_custom', 'below_profile', 'below_profile_custom', 'below_registration', 'below_registration_custom' );
-			
+
 			/* Split array into keys with names of options */
 			foreach ( $elements as $element ) :
 				/* Check if option exists */
@@ -251,7 +258,7 @@ function gravatar_signup_encouragement_upgrade() {
 					}
 				}
 			endforeach;
-			
+
 			/* Add new version and notice about upgrade	*/
 			$gse_options['version'] = '2.0';
 			$gse_options['notice_upgrade_1_to_2'] = true;
@@ -260,59 +267,78 @@ function gravatar_signup_encouragement_upgrade() {
 	}
 }
 
-/*
-* Remove options on uninstallation of plugin
+/**
+ * Remove options on uninstallation of plugin
+ *
+ * @since 1.0
 */
-
 function gravatar_signup_encouragement_uninstall() {
-	delete_option('gravatar_signup_encouragement_settings');
+	delete_option( 'gravatar_signup_encouragement_settings' );
 }
-register_uninstall_hook(__FILE__, 'gravatar_signup_encouragement_uninstall');
+register_uninstall_hook( __FILE__, 'gravatar_signup_encouragement_uninstall' );
 
 /**
- * Add action link(s) to plugins page
- * Thanks Dion Hulse -- http://dd32.id.au/wordpress-plugins/?configure-link
- * (taken from Adminize plugin)
+ * Add action links to plugins page
+ *
+ * Thanks to Dion Hulse for guide
+ * and Adminize plugin for implementation
+ *
+ * @link http://dd32.id.au/wordpress-plugins/?configure-link
+ * @link http://bueltge.de/wordpress-admin-theme-adminimize/674/
+ *
+ * @since 1.0
+ *
+ * @param array $links Default links of plugin
+ * @param string $file Name of plugin's file
+ * @return array $links New & old links of plugin
  */
-function gravatar_signup_encouragement_filter_plugin_actions($links, $file){
+function gravatar_signup_encouragement_filter_plugin_actions( $links, $file ){
 	static $this_plugin;
 
-	if( !$this_plugin ) $this_plugin = plugin_basename(__FILE__);
+	if ( ! $this_plugin )
+		$this_plugin = plugin_basename( __FILE__ );
 
-	if( $file == $this_plugin ){
-		$settings_link = '<a href="' . admin_url('options-discussion.php') . '#gravatar_signup_encouragement_form' . '">' . __('Settings', 'gse_textdomain') . '</a>';
-		$donate_link = '<a href="http://blog.milandinic.com/donate/">' . __('Donate', 'gse_textdomain') . '</a>';
-		$links = array_merge( array($settings_link, $donate_link), $links); // before other links
+	if ( $file == $this_plugin ) {
+		$settings_link = '<a href="' . admin_url( 'options-discussion.php' ) . '#gravatar_signup_encouragement_form' . '">' . __( 'Settings', 'gse_textdomain' ) . '</a>';
+		$donate_link = '<a href="http://blog.milandinic.com/donate/">' . __( 'Donate', 'gse_textdomain' ) . '</a>';
+		$links = array_merge( array( $settings_link, $donate_link ), $links ); // Before other links
 	}
+
 	return $links;
 }
 add_filter( 'plugin_action_links', 'gravatar_signup_encouragement_filter_plugin_actions', 10, 2 );
 
-/*
-* Add contextual help
-* Taken from Adminize plugin
-* (not in function right now)
-*/
-
-function gravatar_signup_encouragement_contextual_help($help) {
-	
-	//keep the existing help copy
+/**
+ * Show contextual help for GSE on settings page
+ *
+ * Based on code from Adminize plugin
+ * @link http://bueltge.de/wordpress-admin-theme-adminimize/674/
+ *
+ * @since 2.0
+ * @param string $help Existing contextual help
+ */
+function gravatar_signup_encouragement_contextual_help( $help ) {
+	/* Show existing help */
 	echo $help;
-	//add some new copy
-	echo "<h5>" . __("Gravatar Signup Encouragement", "gse_textdomain") . "</h5>";
-	echo "<p>" . __("<a href='http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/' target='_blank'>Gravatar Signup Encouragement Settings Documentation</a>", "gse_textdomain") . "</p>";
-	echo "<p>" . __('<a href="http://wordpress.org/tags/gravatar-signup-encouragement" target="_blank">Gravatar Signup Encouragement Support Forums</a>', 'gse_textdomain') . "</p>";
+
+	/* Show GSE help */
+	echo "<h5>" . __( "Gravatar Signup Encouragement", "gse_textdomain" ) . "</h5>";
+	echo "<p>" . __( "<a href='http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/' target='_blank'>Gravatar Signup Encouragement Settings Documentation</a>", "gse_textdomain" ) . "</p>";
+	echo "<p>" . __( '<a href="http://wordpress.org/tags/gravatar-signup-encouragement" target="_blank">Gravatar Signup Encouragement Support Forums</a>', 'gse_textdomain' ) . "</p>";
 }
 
-/* 
-* Load contextual help
-* via http://forum.milo317.com/topic/hacks/page/30#post-1531
-*/
+/**
+ * Load contextual help
+ *
+ * @link http://forum.milo317.com/topic/hacks/page/30#post-1531
+ *
+ * @since 2.0
+ */
 function add_gravatar_signup_encouragement_contextual_help() {
-	//the contextual help filter
-	add_filter('contextual_help','gravatar_signup_encouragement_contextual_help');
+	/* Hook in the contextual help filter */
+	add_filter( 'contextual_help','gravatar_signup_encouragement_contextual_help' );
 }
-add_action('load-options-discussion.php','add_gravatar_signup_encouragement_contextual_help');
+add_action( 'load-options-discussion.php','add_gravatar_signup_encouragement_contextual_help' );
 
 /**
  * Enqueue jQuery on singular page with opened comments
@@ -327,43 +353,48 @@ function gravatar_signup_encouragement_enqueing_comments() {
 	return gravatar_signup_encouragement_template_redirect();
 }
 
-/*
-* URL of screenshot
-*/
-function gravatar_signup_encouragement_screenshot_url($screenshot) {
+/**
+ * Get URL of screenshot
+ *
+ * @since 2.0
+ *
+ * @param string $screenshot Filename of screenshot
+ * @return string URL of screenshot file
+ */
+function gravatar_signup_encouragement_screenshot_url( $screenshot ) {
 	$gse_screenshot_url = plugins_url( $screenshot, __FILE__ );
 	return $gse_screenshot_url;
 }
 
-/*
-* Function to add fields on Discussion Settings page, section Gravatar
-* based on http://planetozh.com/blog/2009/05/handling-plugins-options-in-wordpress-28-with-register_setting/
-*/
-
+/**
+ * Add fields on Discussion Settings page, section Gravatar
+ *
+ * @link http://planetozh.com/blog/2009/05/handling-plugins-options-in-wordpress-28-with-register_setting/
+ *
+ * @since 1.0
+ */
 function add_gravatar_signup_encouragement_settings_field() {
  
-	/*
-	* The fields are:
-	* the id the form field will use
-	* name to display on the page
-	* callback function
-	* the name of the page
-	* the section of the page to add the field to
-	*/
-	/*add_settings_field('gravatar_signup_encouragement_settings' , __('Show Gravatar Signup Tip Below', 'gse_textdomain') ,
-			'gravatar_signup_encouragement_field_showing' , 'discussion' , 'avatars');*/
-	add_settings_field('gravatar_signup_encouragement_settings' , __('Gravatar Signup Encouragement', 'gse_textdomain') ,
-			'gravatar_signup_encouragement_field_settings_form' , 'discussion' , 'avatars');
+	/* Register settings field */
+	add_settings_field(
+		'gravatar_signup_encouragement_settings', // the id the form field will use
+		__('Gravatar Signup Encouragement', 'gse_textdomain'), // name to display on the page
+		'gravatar_signup_encouragement_field_settings_form', // callback function
+		'discussion', // the name of the page
+		'avatars' // the section of the page to add the field to
+	);
  
-	//register the setting to make sure it gets checked
-	register_setting('discussion','gravatar_signup_encouragement_settings');
+	/* Register the setting to make sure options get saved */
+	register_setting( 'discussion', 'gravatar_signup_encouragement_settings' );
 }
 
-/*
-* Function for printing fields on Discussion Settings page
-* based on http://planetozh.com/blog/2009/05/handling-plugins-options-in-wordpress-28-with-register_setting/
-*/
-
+/**
+ * Show setting fields
+ *
+ * @link http://planetozh.com/blog/2009/05/handling-plugins-options-in-wordpress-28-with-register_setting/
+ *
+ * @since 1.0
+ */
 function gravatar_signup_encouragement_field_settings_form() {
 	global $wp_version;
 	$gse_options = gravatar_signup_encouragement_get_option();
@@ -798,11 +829,15 @@ jQuery(document).ready(function()
 
 /**
  * Check if gravatar exists
+ *
+ * @since 2.0
+ * @param string $email Email addresses that is checked
+ * @return bool
  */
-function gravatar_signup_encouragement_check_gravatar_existence($email) {
-	$fileUrl = "http://www.gravatar.com/avatar/".md5( strtolower($email) )."?s=2&d=404";
-	$AgetHeaders = @get_headers($fileUrl);
-	if (!preg_match("|200|", $AgetHeaders[0])) {
+function gravatar_signup_encouragement_check_gravatar_existence( $email ) {
+	$fileUrl = "http://www.gravatar.com/avatar/" . md5( strtolower( $email ) )."?s=2&d=404";
+	$AgetHeaders = @get_headers( $fileUrl );
+	if ( ! preg_match( "|200|", $AgetHeaders[0] ) ) {
 		return false;
 	} else {
 		return true;
@@ -810,105 +845,104 @@ function gravatar_signup_encouragement_check_gravatar_existence($email) {
 }
 
 /**
- * Locale gravatar signup URL
+ * Get URL to locale gravatar signup page
+ *
+ * @since 2.0
+ * @param string $email Email address that should be apended
+ * @return string $gse_url URL of locale signup page
  */
 function gravatar_signup_encouragement_locale_signup_url( $email = '' ) {
 	/* translators: Locale gravatar.com, e.g. sr.gravatar.com for Serbian */
-	$gse_locale_url = _x('en.gravatar.com', 'Locale gravatar.com, e.g. sr.gravatar.com for Serbian', 'gse_textdomain');
-	
-	// check if it is really locale.gravatar.com
-	if (preg_match('|^[A-Z_%+-]+.gravatar+.com|i', $gse_locale_url)) {
-		$gse_locale_url = $gse_locale_url; } else {
+	$gse_locale_url = _x( 'en.gravatar.com', 'Locale gravatar.com, e.g. sr.gravatar.com for Serbian', 'gse_textdomain' );
+
+	/* Check if it's really locale.gravatar.com */
+	if ( preg_match( '|^[A-Z_%+-]+.gravatar+.com|i', $gse_locale_url ) ) {
+		$gse_locale_url = $gse_locale_url;
+	} else {
 		$gse_locale_url = 'en.gravatar.com';
 	}
-	
-	if ( empty($email) ) {
+
+	/* If email exists, append it */
+	if ( empty( $email ) ) {
 		$gse_url = "http://" . $gse_locale_url . '/site/signup/';
 	} else {
 		$gse_url = "http://" . $gse_locale_url . '/site/signup/' . $email;
 	}
-	
+
 	return $gse_url;
 }
 
-/*
-* Prepeare message for use
-*/
-
+/**
+ * Get encouragement message
+ *
+ * @since 1.0
+ * @param string $email Email address that should be appended to signup URL
+ * @param string $onclick Javascript function name run on click on signup URL
+ * @return string $gse_tip_text Encouragement message
+ */
 function gravatar_signup_encouragement_message( $email = '', $onclick = '') {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	
-	/*
-	* Localize URL
-	* and format it for use
-	*/	
-	if ( empty($email) ) {
+
+	/* Get appropiate signup URL */	
+	if ( empty( $email ) ) {
 		$gse_url = gravatar_signup_encouragement_locale_signup_url() . '" + emailValue + "';
 	} else {
-		$gse_url = gravatar_signup_encouragement_locale_signup_url($email);
+		$gse_url = gravatar_signup_encouragement_locale_signup_url( $email );
 	}
-	
-	/*
-	* If there is no message, use default
-	*/
-	if (!$gse_options['tip_text']) {
+
+	/* If there is no message, use default */
+	if ( ! $gse_options['tip_text']) {
 		$gse_options['tip_text'] = gravatar_signup_encouragement_default_message();
 	}
-	
-	/*
-	* Replace placeholder with real URL
-	*/
-	$gse_tip_text = preg_replace('/URL/', $gse_url, $gse_options['tip_text']);
-	
-	/*
-	* Add onclick
-	*/
-	if ( !empty($onclick) ) {
-		$gse_tip_text = preg_replace('/a href/', 'a onclick="' . $onclick . '" href', $gse_tip_text);
+
+	/* Replace placeholder with real URL */
+	$gse_tip_text = preg_replace( '/URL/', $gse_url, $gse_options['tip_text'] );
+
+	/* Add onclick if needed */
+	if ( ! empty( $onclick ) ) {
+		$gse_tip_text = preg_replace( '/a href/', 'a onclick="' . $onclick . '" href', $gse_tip_text );
 	}
-	
+
 	/*
-	* Replace new lines with <br />
-	* Code from http://www.projectpier.org/node/771
-	* via http://www.learningjquery.com/2006/11/really-simple-live-comment-preview
-	*/
-	$gse_tip_text = str_replace("\r", "", $gse_tip_text);  // Remove \r
-	$gse_tip_text = str_replace("\n", "<br />", $gse_tip_text);  // Replace \n with <br />
-	/*
-	* Print message
-	*/
-	
+	 * Replace new lines with <br />
+	 * Code from http://www.projectpier.org/node/771
+	 * via http://www.learningjquery.com/2006/11/really-simple-live-comment-preview
+	 */
+	$gse_tip_text = str_replace( "\r", "", $gse_tip_text );  // Remove \r
+	$gse_tip_text = str_replace( "\n", "<br />", $gse_tip_text );  // Replace \n with <br />
+
+	/* Return message */	
 	return $gse_tip_text;
 }
 
-/*
-* Add encouragement on comment form for unregistered users
-*/
-		
+/**
+ * Show encouragement on comment form for unregistered users
+ *
+ * @since 1.0
+ */
 function show_gravatar_signup_encouragement_com_unreg() {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	
-	/*
-	* Show message if user commented before
-	*/
+
+	/* Show message if user commented before */
 	$gse_current_commenter = wp_get_current_commenter();
 	if ( $gse_current_commenter['comment_author_email'] ) {
 		?>
-	
 <script language="javascript">
 jQuery(document).ready(function()
 {
 	<?php // post and check if gravatar exists or not from ajax ?>
-	var emailValue = jQuery("<?php echo apply_filters('gse_get_email_value_com_unreg', '#email'); ?>").val();
+	var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val();
 	jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:emailValue } ,function(data)
 	{
 	  if(data) <?php // if gravatar doesn't exist ?>
 	  {
-		var emailValue = jQuery("<?php echo apply_filters('gse_get_email_value_com_unreg', '#email'); ?>").val(); <?php // pick up e-mail address from field ?>
-		
+		var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val(); <?php // pick up e-mail address from field ?>
+
 		jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
-		jQuery("<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters('gse_message_com_unreg', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+		jQuery("<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters( 'gse_message_com_unreg', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
 	  }  	
 	  else
 	  {
@@ -919,23 +953,24 @@ jQuery(document).ready(function()
 </script>
 	<?php
 	}
+
+	/* Show message when user leaves email address field */
 	?>
-	
 <script language="javascript">
 jQuery(document).ready(function()
 {
-	jQuery("<?php echo apply_filters('gse_get_email_value_com_unreg', '#email'); ?>").blur(function() <?php // when user leave #email field ?>
+	jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").blur(function() <?php // when user leave #email field ?>
 	{		
 		<?php // post and check if gravatar exists or not from ajax ?>
 		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:jQuery(this).val() } ,function(data)
         {
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
-			var emailValue = jQuery("<?php echo apply_filters('gse_get_email_value_com_unreg', '#email'); ?>").val(); <?php // pick up e-mail address from field ?>
-			
+			var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val(); <?php // pick up e-mail address from field ?>
+
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters('gse_message_com_unreg', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters( 'gse_message_com_unreg', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
           }  	
 		  else
 		  {
@@ -949,15 +984,18 @@ jQuery(document).ready(function()
 	<?php
 }
 
-/*
-* Add encouragement on comment form for registered users
-*/
-		
+/**
+ * Show encouragement on comment form for registered users
+ *
+ * @since 1.0
+ */
 function show_gravatar_signup_encouragement_com_reg() {
+	/* Get user's email address */
 	global $user_email;
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
+
 	?>
-	
 <script language="javascript">
 jQuery(document).ready(function()
 {		
@@ -967,10 +1005,10 @@ jQuery(document).ready(function()
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
 			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
-			
+
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_comments_reg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters('gse_message_com_reg', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_comments_reg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters( 'gse_message_com_reg', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -991,12 +1029,18 @@ function gravatar_signup_encouragement_comment_form() {
 	return gravatar_signup_encouragement_template_redirect();
 }
 
-/*
-* Add encouragement modal after comment posting
-*/
+/**
+ * Show encouragement modal after comment is posted
+ *
+ * @since 2.0
+ */
 function show_gravatar_signup_encouragement_after_commenting_modal() {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	if ( ( !is_user_logged_in() && $gse_options['show_after_commenting_modal_unreg'] ) || ( is_user_logged_in() && $gse_options['show_after_commenting_modal_reg'] ) ) {
+
+	/* Check to see if we need to show modal */
+	if ( ( ! is_user_logged_in() && $gse_options['show_after_commenting_modal_unreg'] ) || ( is_user_logged_in() && $gse_options['show_after_commenting_modal_reg'] ) ) {
+		/* Load Thickbox files */
 		function gravatar_signup_encouragement_load_thickbox() {
 			add_thickbox();
 			?>
@@ -1009,47 +1053,66 @@ function show_gravatar_signup_encouragement_after_commenting_modal() {
 			<?php
 		}
 		add_action( 'wp_head', 'gravatar_signup_encouragement_load_thickbox', 0 );
-		
+
+		/* Load inline Thickbox code */
 		function gravatar_signup_encouragement_inline_thickbox() {
+			/* Get user's email address */
 			global $user_email;
-			
 			if ( is_user_logged_in() ) {
 				$commenter_email = $user_email;
 			} else {
 				$commenter = wp_get_current_commenter();
 				$commenter_email = $commenter['comment_author_email'];
 			}
-			
-			/* http://www.rahulsingla.com/blog/2010/02/thickbox-show-on-page-load
-				http://hobione.wordpress.com/2007/12/28/jquery-thickbox/ via http://www.webmasterworld.com/javascript/3843343.htm */
+
+			/* 
+			 * Show modal when page is loaded
+			 * Thank to these tutorials:
+			 * http://www.rahulsingla.com/blog/2010/02/thickbox-show-on-page-load
+			 * http://hobione.wordpress.com/2007/12/28/jquery-thickbox/ via http://www.webmasterworld.com/javascript/3843343.htm
+			 */
 			?>
 			<script type="text/javascript">
 				jQuery(document).ready(function(){   
-					tb_show('<?php _e( 'Signup to Gravatar', 'gse_textdomain' ); ?>', '#TB_inline?width=<?php echo apply_filters('gse_after_commenting_modal_width', '450'); ?>&height=<?php echo apply_filters('gse_after_commenting_modal_height', '435'); ?>&inlineId=gseaftercommenting&modal=true', false);
+					tb_show('<?php _e( 'Signup to Gravatar', 'gse_textdomain' ); ?>', '#TB_inline?width=<?php echo apply_filters( 'gse_after_commenting_modal_width', '450' ); ?>&height=<?php echo apply_filters( 'gse_after_commenting_modal_height', '435' ); ?>&inlineId=gseaftercommenting&modal=true', false);
 				});
 			</script>
-			
-			<?php /* http://jquery.com/demo/thickbox/ */ ?>
+
+			<?php
+			/* Modal's content
+			 * via http://jquery.com/demo/thickbox/
+			 */
+			 ?>
 			<div id="gseaftercommenting" style="display:none">
-				<div style="text-align: center;" id="gse_after_commenting_modal_avatar"><?php echo get_avatar($commenter_email); ?></div>
-				<p id="gse_after_commenting_modal_text"><?php echo apply_filters('gse_message_after_commenting_modal', gravatar_signup_encouragement_message($commenter_email, 'tb_remove()'), $commenter_email); ?></p>
+				<div style="text-align: center;" id="gse_after_commenting_modal_avatar"><?php echo get_avatar( $commenter_email ); ?></div>
+				<p id="gse_after_commenting_modal_text"><?php echo apply_filters( 'gse_message_after_commenting_modal', gravatar_signup_encouragement_message( $commenter_email, 'tb_remove()' ), $commenter_email ); ?></p>
 				<p style="text-align:center" id="gse_after_commenting_modal_buttons">
-					<input type="submit" id="gse_after_commenting_modal_signup_button" value="<?php _e( 'Get a new avatar', 'gse_textdomain' ); ?>" onclick="window.open('<?php echo gravatar_signup_encouragement_locale_signup_url($commenter_email); ?>'); tb_remove()" />
+					<input type="submit" id="gse_after_commenting_modal_signup_button" value="<?php _e( 'Get a new avatar', 'gse_textdomain' ); ?>" onclick="window.open('<?php echo gravatar_signup_encouragement_locale_signup_url( $commenter_email ); ?>'); tb_remove()" />
 					<input type="submit" id="gse_after_commenting_modal_close_button" value="<?php _e( 'Close this message', 'gse_textdomain' ); ?>" onclick="tb_remove()" />
 				</p> 
 			</div>
-		<?php }
+			<?php
+		}
 		add_action( 'wp_footer', 'gravatar_signup_encouragement_inline_thickbox', 20 );
 	}
 }
 
-/*
-* Add variable in comment redirect URL
+/**
+ * Add query argument to URL in comment redirect
+ *
+ * @since 2.0
+ * @param string $url Original URL where to redirect
+ * @param object $comment Comment that is posted
+ * @return string $url New URL with query argument
 */
-function gravatar_signup_encouragement_after_commenting_redirect($url, $comment) {
+function gravatar_signup_encouragement_after_commenting_redirect( $url, $comment ) {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	if ( ( $gse_options['show_after_commenting_modal_unreg'] && !is_user_logged_in() ) || ( $gse_options['show_after_commenting_modal_reg'] && is_user_logged_in() ) ) {
-		if (!gravatar_signup_encouragement_check_gravatar_existence($comment->comment_author_email)) {
+
+	/* Check to see if we need to add query argument */
+	if ( ( $gse_options['show_after_commenting_modal_unreg'] && !i s_user_logged_in() ) || ( $gse_options['show_after_commenting_modal_reg'] && is_user_logged_in() ) ) {
+		/* Check to see if commenter has gravatar */
+		if ( ! gravatar_signup_encouragement_check_gravatar_existence( $comment->comment_author_email ) ) {
 			$new_url = add_query_arg( 'gseaftercommentingmodal', '', $url );
 			return $new_url;
 		} else {
@@ -1059,35 +1122,34 @@ function gravatar_signup_encouragement_after_commenting_redirect($url, $comment)
 		return $url;
 	}
 }
-
-/*
-* Actions to use modal after comment posting
-*/
 add_filter( 'comment_post_redirect', 'gravatar_signup_encouragement_after_commenting_redirect', 10, 2 );
 
-
-
-/*
-* Add encouragement in admin notices
-*/
-
+/**
+ * Show encouragement in admin notices
+ *
+ * @since 2.0
+ */
 function show_gravatar_signup_encouragement_admin_notice() {
+	/* Get user's email address */
 	global $user_email;
 	
-	if (!gravatar_signup_encouragement_check_gravatar_existence($user_email)) {
-		echo '<div class="update-nag" id="gse_admin_notice">' . gravatar_signup_encouragement_message($user_email) . '</div>';
+	/* Check to see if user has gravatar */
+	if ( ! gravatar_signup_encouragement_check_gravatar_existence( $user_email ) ) {
+		echo '<div class="update-nag" id="gse_admin_notice">' . gravatar_signup_encouragement_message( $user_email ) . '</div>';
 	}
 }
 
-/*
-* Add encouragement on profile page
-*/
-
+/**
+ * Show encouragement on profile page
+ *
+ * @since 1.0
+ */
 function show_gravatar_signup_encouragement_profile() {
+	/* Get user's email address */
 	global $user_email;
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-      
-	//echo '<div id="gravatar_on_profile"></div>';
+
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
@@ -1098,10 +1160,10 @@ jQuery(document).ready(function()
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
 			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
-			
+
 			jQuery('#gse_profile_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_profile']; ?>").after("<br /><div id='gse_profile_message'><?php echo apply_filters('gse_message_profile', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_profile']; ?>").after("<br /><div id='gse_profile_message'><?php echo apply_filters( 'gse_message_profile', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -1109,21 +1171,27 @@ jQuery(document).ready(function()
 	<?php
 }
 
-/*
-* Add encouragement on registration page
-* Actions based on plugin Gravajax Registration ( http://www.epicalex.com/gravajax-registration/ ) by Alex Cragg
-*/
+/**
+ * Show encouragement on registration page
+ *
+ * Actions based on plugin Gravajax Registration by Alex Cragg
+ * @link http://www.epicalex.com/gravajax-registration/
+ *
+ * @since 1.0
+ */
 function show_gravatar_signup_encouragement_registration() {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
+
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
 {
 	<?php
 	/*
-	* Hack for delaying keyup event
-	* Based on script from jQuery's mailing list by Klaus Hartl (  http://www.nabble.com/how-to-delay-a-event--td12288007s27240.html#a12291809 )
-	*/
+	 * Hack for delaying keyup event
+	 * Based on script from jQuery's mailing list by Klaus Hartl (  http://www.nabble.com/how-to-delay-a-event--td12288007s27240.html#a12291809 )
+	 */
 	?>
 	var delayed; 
 	jQuery("#user_email").keyup(function() <?php // when user leave #user_email field ?>
@@ -1136,22 +1204,22 @@ jQuery(document).ready(function()
 			  if(data) <?php // if gravatar doesn't exist ?>
 			  {
 				var emailValue = jQuery("#user_email").val(); <?php // pick up e-mail address from field ?>
-				
+
 				jQuery('#gse_registration_message').hide(); <?php // hide tip if allready shown ?>
 
-				jQuery("<?php echo $gse_options['below_registration']; ?>").after("<div id='gse_registration_message'><?php echo apply_filters('gse_message_after_commenting_modal', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+				jQuery("<?php echo $gse_options['below_registration']; ?>").after("<div id='gse_registration_message'><?php echo apply_filters( 'gse_message_after_commenting_modal', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
 			  }
 			  else
 			  {
 				jQuery('#gse_registration_message').hide(); <?php // hide tip if allready shown ?>
 			  }
 			});
-		}, <?php echo apply_filters('gse_timeout_registration', '1000'); ?>); 
+		}, <?php echo apply_filters( 'gse_timeout_registration', '1000' ); ?>); 
  
 	});
 });
 </script>
-<?php	
+	<?php	
 }
 
 /**
@@ -1169,8 +1237,9 @@ function gravatar_signup_encouragement_enqueing_registration() {
  * @since 3.0
  */
 function gravatar_signup_encouragement_admin_bar() {
+	/* Get user's email address & admin bar object */
 	global $wp_admin_bar, $user_email;
-	
+
 	/* If user has an gravatar, return empty */
 	if ( gravatar_signup_encouragement_check_gravatar_existence( $user_email ) )
 		return;
@@ -1190,10 +1259,12 @@ function gravatar_signup_encouragement_admin_bar() {
  * @since 3.0
  */
 function gravatar_signup_encouragement_bbpress() {
+	/* Get user's email address */
 	global $user_email;
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
+
 	?>
-	
 <script language="javascript">
 jQuery(document).ready(function()
 {		
@@ -1203,10 +1274,10 @@ jQuery(document).ready(function()
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
 			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
-			
+
 			jQuery('#gse_bbpress_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_bbpress']; ?>").after("<br /><div id='gse_bbpress_message'><?php echo apply_filters('gse_message_bbpress', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_bbpress']; ?>").after("<br /><div id='gse_bbpress_message'><?php echo apply_filters( 'gse_message_bbpress', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -1214,20 +1285,24 @@ jQuery(document).ready(function()
 	<?php
 }
 
-/*
-* Add encouragement on signup page (multisite)
+/**
+ * Show encouragement on signup page (multisite)
+ *
+ * @since 2.0
 */
 function show_gravatar_signup_encouragement_ms_signup() {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
+
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
 {
 	<?php
 	/*
-	* Hack for delaying keyup event
-	* Based on script from jQuery's mailing list by Klaus Hartl (  http://www.nabble.com/how-to-delay-a-event--td12288007s27240.html#a12291809 )
-	*/
+	 * Hack for delaying keyup event
+	 * Based on script from jQuery's mailing list by Klaus Hartl (  http://www.nabble.com/how-to-delay-a-event--td12288007s27240.html#a12291809 )
+	 */
 	?>
 	var delayed; 
 	jQuery("#user_email").keyup(function() <?php // when user leave #user_email field ?>
@@ -1240,22 +1315,22 @@ jQuery(document).ready(function()
 			  if(data) <?php // if gravatar doesn't exist ?>
 			  {
 				var emailValue = jQuery("#user_email").val(); <?php // pick up e-mail address from field ?>
-				
+
 				jQuery('#gse_ms_signup_message').hide(); <?php // hide tip if allready shown ?>
 
-				jQuery("<?php echo $gse_options['below_ms_signup']; ?>").after("<div id='gse_ms_signup_message'><?php echo apply_filters('gse_message_after_commenting_modal', gravatar_signup_encouragement_message()); ?></div>"); <?php // show tip ?>
+				jQuery("<?php echo $gse_options['below_ms_signup']; ?>").after("<div id='gse_ms_signup_message'><?php echo apply_filters( 'gse_message_after_commenting_modal', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
 			  }
 			  else
 			  {
 				jQuery('#gse_ms_signup_message').hide(); <?php // hide tip if allready shown ?>
 			  }
 			});
-		}, <?php echo apply_filters('gse_timeout_ms_signup', '1000'); ?>); 
+		}, <?php echo apply_filters( 'gse_timeout_ms_signup', '1000' ); ?>); 
  
 	});
 });
 </script>
-<?php	
+	<?php	
 }
 
 /**
@@ -1267,60 +1342,78 @@ function gravatar_signup_encouragement_enqueing_ms_signup() {
 	wp_enqueue_script( 'jquery' );
 }
 
-
-/*
-* Show notice after upgrade to version 2.0
-*/
+/**
+ * Show notice after upgrade to version 2.0
+ *
+ * @since 2.0
+ */
 function gravatar_signup_encouragement_notice_upgrade_1_to_2() {
-	if ( !current_user_can( 'manage_options' ) ) //Short circuit it.
+	/* Check if current user can actually manage options */
+	if ( ! current_user_can( 'manage_options' ) )
 		return;
 
 	echo '<div class="error default-password-nag">';
-	echo '<p>';
-	echo '<strong>' . __('Notice:', 'gse_textdomain') . '</strong> ';
-	_e('The latest version of the Gravatar Signup Encouragement plugin has new options. Default settings have been configured for these options. Would you like to review and update these new options?', 'gse_textdomain');
-	echo '</p><p>';
-	printf( '<a href="%s">' . __('Yes (edit Gravatar Signup Encouragement settings)', 'gse_textdomain') . '</a> | ', admin_url('options-discussion.php') . '#gravatar_signup_encouragement_form' );
-	printf( '<a href="%s" id="gse-notice-1-to-2-no">' . __('No (use pre-configured default settings)', 'gse_textdomain') . '</a>', '?gse_notice_1_to_2=0' );
-	echo '</p></div>';
+		echo '<p>';
+			echo '<strong>' . __( 'Notice:', 'gse_textdomain' ) . '</strong> ';
+			_e( 'The latest version of the Gravatar Signup Encouragement plugin has new options. Default settings have been configured for these options. Would you like to review and update these new options?', 'gse_textdomain' );
+		echo '</p>';
+		echo '<p>';
+			printf( '<a href="%s">' . __( 'Yes (edit Gravatar Signup Encouragement settings)', 'gse_textdomain' ) . '</a> | ', admin_url( 'options-discussion.php' ) . '#gravatar_signup_encouragement_form' );
+		printf( '<a href="%s" id="gse-notice-1-to-2-no">' . __( 'No (use pre-configured default settings)', 'gse_textdomain' ) . '</a>', '?gse_notice_1_to_2=0' );
+		echo '</p>';
+	echo '</div>';
 }
 
-/*
-* Remove notice after upgrade to version 2.0
-*/
-function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler($errors = false) {
+/**
+ * Remove notice after upgrade to version 2.0
+ *
+ * @since 2.0
+ */
+function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler( $errors = false ) {
+	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-	
-	if ( isset($_GET['gse_notice_1_to_2']) && '0' == $_GET['gse_notice_1_to_2'] ) {
-		unset ($gse_options['notice_upgrade_1_to_2']);
-		update_option('gravatar_signup_encouragement_settings', $gse_options);
+
+	/* Check if user clicked on notice removal */
+	if ( isset( $_GET['gse_notice_1_to_2'] ) && '0' == $_GET['gse_notice_1_to_2'] ) {
+		unset( $gse_options['notice_upgrade_1_to_2'] );
+		update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 	}
 }
 
-
-
-/*
-* Load Thickbox on options page
-*/
+/**
+ * Load Thickbox files on Discussion options page
+ *
+ * @since 2.0
+ */
 function gravatar_signup_encouragement_load_thickbox_admin() {
 	add_thickbox();
 }
 add_action( 'admin_print_styles-options-discussion.php', 'gravatar_signup_encouragement_load_thickbox_admin' );
 
-/*
-* Filter email text field for bad themes
-*/
-function gravatar_signup_encouragement_filter_email_source($element) {
+/**
+ * Filter email text field element for bad themes
+ *
+ * @since 2.0
+ * @param string $element Original element
+ * @return string $element New element
+ */
+function gravatar_signup_encouragement_filter_email_source( $element ) {
+	/* Check if current theme is bad */
 	if ( gravatar_signup_encouragement_is_theme_in_list() ) {
 		return "input[name='email']";
 	} else {
 		return $element;
 	}
 }
+add_filter( "gse_get_email_value_com_unreg", "gravatar_signup_encouragement_filter_email_source" );
 
-/*
-* Check if theme doesn't follow standards
-* Themes are: Carrington Blog and Mystique
+/**
+ * Check if current theme doesn't follow standards
+ *
+ * Themes are: Carrington Blog and Mystique
+ *
+ * @since 2.0
+ * @return bool
 */
 function gravatar_signup_encouragement_is_theme_in_list() {
 	if ( in_array( get_stylesheet(), array( 'carrington-blog', 'mystique' ) ) ) {
@@ -1329,9 +1422,5 @@ function gravatar_signup_encouragement_is_theme_in_list() {
 		return false;
 	}
 }
-/*
-* Add filter for bad themes
-*/
-add_filter("gse_get_email_value_com_unreg", "gravatar_signup_encouragement_filter_email_source");
 
 ?>
