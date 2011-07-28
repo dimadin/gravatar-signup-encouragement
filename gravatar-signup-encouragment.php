@@ -36,7 +36,6 @@ function gravatar_signup_encouragement_check_url() {
 function gravatar_signup_encouragement_textdomain() {
 	load_plugin_textdomain( 'gse_textdomain', false, dirname( plugin_basename( __FILE__ ) ) . '/translations' );
 }
-add_action('init', 'gravatar_signup_encouragement_textdomain');
 
 /**
  * Load options from database
@@ -54,16 +53,12 @@ function gravatar_signup_encouragement_get_option() {
 * Return default message
 */
 function gravatar_signup_encouragement_default_message() {
-	/*
-	* Load l10n functions on activation
-	*/
-	if(!function_exists('__')) {
-		gravatar_signup_encouragement_textdomain();
-	}
+	/* Load plugin textdomain since maybe it's not loaded already */
+	gravatar_signup_encouragement_textdomain();
 	
 	$message = sprintf(__("You do not appear to have a registered Gravatar. Therefore, the default avatar will be shown with your comments on this site.
 
-If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a> to create one (link opens in new tab/window).", "gse_textdomain"), 'URL');
+If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a> to create one (link opens in new tab/window).", "gse_textdomain"), "URL");
 
 	return $message;	
 }
@@ -76,6 +71,9 @@ If you would like your own Gravatar, click <a href='%s' target='_blank'>here</a>
 function gravatar_signup_encouragement_init() {
 	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
+	
+	/* Load plugin textdomain */
+	gravatar_signup_encouragement_textdomain();
 	
 	/* 
 	 * Load modal if needed
@@ -163,10 +161,7 @@ function gravatar_signup_encouragement_add_default_options() {
 	/* Add version number */
 	$gse_options['version'] = '2.0';
 	
-	/*
-	 * Load plugin textdomain only for activation hook
-	 * so that default message could be saved in database localized
-	 */
+	/* Load plugin textdomain since maybe it's not loaded already */
 	gravatar_signup_encouragement_textdomain();
 	
 	/* Add default message */
