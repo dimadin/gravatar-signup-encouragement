@@ -141,7 +141,7 @@ function gravatar_signup_encouragement_action_admin_init() {
 	$gse_options = gravatar_signup_encouragement_get_option();
 
 	/* If no options, or version <2.0, upgrade */
-	if ( ! $gse_options || ! $gse_options['version'] ) {
+	if ( ! $gse_options || ! $gse_options['version'] || $gse_options['version'] == '2.0' ) {
 		gravatar_signup_encouragement_upgrade();
 	}
 
@@ -265,7 +265,7 @@ function gravatar_signup_encouragement_upgrade() {
 			$gse_options['notice_upgrade_1_to_3'] = true;
 			update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 		/* Update from 2.0+ */
-		} elseif ( version_compare( $gse_options['version'], '3.0', '<' ) ) {
+		} elseif ( $gse_options['version'] == '2.0' ) {
 			/* Add new version and notice about upgrade	*/
 			$gse_options['version'] = '3.0';
 			$gse_options['notice_upgrade_2_to_3'] = true;
