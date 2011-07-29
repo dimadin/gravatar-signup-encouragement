@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 3.0-alpha-1
+Version: 3.0-alpha-2
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -124,8 +124,8 @@ function gravatar_signup_encouragement_init() {
 		add_action( 'wp_footer', 'gravatar_signup_encouragement_bbpress' );
 	}
 
-	/* Add action for handler of remover of notice after upgrade to version 2.0 */
-	if ( $gse_options['notice_upgrade_1_to_2'] ) {
+	/* Add action for handler of remover of notice after upgrade to version 2.0+ */
+	if ( isset( $_GET['gse_notice_1_to_2'] ) ) {
 		add_action( 'admin_init', 'gravatar_signup_encouragement_notice_upgrade_1_to_2_handler' );
 	}
 }
@@ -625,7 +625,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<br /><br />
 	<?php
 	/* Show notice about upgrade from <2.0 */
-	if ( $gse_options['notice_upgrade_1_to_2'] ) {
+	if ( $gse_options['notice_upgrade_1_to_3'] ) {
 		?>
 		<div class="dashboard-widget-notice">
 		<?php _e( "There are new options for Gravatar Signup Encouragement.", "gse_textdomain" ); ?><br />
@@ -1406,7 +1406,7 @@ function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler( $errors = 
 
 	/* Check if user clicked on notice removal */
 	if ( isset( $_GET['gse_notice_1_to_2'] ) && '0' == $_GET['gse_notice_1_to_2'] ) {
-		unset( $gse_options['notice_upgrade_1_to_2'] );
+		unset( $gse_options['notice_upgrade_1_to_3'] );
 		unset( $gse_options['notice_upgrade_2_to_3'] );
 		update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 	}
