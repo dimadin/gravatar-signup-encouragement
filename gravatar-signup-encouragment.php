@@ -195,7 +195,7 @@ function gravatar_signup_encouragement_add_default_options() {
 	}
 
 	/* Add version number */
-	$gse_options['version'] = '2.0';
+	$gse_options['version'] = '3.0';
 
 	/* Load plugin textdomain since maybe it's not loaded already */
 	gravatar_signup_encouragement_textdomain();
@@ -237,8 +237,9 @@ function gravatar_signup_encouragement_upgrade() {
 	/* If no options, add default */
 	if ( ! $gse_options ) {
 		gravatar_signup_encouragement_add_default_options();
-	/* Else update to version 2.0 */
+	/* Else update to version 3.0 */
 	} else {
+		/* Update from 1.0 */
 		if ( ! $gse_options['version'] ) {
 			/* Make array with names of options */
 			$elements = array( 'below_comments_unreg', 'below_comments_unreg_custom', 'below_comments_reg', 'below_comments_reg_custom', 'below_profile', 'below_profile_custom', 'below_registration', 'below_registration_custom' );
@@ -260,8 +261,15 @@ function gravatar_signup_encouragement_upgrade() {
 			endforeach;
 
 			/* Add new version and notice about upgrade	*/
-			$gse_options['version'] = '2.0';
-			$gse_options['notice_upgrade_1_to_2'] = true;
+			$gse_options['version'] = '3.0';
+			$gse_options['notice_upgrade_1_to_3'] = true;
+			update_option( 'gravatar_signup_encouragement_settings', $gse_options );
+		/* Update from 2.0+ */
+		} elseif ( version_compare( $gse_options['version'], '3.0', '<' ) ) {
+			/* Add new version and notice about upgrade	*/
+			$gse_options['version'] = '3.0';
+			$gse_options['notice_upgrade_2_to_3'] = true;
+			unset( $gse_options['notice_upgrade_1_to_2'] );
 			update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 		}
 	}
@@ -616,19 +624,30 @@ function gravatar_signup_encouragement_field_settings_form() {
 
 	<br /><br />
 	<?php
-	/* Show notice about upgrade to 2.0	*/
+	/* Show notice about upgrade from <2.0 */
 	if ( $gse_options['notice_upgrade_1_to_2'] ) {
 		?>
 		<div class="dashboard-widget-notice">
 		<?php _e( "There are new options for Gravatar Signup Encouragement.", "gse_textdomain" ); ?><br />
 		<ol>
-			<li><?php _e( "Now you can show message in dialog after comment is posted, as an administration notice, and on a signup page for multisite installation.", "gse_textdomain" ); ?></li>
+			<li><?php _e( "Now you can show message in dialog after comment is posted, as an administration notice, in admin bar, on a signup page for multisite installation and in a bbPress reply form if bbPress plugin is installed.", "gse_textdomain" ); ?></li>
 			<li><?php _e( "Now you can add message after any element on a page more easily then before.", "gse_textdomain" ); ?></li>
 			<li><?php _e( "There are new predefined elements for profile page.", "gse_textdomain" ); ?></li>
 			<li><?php _e( "Finally, there is a new, longer, and more descriptive default message. You can use the new default message, your existing message, or update your existing message.", "gse_textdomain" ); ?></li>
 		</ol>
 		<?php _e( "New default message:", "gse_textdomain" ); ?><br />
 		<textarea  readonly="true" rows="5" cols="50" class="large-text code"><?php echo gravatar_signup_encouragement_default_message(); ?></textarea><br />
+		<?php printf( '<a href="%s" id="gse-notice-1-to-2-no">' . __( 'Do not show this notice again', 'gse_textdomain' ) . '</a>', '?gse_notice_1_to_2=0' ); ?>
+		</div><br />
+		<?php
+	/* Show notice about upgrade from 2.0+ */
+	} elseif ( $gse_options['notice_upgrade_2_to_3'] ) {
+		?>
+		<div class="dashboard-widget-notice">
+		<?php _e( "There are new options for Gravatar Signup Encouragement.", "gse_textdomain" ); ?><br />
+		<ol>
+			<li><?php _e( "Now you can show message in admin bar, and in a bbPress reply form if bbPress plugin is installed.", "gse_textdomain" ); ?></li>
+		</ol>
 		<?php printf( '<a href="%s" id="gse-notice-1-to-2-no">' . __( 'Do not show this notice again', 'gse_textdomain' ) . '</a>', '?gse_notice_1_to_2=0' ); ?>
 		</div><br />
 		<?php
@@ -1388,6 +1407,7 @@ function gravatar_signup_encouragement_notice_upgrade_1_to_2_handler( $errors = 
 	/* Check if user clicked on notice removal */
 	if ( isset( $_GET['gse_notice_1_to_2'] ) && '0' == $_GET['gse_notice_1_to_2'] ) {
 		unset( $gse_options['notice_upgrade_1_to_2'] );
+		unset( $gse_options['notice_upgrade_2_to_3'] );
 		update_option( 'gravatar_signup_encouragement_settings', $gse_options );
 	}
 }
