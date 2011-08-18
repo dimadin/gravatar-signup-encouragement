@@ -120,8 +120,8 @@ function gravatar_signup_encouragement_init() {
 
 	/* Show encouragement in bbPress reply form if needed */
 	if ( $gse_options['show_bbpress'] ) {
-		wp_enqueue_script( 'jquery' );
-		add_action( 'wp_footer', 'gravatar_signup_encouragement_bbpress' );
+		add_action( 'bbp_theme_after_reply_form', 'gravatar_signup_encouragement_bbpress' );
+		add_action( 'bbp_theme_after_topic_form', 'gravatar_signup_encouragement_bbpress' );
 	}
 
 	/* Add action for handler of remover of notice after upgrade to version 2.0+ */
@@ -603,11 +603,11 @@ function gravatar_signup_encouragement_field_settings_form() {
 		<div id="gse_below_bbpress" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the bbPress reply form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
-			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#bbp_topic_tags" 
-			<?php checked( '#bbp_topic_tags', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Topic tags', 'gse_textdomain' ); ?> </label>
-			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post div.avatar" 
 			<?php checked( '#new-post div.avatar', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Avatar', 'gse_textdomain' ); ?> </label>
+			<br />
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#bbp_topic_tags" 
+			<?php checked( '#bbp_topic_tags', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Topic tags', 'gse_textdomain' ); ?> </label>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post .bbp-form p:last" 
 			<?php checked( '#new-post .bbp-form p:last', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Last input field', 'gse_textdomain' ); ?> </label>
@@ -1294,7 +1294,8 @@ function gravatar_signup_encouragement_bbpress() {
 	global $user_email;
 	/* Load options */
 	$gse_options = gravatar_signup_encouragement_get_option();
-
+	/* Load jQuery */
+	wp_print_scripts( 'jquery' );
 	?>
 <script language="javascript">
 jQuery(document).ready(function()
