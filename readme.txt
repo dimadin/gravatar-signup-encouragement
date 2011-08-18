@@ -80,10 +80,12 @@ No, this plugin will never add that feature since author of this plugin is again
 3. Message shown to registered commenter on default theme with default settings
 4. Message shown in a dialog to unregistered commenter on default theme with default settings after posted comment
 5. Message shown in a dialog to registered commenter on default theme with default settings after posted comment
-5. Message shown in administration notices
-7. Message shown on a profile page with option to show below “Profile” header
-8. Message shown on a registration page with default settings
-9. Message shown on a registration page (multisite) with default theme and default settings
+6. Message shown in admin bar
+7. Message shown in administration notices
+8. Message shown on a profile page with option to show below “Profile” header
+9. Message shown on a registration page with default settings
+10. Message shown on a registration page (multisite) with default theme and default settings
+11. Message shown in a bbPress reply form of a Twenty Eleven theme in line with avatar
 
 == Changelog ==
 
@@ -101,6 +103,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Replaced several load_plugin_textdomain() calls with own function gravatar_signup_encouragement_textdomain() that already calls load_plugin_textdomain()
 * Complete code beautification
 * Added basic documentation to all functions
+* Updated screenshots with one from Twenty Eleven theme
 
 = 2.0.1 =
 * Released on 22nd October 2010

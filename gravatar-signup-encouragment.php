@@ -427,7 +427,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 
 	<?php // Comments for unregistered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_comments_unreg]" class="gse_show_comments_unreg" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_comments_unreg'] ); ?> /> <?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-2.jpg' ); ?>" title="<?php _e( 'Message shown below comment text field on a Twenty Ten theme', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_comments_unreg'] ); ?> /> <?php _e( 'Comment form (unregistered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-2.png' ); ?>" title="<?php _e( 'Message shown below comment text field on a Twenty Eleven theme', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Elements ?>
 		<div id="gse_below_comments_unreg" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
@@ -461,7 +461,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 
 	<?php // Comments for registered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_comments_reg]" class="gse_show_comments_reg" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_comments_reg'] ); ?> /> <?php _e( 'Comment form (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-3.jpg' ); ?>" title="<?php _e( 'Message shown below comment text field on a Twenty Ten theme', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_comments_reg'] ); ?> /> <?php _e( 'Comment form (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-3.png' ); ?>" title="<?php _e( 'Message shown below comment text field on a Twenty Eleven theme', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Elements ?>
 		<div id="gse_below_comments_reg" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the comment form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
@@ -493,30 +493,30 @@ function gravatar_signup_encouragement_field_settings_form() {
 
 	<?php // Modal for unregistered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_after_commenting_modal_unreg]" class="gse_show_after_commenting_modal_unreg" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_after_commenting_modal_unreg'] ); ?> /> <?php _e( 'Dialog after comment posting (unregistered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-4.jpg' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Ten theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_after_commenting_modal_unreg'] ); ?> /> <?php _e( 'Dialog after comment posting (unregistered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-4.png' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Eleven theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 
 	<?php // Modal for registered ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_after_commenting_modal_reg]" class="gse_show_after_commenting_modal_reg" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_after_commenting_modal_reg'] ); ?> /> <?php _e( 'Dialog after comment posting (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-5.jpg' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Ten theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_after_commenting_modal_reg'] ); ?> /> <?php _e( 'Dialog after comment posting (registered users)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-5.png' ); ?>" title="<?php _e( 'Message shown in a dialog over a Twenty Eleven theme after comment is posted', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 
 	<?php // Admin bar ?>
 	<?php // Show only if WP 3.1 or newer ?>
 	<?php if ( version_compare( $wp_version, '3.1', '>=' ) ) { ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_in_admin_bar]" class="gse_show_in_admin_bar" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_in_admin_bar'] ); ?> /> <?php _e( 'Admin bar', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-6.jpg' ); ?>" title="<?php _e( 'Message shown in admin bar', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_in_admin_bar'] ); ?> /> <?php _e( 'Admin bar', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-6.png' ); ?>" title="<?php _e( 'Message shown in admin bar', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 	<?php } ?>
 
 	<?php // Admin notice ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_in_admin_notices]" class="gse_show_in_admin_notices" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_in_admin_notices'] ); ?> /> <?php _e( 'Administration notice', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-6.jpg' ); ?>" title="<?php _e( 'Message shown in administration notices', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_in_admin_notices'] ); ?> /> <?php _e( 'Administration notice', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-7.png' ); ?>" title="<?php _e( 'Message shown in administration notices', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 	<br />
 
 	<?php // Profile ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_profile]" class="gse_show_profile" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_profile'] ); ?> /> <?php _e( 'Profile page', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-7.jpg' ); ?>" title="<?php _e( 'Message shown on a profile page below “Profile” header', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_profile'] ); ?> /> <?php _e( 'Profile page', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-8.png' ); ?>" title="<?php _e( 'Message shown on a profile page below “Profile” header', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Elements ?>
 		<div id="gse_below_profile" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the profile page form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
@@ -551,7 +551,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 
 	<?php // Registration ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_registration]" class="gse_show_registration" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_registration'] ); ?> /> <?php _e( 'Registration page', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-8.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_registration'] ); ?> /> <?php _e( 'Registration page', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-9.png' ); ?>" title="<?php _e( 'Message shown on a registration page below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Then we print selection of cases where on page to show tip ?>
 		<div id="gse_below_registration" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the registration page form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
@@ -574,7 +574,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php // Show only if super admin is at main site of multisite ?>
 	<?php if ( function_exists( 'is_multisite' ) && is_multisite() && is_main_site() && is_super_admin() ) { ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_ms_signup]" class="gse_show_ms_signup" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_ms_signup'] ); ?> /> <?php _e( 'Signup page (multisite)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-9.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page (multisite) on a Twenty Ten theme below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_ms_signup'] ); ?> /> <?php _e( 'Signup page (multisite)', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-10.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page (multisite) on a Twenty Ten theme below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Elements ?>
 		<div id="gse_below_ms_signup" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the (multisite) registration page form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
@@ -598,7 +598,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php // Show only if bbPress plugin is activated ?>
 	<?php if ( class_exists( 'bbPress' ) ) { ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_bbpress]" class="gse_show_bbpress" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_bbpress'] ); ?> /> <?php _e( 'bbPress reply form', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-9.jpg' ); ?>" title="<?php _e( 'Message shown on a registration page (multisite) on a Twenty Ten theme below e-mail address text field', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_bbpress'] ); ?> /> <?php _e( 'bbPress reply form', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-11.png' ); ?>" title="<?php _e( 'Message shown in a bbPress reply form of a Twenty Eleven theme in line with avatar', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Elements ?>
 		<div id="gse_below_bbpress" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the bbPress reply form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
