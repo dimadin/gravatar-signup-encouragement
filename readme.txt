@@ -3,7 +3,7 @@ Contributors: dimadin
 Donate link: http://blog.milandinic.com/donate/
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
 Requires at least: 2.8
-Tested up to: 3.0.1
+Tested up to: 3.2.1
 Stable tag: 2.0.1
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
@@ -104,6 +104,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Complete code beautification
 * Added basic documentation to all functions
 * Updated screenshots with one from Twenty Eleven theme
+* Added urlencoding of email addresses so that “@” is still in address after redirection on gravatar.com
 
 = 2.0.1 =
 * Released on 22nd October 2010

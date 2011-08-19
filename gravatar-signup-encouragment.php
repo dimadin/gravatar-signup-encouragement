@@ -3,7 +3,7 @@
 Plugin Name: Gravatar Signup Encouragement
 Plugin URI: http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/
 Description: Displays message to users without gravatar that they don't have one with link to Gravatar's sign-up page (e-mail included).
-Version: 3.0-alpha-2
+Version: 3.0-beta-1
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
@@ -897,7 +897,8 @@ function gravatar_signup_encouragement_locale_signup_url( $email = '' ) {
 	if ( empty( $email ) ) {
 		$gse_url = "http://" . $gse_locale_url . '/site/signup/';
 	} else {
-		$gse_url = "http://" . $gse_locale_url . '/site/signup/' . $email;
+		$encoded_email = urlencode( $email );
+		$gse_url = "http://" . $gse_locale_url . '/site/signup/' . $encoded_email;
 	}
 
 	return $gse_url;
@@ -971,6 +972,8 @@ jQuery(document).ready(function()
 	  {
 		var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val(); <?php // pick up e-mail address from field ?>
 
+		emailValue = encodeURIComponent(emailValue); <?php // urlencode e-mail address ?>
+
 		jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
 		jQuery("<?php echo $gse_options['below_comments_unreg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters( 'gse_message_com_unreg', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
@@ -998,6 +1001,8 @@ jQuery(document).ready(function()
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
 			var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val(); <?php // pick up e-mail address from field ?>
+
+			emailValue = encodeURIComponent(emailValue); <?php // urlencode e-mail address ?>
 
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
@@ -1035,11 +1040,9 @@ jQuery(document).ready(function()
         {
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
-			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
-
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_comments_reg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters( 'gse_message_com_reg', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_comments_reg']; ?>").after("<br /><div id='gse_comments_message'><?php echo apply_filters( 'gse_message_com_reg', gravatar_signup_encouragement_message( $user_email ) ); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -1190,11 +1193,9 @@ jQuery(document).ready(function()
         {
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
-			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
-
 			jQuery('#gse_profile_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_profile']; ?>").after("<br /><div id='gse_profile_message'><?php echo apply_filters( 'gse_message_profile', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_profile']; ?>").after("<br /><div id='gse_profile_message'><?php echo apply_filters( 'gse_message_profile', gravatar_signup_encouragement_message( $user_email ) ); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -1235,6 +1236,8 @@ jQuery(document).ready(function()
 			  if(data) <?php // if gravatar doesn't exist ?>
 			  {
 				var emailValue = jQuery("#user_email").val(); <?php // pick up e-mail address from field ?>
+
+				emailValue = encodeURIComponent(emailValue); <?php // urlencode e-mail address ?>
 
 				jQuery('#gse_registration_message').hide(); <?php // hide tip if allready shown ?>
 
@@ -1305,11 +1308,9 @@ jQuery(document).ready(function()
         {
 		  if(data) <?php // if gravatar doesn't exist ?>
 		  {
-			var emailValue = "<?php echo $user_email; ?>"; <?php // pick up e-mail address from wp_usermeta ?>
-
 			jQuery('#gse_bbpress_message').hide(); <?php // hide tip if allready shown ?>
 
-		  	jQuery("<?php echo $gse_options['below_bbpress']; ?>").after("<br /><div id='gse_bbpress_message'><?php echo apply_filters( 'gse_message_bbpress', gravatar_signup_encouragement_message() ); ?></div>"); <?php // show tip ?>
+		  	jQuery("<?php echo $gse_options['below_bbpress']; ?>").after("<br /><div id='gse_bbpress_message'><?php echo apply_filters( 'gse_message_bbpress', gravatar_signup_encouragement_message( $user_email ) ); ?></div>"); <?php // show tip ?>
           }  				
         });
 });
@@ -1347,6 +1348,8 @@ jQuery(document).ready(function()
 			  if(data) <?php // if gravatar doesn't exist ?>
 			  {
 				var emailValue = jQuery("#user_email").val(); <?php // pick up e-mail address from field ?>
+
+				emailValue = encodeURIComponent(emailValue); <?php // urlencode e-mail address ?>
 
 				jQuery('#gse_ms_signup_message').hide(); <?php // hide tip if allready shown ?>
 
