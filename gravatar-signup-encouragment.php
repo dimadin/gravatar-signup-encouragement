@@ -589,7 +589,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 			<?php checked( '#submit', $gse_options['below_ms_signup'] ); ?> /> <?php _e( 'Submit button', 'gse_textdomain' ); ?> </label>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_ms_signup]" class="gse_below_ms_signup_custom_radio" type="radio" value="<?php echo $gse_options['below_ms_signup_custom']; ?>" 
-			<?php checked( $gse_options['below_ms_signup_custom'], $gse_options['below_ms_signup'] ); ?> /> <?php _e( 'Custom ID:', 'gse_textdomain' ); ?></label> <input name="gravatar_signup_encouragement_settings[below_ms_signup_custom]" type="text" class="gse_below_ms_signup_custom_text" value="<?php echo $gse_options['below_ms_signup_custom']; ?>" /> 
+			<?php checked( $gse_options['below_ms_signup_custom'], $gse_options['below_ms_signup'] ); ?> /> <?php _e( 'Custom element:', 'gse_textdomain' ); ?></label> <input name="gravatar_signup_encouragement_settings[below_ms_signup_custom]" type="text" class="gse_below_ms_signup_custom_text" value="<?php echo $gse_options['below_ms_signup_custom']; ?>" /> 
 		</div>
 	<br />
 	<?php } ?>
@@ -598,13 +598,13 @@ function gravatar_signup_encouragement_field_settings_form() {
 	<?php // Show only if bbPress plugin is activated ?>
 	<?php if ( class_exists( 'bbPress' ) ) { ?>
 	<label><input name="gravatar_signup_encouragement_settings[show_bbpress]" class="gse_show_bbpress" type="checkbox" value="1" 
-	<?php checked( '1', $gse_options['show_bbpress'] ); ?> /> <?php _e( 'bbPress reply form', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-11.png' ); ?>" title="<?php _e( 'Message shown in a bbPress reply form of a Twenty Eleven theme in line with avatar', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
+	<?php checked( '1', $gse_options['show_bbpress'] ); ?> /> <?php _e( 'bbPress reply form', 'gse_textdomain' ); ?> </label> (<a href="<?php echo gravatar_signup_encouragement_screenshot_url( 'screenshot-11.png' ); ?>" title="<?php _e( 'Message shown in a bbPress reply form of a Twenty Eleven theme below form title', 'gse_textdomain' ); ?>" class="thickbox"><?php _e( 'example of how this looks', 'gse_textdomain' ); ?></a>)
 		<?php // Elements ?>
 		<div id="gse_below_bbpress" style="margin: 5px 0 0 10px;">
 			<span><?php _e( 'Choose the bbPress reply form element or text field to display the Gravatar Signup Encouragement message below it', 'gse_textdomain' ); ?></span>
 			<br />
-			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post div.avatar" 
-			<?php checked( '#new-post div.avatar', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Avatar', 'gse_textdomain' ); ?> </label>
+			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#new-post legend:first" 
+			<?php checked( '#new-post legend:first', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Form title', 'gse_textdomain' ); ?> </label>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" type="radio" value="#bbp_topic_tags" 
 			<?php checked( '#bbp_topic_tags', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Topic tags', 'gse_textdomain' ); ?> </label>
@@ -616,7 +616,7 @@ function gravatar_signup_encouragement_field_settings_form() {
 			<?php checked( '#new-post button', $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Submit button', 'gse_textdomain' ); ?> </label>
 			<br />
 			<label><input name="gravatar_signup_encouragement_settings[below_bbpress]" class="gse_below_bbpress_custom_radio" type="radio" value="<?php echo $gse_options['below_bbpress_custom']; ?>" 
-			<?php checked( $gse_options['below_bbpress_custom'], $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Custom ID:', 'gse_textdomain' ); ?></label> <input name="gravatar_signup_encouragement_settings[below_bbpress_custom]" type="text" class="gse_below_bbpress_custom_text" value="<?php echo $gse_options['below_bbpress_custom']; ?>" /> 
+			<?php checked( $gse_options['below_bbpress_custom'], $gse_options['below_bbpress'] ); ?> /> <?php _e( 'Custom element:', 'gse_textdomain' ); ?></label> <input name="gravatar_signup_encouragement_settings[below_bbpress_custom]" type="text" class="gse_below_bbpress_custom_text" value="<?php echo $gse_options['below_bbpress_custom']; ?>" /> 
 		</div>
 	<br />
 	<?php } ?>
