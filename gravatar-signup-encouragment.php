@@ -415,6 +415,11 @@ function gravatar_signup_encouragement_field_settings_form() {
 		<input type="hidden" name="gravatar_signup_encouragement_settings[version]" value="<?php echo $gse_options['version']; ?>" />
 		<?php
 	}
+	?>
+	<div class="dashboard-widget-notice">
+		<?php echo sprintf( __( 'Don&#8220;t know how to use this? <a href="%s" class="thickbox">Watch video tutorial</a>.', 'gse_textdomain' ), "#TB_inline?height=400&width=430&inlineId=gsevideotutorial&modal=true" ); ?><br />
+	</div>
+	<?php
 
 	/* 
 	 * First we print selection of cases when to show tip,
@@ -807,6 +812,12 @@ jQuery(document).ready(function()
 	});
 });
 </script>
+
+	<?php /* Print Thickbox for video tutorial */ ?>
+	<div id="gsevideotutorial" style="display: none;">
+		<iframe width="420" height="345" src="https://www.youtube.com/embed/Pwjz2us0L-U" frameborder="0" allowfullscreen></iframe>
+		<p><input type="submit" id="gse_nonstandard_theme_tips_close_button" value="<?php _e( 'Close this video', 'gse_textdomain' ); ?>" onclick="tb_remove()" /></p>
+	</div>
 
 	<?php /* At the end, we print Thickboxes for bad themes */ ?>
 	<?php
