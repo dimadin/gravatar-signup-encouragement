@@ -7,7 +7,7 @@ Version: 3.0-beta-1
 Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
-Domain Path: translations
+Domain Path: /translations/
 */
 
 /*
