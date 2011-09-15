@@ -105,6 +105,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Added basic documentation to all functions
 * Updated screenshots with one from Twenty Eleven theme
 * Added urlencoding of email addresses so that “@” is still in address after redirection on gravatar.com
+* Moved settings form to other file which is loaded conditionaly. Size of main file is reduced by half which means better performance.
 
 = 2.0.1 =
 * Released on 22nd October 2010
