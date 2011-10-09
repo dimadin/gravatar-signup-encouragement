@@ -430,7 +430,7 @@ jQuery(document).ready(function()
 
 	<?php /* Print Thickbox for video tutorial */ ?>
 	<div id="gsevideotutorial" style="display: none;">
-		<iframe width="420" height="345" src="https://www.youtube.com/embed/Pwjz2us0L-U" frameborder="0" allowfullscreen></iframe>
+		<iframe width="420" height="345" src="https://www.youtube.com/embed/eIvm4rBkxPk&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
 		<p><input type="submit" id="gse_nonstandard_theme_tips_close_button" value="<?php _e( 'Close this video', 'gse_textdomain' ); ?>" onclick="tb_remove()" /></p>
 	</div>
 
