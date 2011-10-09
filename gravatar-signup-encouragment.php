@@ -8,6 +8,7 @@ Author: Milan Dinić
 Author URI: http://blog.milandinic.com/
 Text Domain: gse_textdomain
 Domain Path: /translations/
+License: GPL
 */
 
 /*

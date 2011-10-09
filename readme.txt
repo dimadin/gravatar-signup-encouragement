@@ -1,7 +1,7 @@
 === Gravatar Signup Encouragement ===
 Contributors: dimadin
 Donate link: http://blog.milandinic.com/donate/
-Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments
+Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments, bbPress
 Requires at least: 2.8
 Tested up to: 3.2.1
 Stable tag: 2.0.1
@@ -18,6 +18,10 @@ Message can be shown to:
 
 *   unregistered commenters when they leave text input field for e-mail address
 *   registered commenters to whom their registered e-mail address is checked
+*	unregistered commenters after they post a comment in a dialog, to whom their entered e-mail address is checked
+*	registered commenters after they post a comment in a dialog, to whom their registered e-mail address is checked
+*	registered users in administration notices, to whom their registered e-mail address is checked
+*	registered users in admin bar, to whom their registered e-mail address is checked
 *   registered users on their profile page, to whom their registered e-mail address is checked
 *   users who fill registration form when they leave text input field for e-mail address
 
@@ -27,6 +31,8 @@ This plugin is lightweight, it adds only one field in database which is deleted 
 If you want to speed up your web site and save on bandwidth and server resources, it is recommended that you also install plugin [Use Google Libraries](http://jasonpenney.net/wordpress-plugins/use-google-libraries/) which will load jQuery file from [Google AJAX Libraries](http://code.google.com/apis/ajaxlibs/).
 
 In order to plugin works, it needs to be on server with PHP 5 and on WordPress 2.8 or above.
+
+http://www.youtube.com/watch?v=eIvm4rBkxPk&cc_load_policy=1
 
 == Installation ==
 
@@ -49,8 +55,12 @@ Yes, you can choose below which elements on page to show message. There are seve
 Yes, you can add styles for message. Whole message is wrapped with div with ID depending on case:
 
 *   `gse_comments_message` for comment form
+*   `gseaftercommenting` for modal
+*   `gse_admin_notice` for administration notice
 *   `gse_profile_message` for profile page
 *   `gse_registration_message` for registration page
+*   `gse_ms_signup_message` for signup page on multisite
+*   `gse_bbpress_message` for bbPress
 
 = Can I customize text of message? =
 
@@ -58,7 +68,7 @@ Yes, you can write any message you want, even use HTML tags you want. Note that 
 
 = Can I have different message for all cases? =
 
-No.
+Yes, if you use filters.
 
 = Can I translate plugin to language other than English? =
 
@@ -106,6 +116,7 @@ No, this plugin will never add that feature since author of this plugin is again
 * Updated screenshots with one from Twenty Eleven theme
 * Added urlencoding of email addresses so that “@” is still in address after redirection on gravatar.com
 * Moved settings form to other file which is loaded conditionaly. Size of main file is reduced by half which means better performance.
+* Added license to plugin meta
 
 = 2.0.1 =
 * Released on 22nd October 2010
