@@ -4,14 +4,8 @@
 * and it is used for settings form
 */
 
-/*
- * If file is opened directly, return 403 error
- */
-if ( ! function_exists( 'add_action' ) ) {
-	header( 'Status: 403 Forbidden' );
-	header( 'HTTP/1.1 403 Forbidden' );
-	exit();
-}
+/* Exit if accessed directly */
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Display setting fields
