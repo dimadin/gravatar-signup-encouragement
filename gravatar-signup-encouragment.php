@@ -181,8 +181,20 @@ add_filter( 'plugin_action_links', 'gravatar_signup_encouragement_filter_plugin_
  * @since 2.0
  */
 function add_gravatar_signup_encouragement_contextual_help() {
-	/* Hook in the contextual help filter */
-	add_filter( 'contextual_help','gravatar_signup_encouragement_contextual_help' );
+	global $wp_version;
+	/* For post-3.3, use new API */
+	if ( version_compare( $wp_version, 3.3, '>=' ) ) {
+		$screen = get_current_screen();
+		$screen->add_help_tab( array(
+			'id'      => 'gravatar-signup-encouragement-help',
+			'title'   => __( "Gravatar Signup Encouragement", "gse_textdomain" ),
+			'content' => "<p>" . __( "<a href='http://blog.milandinic.com/wordpress/plugins/gravatar-signup-encouragement/' target='_blank'>Gravatar Signup Encouragement Settings Documentation</a>", "gse_textdomain" ) . "</p>" .
+				"<p>" . __( '<a href="http://wordpress.org/tags/gravatar-signup-encouragement" target="_blank">Gravatar Signup Encouragement Support Forums</a>', 'gse_textdomain' ) . "</p>"
+		) );
+	/* Otherwise, hook in the contextual help filter */
+	} else {
+		add_filter( 'contextual_help', 'gravatar_signup_encouragement_contextual_help' );
+	}
 }
 add_action( 'load-options-discussion.php','add_gravatar_signup_encouragement_contextual_help' );
 
