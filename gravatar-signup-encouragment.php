@@ -226,6 +226,19 @@ function gravatar_signup_encouragement_filter_email_source( $element ) {
 add_filter( "gse_get_email_value_com_unreg", "gravatar_signup_encouragement_filter_email_source" );
 
 /**
+ * Check if allow_url_fopen is allowed
+ *
+ * @since 3.1
+ * @return bool
+ */
+function gravatar_signup_encouragement_allow_url_fopen() {
+	if ( ini_get( 'allow_url_fopen' ) )
+		return true;
+	else
+		return false;
+}
+
+/**
  * Get URL of gravatar existence check
  *
  * @since 2.0
@@ -233,8 +246,10 @@ add_filter( "gse_get_email_value_com_unreg", "gravatar_signup_encouragement_filt
  * @return string URL of gravatar-check.php file
  */
 function gravatar_signup_encouragement_check_url() {
-	$gse_grav_check_url = plugins_url( 'gravatar-check.php', __FILE__ );
-	return $gse_grav_check_url;
+	if ( gravatar_signup_encouragement_allow_url_fopen() )
+		return plugins_url( 'gravatar-check.php', __FILE__ );
+	else
+		return admin_url( 'admin-ajax.php' );
 }
 
 /**
@@ -526,11 +541,29 @@ function gravatar_signup_encouragement_contextual_help( $help ) {
  */
 function gravatar_signup_encouragement_check_gravatar_existence( $email ) {
 	$fileUrl = "http://www.gravatar.com/avatar/" . md5( strtolower( $email ) )."?s=2&d=404";
-	$AgetHeaders = @get_headers( $fileUrl );
-	if ( ! preg_match( "|200|", $AgetHeaders[0] ) ) {
-		return false;
+	/* Lets first try with faster method */
+	if ( gravatar_signup_encouragement_allow_url_fopen() ) {
+		$AgetHeaders = @get_headers( $fileUrl );
+		if ( ! preg_match( "|200|", $AgetHeaders[0] ) ) {
+			return false;
+		} else {
+			return true;
+		}
+	/* Then we try with WordPress HTTP API */
 	} else {
-		return true;
+		$response = wp_remote_get( $fileUrl );
+		/* If there is no error, get response code */
+		if ( ! is_wp_error( $response ) ) {
+			$response_code = wp_remote_retrieve_response_code( $response );
+			if ( 200 == $response_code ) {
+				return true;
+			} else {
+				return false;
+			}
+		/* Otherwise return true */
+		} else {
+			return true;
+		}
 	}
 }
 
@@ -608,6 +641,24 @@ function gravatar_signup_encouragement_message( $email = '', $onclick = '') {
 }
 
 /**
+ * Handle check on admin-ajax.php
+ *
+ * Used when allow_url_fopen is dissalowed
+ *
+ * @since 3.1
+ */
+function gravatar_signup_encouragement_wp_ajax_check() {
+	/* Load e-mail address sent via POST */
+	$gravatar_email = $_POST['gravmail'];
+
+	/* Echo no if no existence */
+	if ( ! gravatar_signup_encouragement_check_gravatar_existence( $gravatar_email ) )
+		die ( 'no' );
+}
+add_action( 'wp_ajax_gse_check', 'gravatar_signup_encouragement_wp_ajax_check' );
+add_action( 'wp_ajax_nopriv_gse_check', 'gravatar_signup_encouragement_wp_ajax_check' );
+
+/**
  * Show encouragement on comment form for unregistered users
  *
  * @since 1.0
@@ -625,9 +676,9 @@ jQuery(document).ready(function()
 {
 	<?php // post and check if gravatar exists or not from ajax ?>
 	var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val();
-	jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:emailValue } ,function(data)
+	jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:emailValue, action:"gse_check" } ,function(data)
 	{
-	  if(data) <?php // if gravatar doesn't exist ?>
+	  if (data == 'no') <?php // if gravatar doesn't exist ?>
 	  {
 		var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val(); <?php // pick up e-mail address from field ?>
 
@@ -655,9 +706,9 @@ jQuery(document).ready(function()
 	jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").blur(function() <?php // when user leave #email field ?>
 	{		
 		<?php // post and check if gravatar exists or not from ajax ?>
-		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:jQuery(this).val() } ,function(data)
+		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:jQuery(this).val(), action:"gse_check" } ,function(data)
         {
-		  if(data) <?php // if gravatar doesn't exist ?>
+		  if (data == 'no') <?php // if gravatar doesn't exist ?>
 		  {
 			var emailValue = jQuery("<?php echo apply_filters( 'gse_get_email_value_com_unreg', '#email' ); ?>").val(); <?php // pick up e-mail address from field ?>
 
@@ -695,9 +746,9 @@ function show_gravatar_signup_encouragement_com_reg() {
 jQuery(document).ready(function()
 {		
 		<?php // post and check if gravatar exists or not from ajax ?>
-		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>" } ,function(data)
+		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>", action:"gse_check" } ,function(data)
         {
-		  if(data) <?php // if gravatar doesn't exist ?>
+		  if (data == 'no') <?php // if gravatar doesn't exist ?>
 		  {
 			jQuery('#gse_comments_message').hide(); <?php // hide tip if allready shown ?>
 
@@ -848,9 +899,9 @@ function show_gravatar_signup_encouragement_profile() {
 jQuery(document).ready(function()
 {
 		<?php // post and check if gravatar exists or not from ajax ?>
-		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>" } ,function(data)
+		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>", action:"gse_check" } ,function(data)
         {
-		  if(data) <?php // if gravatar doesn't exist ?>
+		  if (data == 'no') <?php // if gravatar doesn't exist ?>
 		  {
 			jQuery('#gse_profile_message').hide(); <?php // hide tip if allready shown ?>
 
@@ -890,9 +941,9 @@ jQuery(document).ready(function()
 		clearTimeout(delayed);
 		var value = this.value; delayed = setTimeout(function() { 
 			<?php // post and check if gravatar exists or not from ajax ?>
-			jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:value } ,function(data)
+			jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:value, action:"gse_check" } ,function(data)
 			{
-			  if(data) <?php // if gravatar doesn't exist ?>
+			  if (data == 'no') <?php // if gravatar doesn't exist ?>
 			  {
 				var emailValue = jQuery("#user_email").val(); <?php // pick up e-mail address from field ?>
 
@@ -954,9 +1005,9 @@ function gravatar_signup_encouragement_bbpress() {
 jQuery(document).ready(function()
 {		
 		<?php // post and check if gravatar exists or not from ajax ?>
-		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>" } ,function(data)
+		jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:"<?php echo $user_email; ?>", action:"gse_check" } ,function(data)
         {
-		  if(data) <?php // if gravatar doesn't exist ?>
+		  if (data == 'no') <?php // if gravatar doesn't exist ?>
 		  {
 			jQuery('#gse_bbpress_message').hide(); <?php // hide tip if allready shown ?>
 
@@ -993,9 +1044,9 @@ jQuery(document).ready(function()
 		clearTimeout(delayed);
 		var value = this.value; delayed = setTimeout(function() { 
 			<?php // post and check if gravatar exists or not from ajax ?>
-			jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:value } ,function(data)
+			jQuery.post("<?php echo gravatar_signup_encouragement_check_url(); ?>",{ gravmail:value, action:"gse_check" } ,function(data)
 			{
-			  if(data) <?php // if gravatar doesn't exist ?>
+			  if (data == 'no') <?php // if gravatar doesn't exist ?>
 			  {
 				var emailValue = jQuery("#user_email").val(); <?php // pick up e-mail address from field ?>
 
