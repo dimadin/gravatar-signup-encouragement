@@ -99,7 +99,13 @@ No, this plugin will never add that feature since author of this plugin is again
 
 == Changelog ==
 
+= 3.1 =
+* Released on 
+* Used new API for help for post-3.3 versions.
+* Made it possible to check for gravatar existence even when allow_url_fopen isn't allowed.
+
 = 3.0 =
+* Released on 9th October 2011
 * Introduced gravatar_signup_encouragement_get_option() function as a replacement for global variable with options
 * Moved all code inside add_action() function so we don't have anything before init hook
 * Added hidden field inside settings form that contains options version
