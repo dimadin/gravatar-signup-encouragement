@@ -3,7 +3,7 @@ Contributors: dimadin
 Donate link: http://blog.milandinic.com/donate/
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments, bbPress
 Requires at least: 2.8
-Tested up to: 3.2.1
+Tested up to: 3.4.1
 Stable tag: 3.0
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
