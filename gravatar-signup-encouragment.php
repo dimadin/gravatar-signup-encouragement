@@ -246,10 +246,17 @@ function gravatar_signup_encouragement_allow_url_fopen() {
  * @return string URL of gravatar-check.php file
  */
 function gravatar_signup_encouragement_check_url() {
-	if ( gravatar_signup_encouragement_allow_url_fopen() )
-		return plugins_url( 'gravatar-check.php', __FILE__ );
-	else
+	if ( gravatar_signup_encouragement_allow_url_fopen() ) {
+		$url = plugins_url( 'gravatar-check.php', __FILE__ );
+
+		/* Pass rating if not G */
+		if ( 'G' != get_option( 'avatar_rating' ) )
+			$url = add_query_arg( 'r', get_option( 'avatar_rating' ), $url );
+
+		return $url;
+	} else {
 		return admin_url( 'admin-ajax.php' );
+	}
 }
 
 /**
@@ -540,7 +547,12 @@ function gravatar_signup_encouragement_contextual_help( $help ) {
  * @return bool
  */
 function gravatar_signup_encouragement_check_gravatar_existence( $email ) {
-	$fileUrl = "http://www.gravatar.com/avatar/" . md5( strtolower( $email ) )."?s=2&d=404";
+	$fileUrl = 'http://www.gravatar.com/avatar/' . md5( strtolower( $email ) ) . '?s=2&d=404';
+
+	/* Pass rating if not G */
+	if ( 'G' != get_option( 'avatar_rating' ) )
+		$fileUrl .= '&r=' . get_option( 'avatar_rating' );
+
 	/* Lets first try with faster method */
 	if ( gravatar_signup_encouragement_allow_url_fopen() ) {
 		$AgetHeaders = @get_headers( $fileUrl );

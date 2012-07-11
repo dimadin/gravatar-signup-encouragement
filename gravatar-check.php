@@ -19,7 +19,12 @@ if ( ! $gravatar_email ) exit;
  * Based on work from florinel2k at yahoo dot com (  http://php.net/file_exists#75720 )
  * and worldclimb at gmail dot com (  http://php.net/file_exists#76545 )
  */
-$fileUrl = "http://www.gravatar.com/avatar/" . md5( strtolower( $gravatar_email ) ) . "?s=2&d=404";
+$fileUrl = 'http://www.gravatar.com/avatar/' . md5( strtolower( $gravatar_email ) ) . '?s=2&d=404';
+
+$rating = $_GET['r'];
+if ( ! empty( $rating ) )
+	$fileUrl .= '&r=' . $rating;
+
 $AgetHeaders = @get_headers( $fileUrl );
 if ( ! preg_match( "|200|", $AgetHeaders[0] ) ) {
 	echo 'no';
