@@ -102,7 +102,8 @@ No, this plugin will never add that feature since author of this plugin is again
 = 3.1 =
 * Released on 
 * Used new API for help for post-3.3 versions.
-* Made it possible to check for gravatar existence even when allow_url_fopen isn't allowed.
+* Made it possible to check for gravatar existence even when allow_url_fopen isn't allowed. Thanks wp.org user jlencion for report and initial patch.
+* Rating is now passed to checker if it's different than G. Thanks wp.org user Parakoos for report.
 
 = 3.0 =
 * Released on 9th October 2011
