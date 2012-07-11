@@ -4,7 +4,7 @@ Donate link: http://blog.milandinic.com/donate/
 Tags: Gravatar, gravatar, gravatars, avatar, avatars, comment, comments, bbPress
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 3.0
+Stable tag: 3.1
 
 Shows a message with link to Gravatar's signup page to commenters and/or users without gravatar.
 
@@ -100,7 +100,7 @@ No, this plugin will never add that feature since author of this plugin is again
 == Changelog ==
 
 = 3.1 =
-* Released on 
+* Released on 11th July 2012
 * Used new API for help for post-3.3 versions.
 * Made it possible to check for gravatar existence even when allow_url_fopen isn't allowed. Thanks wp.org user jlencion for report and initial patch.
 * Rating is now passed to checker if it's different than G. Thanks wp.org user Parakoos for report.
